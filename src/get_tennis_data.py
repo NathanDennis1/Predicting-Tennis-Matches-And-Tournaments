@@ -23,7 +23,7 @@ class GetTennisData():
         Final dataframe across every github url
         """
         df_list = []
-        for year in range(2000, 2024):  
+        for year in range(2000, 2025):  
 
             url = self.base_url.format(year)
 
@@ -50,7 +50,7 @@ def main():
     tennis_df = tennisdata.get_data()
 
     # Select relevent columns for analysis
-    tennis_df = tennis_df[['tourney_name', 'surface', 'draw_size', 'tourney_level', 'best_of', 'winner_name', 'winner_hand', 'winner_ht', 'winner_age', 'loser_name', 'loser_hand', 'loser_ht', 'loser_age', 'winner_rank', 'winner_rank_points', 'loser_rank', 'loser_rank_points', 'Year']]
+    tennis_df = tennis_df[['tourney_name', 'surface', 'draw_size', 'tourney_level', 'best_of', 'winner_name', 'winner_age', 'loser_name', 'loser_age', 'Year']]
 
     tennis_df = tennis_df.dropna()
 
