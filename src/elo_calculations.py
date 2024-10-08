@@ -132,70 +132,58 @@ class ELO:
         # Create a dataframe of each of the winners last ages in the dataset, keeping only the first in drop duplicates.
         winner_ages = df_sorted[['winner_name', 'winner_age', 'Year']].drop_duplicates('winner_name', keep='first')
 
-<<<<<<< HEAD
         # Renames columns for proper naming. The winner name is the players name, and the most recent winning age.
         winner_ages.rename(columns={'winner_name': 'Player_name', 'winner_age': 'most_recent_age'}, inplace=True)
         winner_ages['Result'] = 'Match_winner'
-=======
-        # Renames columns for proper naming.
-        winner_ages.rename(columns={'winner_name': 'Player_name', 'winner_age': 'most_recent_age'}, inplace=True)
-        winner_ages['Result'] = 'Winner'
->>>>>>> 5d745a6 (Added calculation for estimated player age based on tennis dataset)
 
         # Create a dataframe of each of the losers last ages in the dataset, keeping only the first in drop duplicates.
         loser_ages = df_sorted[['loser_name', 'loser_age', 'Year']].drop_duplicates('loser_name',keep='first')
         
         # Renames the columns similar to winners_ages for similar naming convention.
         loser_ages.rename(columns={'loser_name': 'Player_name', 'loser_age': 'most_recent_age'}, inplace=True)
-<<<<<<< HEAD
         loser_ages['Result'] = 'Match_loser'
 
         recent_ages = pd.concat([winner_ages, loser_ages])
 
         # Use pivot to create new dataframe using Player_name as the index, the column being the result of the match, and the values
-=======
-        loser_ages['Result'] = 'Loser'
-
-        recent_ages = pd.concat([winner_ages, loser_ages], ignore_index=True)
-
-        # Use pivot to create new dataframe using Player_name as the index, the column being if they won or lost a match, and the values
->>>>>>> 5d745a6 (Added calculation for estimated player age based on tennis dataset)
         # being their most recent age.
         recent_ages = recent_ages.pivot(index ='Player_name', columns = 'Result', values = 'most_recent_age').reset_index()
 
         # Fills NaN values with 0 as placeholder, won't be used since the players age will be larger for either a win or loss.
-<<<<<<< HEAD
         recent_ages.fillna(0)
 
         # Takes most recent year a player has played, used for age calculation
         recent_years = pd.concat([winner_ages[['Player_name', 'Year']], loser_ages[['Player_name', 'Year']]])
 
         # Drops duplicates on player names, keeping only the most recent year a player has played (The dataframe is already sorted on year)
-=======
-        recent_ages.fillna(0, inplace=True)
-
-        # Takes most recent year a player has played, used for age calculation
-        recent_years = pd.concat([winner_ages[['Player_name', 'Year']], loser_ages[['Player_name', 'Year']]], ignore_index=True)
-
-        # Drops duplicates of player names, keeping only the most recent year a player has played (The dataframe is already sorted on year)
->>>>>>> 5d745a6 (Added calculation for estimated player age based on tennis dataset)
         recent_years = recent_years.drop_duplicates(subset='Player_name', keep='first')
 
         # Merges most recent ages alongside the most recent year a match was played, based off the players name.
         recent_ages = recent_ages.merge(recent_years, on='Player_name')
 
         # Calculate the maximum current age for each player based off both columns.
-<<<<<<< HEAD
         recent_ages['Player_age'] = recent_ages[['Match_winner', 'Match_loser']].max(axis=1)
-=======
-        recent_ages['Player_age'] = recent_ages[['Winner', 'Loser']].max(axis=1)
->>>>>>> 5d745a6 (Added calculation for estimated player age based on tennis dataset)
 
         recent_ages['Player_age'] = recent_ages['Player_age'] + (self.current_year - recent_ages['Year'])
         
         recent_ages.set_index('Player_name', inplace=True)
 
         return recent_ages['Player_age']
+    
+    def games_played(self, data):
+        """
+        Calculates the number of games a player has played
+
+        Args:
+        data: Dataframe for previous match history for each tennis tournament and professional match.
+
+        Returns:
+        Series for the number of games a player has played.
+        """
+        games_played_winner = pd.DataFrame(data['winner_name'].value_counts())
+        games_played_loser = pd.DataFrame(data['loser_name'].value_counts())
+        games_played = pd.concat([games_played_winner, games_played_loser])
+        return games_played.groupby(games_played.index).sum()['count']
     
 def main():
     
@@ -214,6 +202,8 @@ def main():
     player_elos = elo.elo_calculation(tennis_data[tennis_data['Year'] < 2024], elo_df)
 
     player_elos['Player_age'] = elo.get_most_recent_age(tennis_data)
+
+    player_elos['Games_played'] = elo.games_played(tennis_data)
 
     player_elos.to_csv('player_elos.csv', index_label='Player_Name', index=True)
 
