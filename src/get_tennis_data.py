@@ -25,8 +25,8 @@ class GetTennisData():
         Final dataframe across every github url for given years.
         """
 
-        if (type(year_lower) == str or type(year_upper) == str):
-            raise Exception("This is a string, you must input an int for years")
+        if (type(year_lower) != int or type(year_upper) != int):
+            raise Exception("This is not of type int (integer), you must input an int for years")
 
         try:
             if not (1968 <= year_lower <= 2024) or not (1969 <= year_upper <= 2025):
