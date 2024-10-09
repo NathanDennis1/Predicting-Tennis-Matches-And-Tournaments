@@ -4,6 +4,7 @@ class ELO:
     def __init__(self):
         self.initial_rating = float(1500)
         self.current_year = 2024
+        self.tennis_data = pd.read_csv('../data/tennis_data.csv')
 
     def initial_elos(self, surfaces, names):
         """
@@ -185,27 +186,14 @@ class ELO:
         games_played = pd.concat([games_played_winner, games_played_loser])
         return games_played.groupby(games_played.index).sum()['count']
     
-def main():
+    def final_elo_csv(self):
+        names = self.get_names(self.tennis_data)
+        surfaces = self.tennis_data['surface'].unique()[0:3]
+        elo_df = self.initial_elos(surfaces, list(names))
+        player_elos = self.elo_calculation(self.tennis_data[self.tennis_data['Year'] < 2024], elo_df)
+        player_elos['Player_age'] = self.get_most_recent_age(self.tennis_data)
+        player_elos['Games_played'] = self.games_played(self.tennis_data)
+
+        file_path = f'../data/player_elos.csv'
+        player_elos.to_csv(file_path, index_label='Player_Name', index=True)
     
-    tennis_data = pd.read_csv('tennis_data.csv')
-
-    elo = ELO()
-
-    names = elo.get_names(tennis_data)
-
-    surfaces = tennis_data['surface'].unique()[0:3]
-
-    surfaces = list(surfaces)
-
-    elo_df = elo.initial_elos(surfaces, list(names))
-
-    player_elos = elo.elo_calculation(tennis_data[tennis_data['Year'] < 2024], elo_df)
-
-    player_elos['Player_age'] = elo.get_most_recent_age(tennis_data)
-
-    player_elos['Games_played'] = elo.games_played(tennis_data)
-
-    player_elos.to_csv('player_elos.csv', index_label='Player_Name', index=True)
-
-if __name__ == "__main__":
-    main()
