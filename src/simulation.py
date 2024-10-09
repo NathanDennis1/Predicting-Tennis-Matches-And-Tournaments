@@ -49,11 +49,11 @@ class Simulation():
 
 
     def find_initial_draw(self, data, year, tournament):
+
         grand_slams = ['Australian Open', 'French Open', 'Wimbledon', 'US Open']
         if tournament not in grand_slams:
             raise InvalidTournamentError(f'Invalid tournament, must be a Grand Slam: One of ', {grand_slams})
 
-        
         tournament_results = data[(data['Year'] == year) & (data['tourney_name'] == tournament)]
 
         if len(tournament_results) != 127:
@@ -124,6 +124,7 @@ class Simulation():
         W_data = pd.DataFrame(matrix_W)
         W_data.columns = column_names
 
+        self.tournament_name = self.tournament_name.replace(' ', '_')
         file_path = f'../data/tournament_results_{self.tournament_name}.csv'
 
         W_data.to_csv(file_path, index=True)
