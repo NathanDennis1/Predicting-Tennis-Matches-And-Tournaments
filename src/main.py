@@ -4,15 +4,15 @@ from elo_calculations import ELO
 import pandas as pd
 
 def main():
-    player_elos = pd.read_csv('player_elos.csv', index_col = 'Player_Name')
-    data = pd.read_csv('tennis_data.csv')
+    player_elos = pd.read_csv('../data/player_elos.csv', index_col = 'Player_Name')
+    data = pd.read_csv('../data/tennis_data.csv')
 
     #elo = ELO()
     #elo.final_elo_csv()
 
     #tennis_data = GetTennisData()
 
-    #tennis_data.get_data()
+    #tennis_data.get_data(year_lower = '123')
 
     simulation = Simulation(player_elos)
 
