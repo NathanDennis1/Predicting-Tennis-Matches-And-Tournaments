@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from io import StringIO
+import sys
 
 class GetTennisData():
     """
@@ -22,6 +23,19 @@ class GetTennisData():
         Returns:
         Final dataframe across every github url
         """
+
+        if (type(year_lower) == str or type(year_upper) == str):
+            raise Exception("This is a string, you must input an int for years")
+
+        try:
+            if not (1968 <= year_lower <= 2024) or not (1969 <= year_upper <= 2025):
+                raise ValueError("Year must be between 1968 and 2024 for the lower year, and between 1969 and 2025 for the upper year")
+        except ValueError as e:
+            print(e)
+            sys.exit(1)
+
+            
+ 
         df_list = []
         for year in range(year_lower, year_upper):  
 
