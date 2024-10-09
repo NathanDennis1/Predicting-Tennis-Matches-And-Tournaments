@@ -11,24 +11,38 @@ class ELO:
         Reads dataframe and calculates initial ELO ratings.
 
         Args:
-        surfaces: A list of surfaces players are playing on. (Tennis could include Clay or Grass, Basketball could include Home or Away court)
-        names: Names of all teams/players for the sport.
+        surfaces (list): A list of surfaces players are playing on. (Tennis could include Clay or Grass, Basketball could include Home or Away court)
+        names (list): Names of all teams/players for the sport.
 
         Returns:
         Final dataframe across all surfaces and players.
         """
 
+        # Creates initial elo dictionary
         elo_dict = {}
         for surface in surfaces:
             elo_dict[f"{surface}_ELO"] = [self.initial_rating] * len(names)    
 
+        # Makes the dictionary a dataframe
         player_elos = pd.DataFrame(elo_dict, index=names)    
 
         return player_elos
     
     def get_names(self, data):
+        """
+        Gets the names of all players in a dataframe. Creates a set of the unique names in
+        the winners and losers columns, then combines the set using union.
+
+        Args:
+        data (pandas dataframe): Dataframe for given tennis dataset
+
+        Returns:
+        List of player names from the tennis dataset
+        """
+        # First set for winner names
         winner_names = set(data['winner_name'].unique())
 
+        # Second set for loser names
         loser_names = set(data['loser_name'].unique())
 
         names = winner_names.union(loser_names)
@@ -40,7 +54,7 @@ class ELO:
         Creates logistic function used for ELO calculation.
 
         Args:
-        x: some number used for the log function
+        x (float): number input for the log function
 
         Returns:
         Final calculation of log function with given number
@@ -52,9 +66,9 @@ class ELO:
         Calculates expected game score based on logistic function
 
         Args:
-        first_elo: The first elo for a given team/player
-        second_elo: The second elo for a given team/player
-        S = Scaling factor
+        first_elo (float): The first elo for a given team/player
+        second_elo (float): The second elo for a given team/player
+        S (int): Scaling factor
 
         Returns:
         Final calculation for an expected game score.
@@ -66,9 +80,9 @@ class ELO:
         Calculates ELO scores for each tennis player based on previous match history
 
         Args:
-        data: Dataframe for previous match history for each tennis tournament and professional match.
-        elo_df: Dataframe of ELO scores for players on all surfaces.
-        K: Sensitivity Constant
+        data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
+        elo_df (pandas dataframe): Dataframe of ELO scores for players on all surfaces.
+        K (int): Sensitivity Constant
 
         Returns:
         New Elo dataframe for players updated ELO scores.
@@ -93,7 +107,7 @@ class ELO:
             elif row['tourney_level'] == 'D':
                 K = K * 0.5 # Davis Cup has little effect on ELO scores.
 
-
+            # Adjusts ELO calculation rating based off given years.
             if row['Year'] <= 2015:
                 K = K * 0.02 + (row['Year']-2000) / 20
             elif (row['Year'] > 2015 and row['Year'] <= 2020):
@@ -122,7 +136,7 @@ class ELO:
         Calculates an estimated current age for each player in the dataset.
 
         Args:
-        data: Dataframe for previous match history for each tennis tournament and professional match.
+        data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
 
         Returns:
         Series for the estimated current age of a given tennis player.
@@ -181,8 +195,11 @@ class ELO:
         Returns:
         Series for the number of games a player has played.
         """
+        # Counts all values for each winner and loser names in the dataframe, indicating how many matches played
         games_played_winner = pd.DataFrame(data['winner_name'].value_counts())
         games_played_loser = pd.DataFrame(data['loser_name'].value_counts())
+
+        # Concats both dataframe together for all players, winners or losers.
         games_played = pd.concat([games_played_winner, games_played_loser])
         return games_played.groupby(games_played.index).sum()['count']
     
