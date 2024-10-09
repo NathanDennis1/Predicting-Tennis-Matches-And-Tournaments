@@ -5,8 +5,9 @@ class InvalidTournamentError(ValueError):
         pass
 
 class Simulation():
-    def __init__(self):
-        self.elo_df = pd.read_csv('player_elos.csv')
+    def __init__(self, player_elos):
+        self.elo_df = player_elos
+        self.tournament_name = None
 
     def logistic(self, x):
         return 1 / (1 + 10**(-x))
@@ -60,6 +61,7 @@ class Simulation():
 
         first_round = tournament_results.head(64).apply(lambda row: [row['winner_name'], row['loser_name']], axis=1).tolist()
         first_round_df = pd.DataFrame(first_round, columns=['Player_1','Player_2'])
+        self.tournament_name = tournament
         return first_round_df
 
 
@@ -121,4 +123,9 @@ class Simulation():
         column_names = ["Round_64", "Round_32", "Round_16", "Round_8", "Round_4", "Round_2", "Runner_up", "Champion"]
         W_data = pd.DataFrame(matrix_W)
         W_data.columns = column_names
+
+        file_path = f'../data/tournament_results_{self.tournament_name}.csv'
+
+        W_data.to_csv(file_path, index=True)
+
         return W_data
