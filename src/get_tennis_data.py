@@ -12,7 +12,7 @@ class GetTennisData():
         """
         self.base_url = "https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_{}.csv"
 
-    def get_data(self):
+    def get_data(self, year_lower = 2000, year_upper = 2025):
         """
         Reads data from github url and creates dataframe for each url.
 
@@ -23,7 +23,7 @@ class GetTennisData():
         Final dataframe across every github url
         """
         df_list = []
-        for year in range(2000, 2025):  
+        for year in range(year_lower, year_upper):  
 
             url = self.base_url.format(year)
 
@@ -36,28 +36,14 @@ class GetTennisData():
             df_list.append(df)
 
         final_df = pd.concat(df_list)
-        return final_df
-    
-    # TODO
-    def save_data(self):
-        pass
 
+        final_df = final_df[['tourney_name', 'surface', 'draw_size', 'tourney_level', 'best_of', 
+                   'winner_name', 'winner_age', 'loser_name', 'loser_age', 'Year']]
+        
+        final_df = final_df[final_df['surface'] != 'Carpet']
+        
+        final_df = final_df.dropna()
 
-def main():
-    
-    tennisdata = GetTennisData()
+        file_path = f'../data/tennis_data.csv'
 
-    tennis_df = tennisdata.get_data()
-
-    # Select relevent columns for analysis
-    tennis_df = tennis_df[['tourney_name', 'surface', 'draw_size', 'tourney_level', 'best_of', 'winner_name', 'winner_age', 'loser_name', 'loser_age', 'Year']]
-
-    tennis_df = tennis_df.dropna()
-
-    tennis_df = tennis_df[tennis_df['surface'] != 'Carpet']
-
-    tennis_df.to_csv('tennis_data.csv', index=0)
-
-
-if __name__ == "__main__":
-    main()
+        final_df.to_csv(file_path, index=0)
