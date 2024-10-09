@@ -204,6 +204,15 @@ class ELO:
         return games_played.groupby(games_played.index).sum()['count']
     
     def final_elo_csv(self):
+        """
+        Creates the final elo csv which has ELO calculations for all surfaces
+
+        Args:
+        data: Dataframe for previous match history for each tennis tournament and professional match.
+
+        Returns:
+        Series for the number of games a player has played.
+        """
         names = self.get_names(self.tennis_data)
         surfaces = self.tennis_data['surface'].unique()[0:3]
         elo_df = self.initial_elos(surfaces, list(names))
