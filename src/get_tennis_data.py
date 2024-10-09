@@ -18,10 +18,11 @@ class GetTennisData():
         Reads data from github url and creates dataframe for each url.
 
         Args:
-        url_list: List of url's to use in dataframe.
+        year_lower (int): The lower bound for the years you want data for.
+        year_upper (int): The upper bound (Exclusive) for the years you want data for.
 
         Returns:
-        Final dataframe across every github url
+        Final dataframe across every github url for given years.
         """
 
         if (type(year_lower) == str or type(year_upper) == str):
