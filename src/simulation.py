@@ -226,6 +226,19 @@ class Simulation():
         return Winners_data
     
     def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims):
+        """
+        Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
+        saves the results to a final csv.
+
+        Args:
+            tennis_data (pandas dataframe): Dataframe of tennis data for given years.
+            year (int): Year of tournament user wants to simulate
+            tournament_name (str): The name of the tournament the user wants to simulate
+            nsims (int): Number of tournament simulations
+
+        Raises:
+            InvalidTournamentError: User must enter a grand slam tournament
+        """
         grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
 
         if tournament_name == 'Australian Open':
