@@ -15,14 +15,18 @@ class GetTennisData():
 
     def get_data(self, year_lower = 2000, year_upper = 2025):
         """
-        Reads data from github url and creates dataframe for each url.
+            Reads data from github url and creates dataframe for each url.
 
         Args:
-        year_lower (int): The lower bound for the years you want data for. Default set to 2000
-        year_upper (int): The upper bound (Exclusive) for the years you want data for. Default set to 2025
+            year_lower (int): The lower bound for the years you want data for. Default set to 2000
+            year_upper (int): The upper bound (Exclusive) for the years you want data for. Default set to 2025
 
         Returns:
-        Final dataframe across every github url for given years.
+            Final dataframe across every github url for given years.
+
+        Raises:
+            Exception: Years must be integers
+            ValueError: Year must be in specified range of possible data.
         """
 
         if (type(year_lower) != int or type(year_upper) != int):
@@ -35,8 +39,6 @@ class GetTennisData():
             print(e)
             sys.exit(1)
 
-            
- 
         df_list = []
         for year in range(year_lower, year_upper):  
 
@@ -52,6 +54,7 @@ class GetTennisData():
 
         final_df = pd.concat(df_list)
 
+        # Saved only columns we deemed relevant for analysis.
         final_df = final_df[['tourney_name', 'surface', 'draw_size', 'tourney_level', 'best_of', 
                    'winner_name', 'winner_age', 'loser_name', 'loser_age', 'Year']]
         
