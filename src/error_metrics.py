@@ -9,29 +9,58 @@ class Errors():
     def __init__(self):
         pass
 
-    # Compute mean square error
-    def RMSE(self, x,y):
-        return np.sqrt( np.mean( np.square(x-y) ) )
+    def RMSE(self, true, pred):
+        """ 
+        Calculates RMSE score
 
-    # Computes the maximal element difference (L_inf)
-    def Linf(self, x,y):
-        return np.max( np.abs( x-y ) )
+        Input:
+            true (float): True value (betting odds probability)
+            pred (float): Predicted value (model output probability)
 
-    # Computes the average of absolute differences (L_1)
-    def L1(self, x,y):
-        return np.mean( np.absolute( x-y ) )
+        Return:
+            RMSE score as a float
+        """
+        return np.sqrt(np.mean(np.square(true-pred)))
+
+    def Linf(self, true, pred):
+        """ 
+        Calculates L-Infinity Norm score, the maximum absolute error between the true and predicted values.
+
+        Input:
+            true (float): True value (betting odds probability)
+            pred (float): Predicted value (model output probability)
+
+        Output:
+            L-Infinity Norm score as a float
+        """
+        return np.max(np.abs(true-pred))
+
+    def L1(self, true, pred):
+        """ 
+        Calculates L-1 Norm score, the average absolute difference between the true and predicted values
+
+        Input:
+            true (float): True value (betting odds probability)
+            pred (float): Predicted value (model output probability)
+
+        Output:
+            L-1 Norm score as a float
+        """
+        return np.mean(np.absolute(true-pred))
 
 
 
     def displayErrors(self, tournament_name, display=True):
-        """ Given prediction probabilities, returns all the above error metrics.
+        """ 
+        Given prediction probabilities, returns all the utilized error metrics including RMSE, L-Infinity Norm,
+        and L-1 Norm.
 
         Input:
-        preds (array-like): predicted probabilities
-        actual (array-like): probabilities (from betting odds)
-        display (boolean): whether to directly display metrics
+            tournament_name (str): Name of tennis tournament
+            display (boolean): Display calculated error metric values, default is True.
+
         Output:
-        (double) (x3): RMSE, Linf, and L1 metrics
+            (double) (x3): RMSE, Linf, and L1 metrics
         """
 
         tournament_name = tournament_name.replace(' ', '_')
@@ -51,5 +80,3 @@ class Errors():
 
         if display:
             print("RMSE: {:0.5f} \nL_inf: {:0.5f}\nL_1: {:0.5f}".format(rmse, linf, l1))
-        
-        return rmse
