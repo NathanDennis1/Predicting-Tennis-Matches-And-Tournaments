@@ -6,12 +6,17 @@ class InvalidTournamentError(ValueError):
         pass
 
 class Simulation():
-    def __init__(self, player_elos):
+    def __init__(self, player_elos, S = 400):
         """
         Initializer for Plot class.
+
+        Args:
+            player_elos: Dataframe of player elo ratings
+            S (int): Scale for difference in ELO ratings 
         """
         self.elo_df = player_elos
         self.tournament_name = None
+        self.S = S
 
     def logistic(self, x):
         """
@@ -25,7 +30,7 @@ class Simulation():
         """
         return 1 / (1 + 10**(-x))
 
-    def compute_prob_using_ELO(self, R_A, R_B, S=800):
+    def compute_prob_using_ELO(self, R_A, R_B):
         """
         Calculates expected game score based on the logistic function
 
@@ -35,9 +40,9 @@ class Simulation():
             S (int): Scaling factor
 
         Returns:
-            Final calculation for an expected game score.
+            Final calculation for an expected game score as a float.
         """
-        return self.logistic((R_A-R_B)/S)
+        return self.logistic((R_A-R_B)/self.S)
     
 
     def compute_prob_in_sets(self, winning_prob, age, sets):
@@ -74,6 +79,7 @@ class Simulation():
             player_2_elo (float): The surface ELO of player 2
             player_2_age (float): The age of player 2
             num_sets (int): Number of sets in a match
+            S (int): Scaling factor for elo calculation
 
         Returns:
             Player who won the match as a string.
@@ -228,7 +234,7 @@ class Simulation():
     def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims):
         """
         Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
-        saves the results to a final csv.
+        saves the results to a final csv used for visualization and validation.
 
         Args:
             tennis_data (pandas dataframe): Dataframe of tennis data for given years.
