@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from scipy.stats import norm
 
 class InvalidTournamentError(ValueError):
         pass
@@ -12,36 +13,37 @@ class Simulation():
     def logistic(self, x):
         return 1 / (1 + 10**(-x))
 
-    def compute_prob_using_ELO(self, R_A, R_B):
-        return self.logistic((R_A-R_B)/800)
+    def compute_prob_using_ELO(self, R_A, R_B, S=800):
+        return self.logistic((R_A-R_B)/S)
     
 
-    def compute_prob_in_sets(self, winning_prob, age, age_threshold1, age_threshold2, games_played):
-        if age <= age_threshold1:
-            return [winning_prob * ( 2/3 * np.exp(-1/(1+(games_played/20)**2)) +1/3) for i in range(5)]
-        else:
-            return [winning_prob * ( 2/3 * np.exp(-1/(1+(games_played/20)**2)) +1/3) * 
-                    (1 - (age - age_threshold1)**2 / ((age_threshold2 - age_threshold1)**2 + (age - age_threshold1)**2) * i/5) for i in range(5)]
+    def compute_prob_in_sets(self, winning_prob, age):
+        mean = 25
+        std_dev = 25
+
+        y = norm.pdf(age, mean, std_dev)
+        y_peak = norm.pdf(mean, mean, std_dev)
+        y_normalized = y / y_peak
+
+        return [winning_prob * y_normalized ** i for i in range(5)]
+
         
     def simulating_game(self, player_1, player_1_elo, player_1_age, player_1_games_played, player_2, player_2_elo, player_2_age, player_2_games_played, num_sets):
         set_winner = []
         
         winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
-        winning_prob_2 = self.compute_prob_using_ELO(player_2_elo, player_1_elo)
+        winning_prob_2 = 1 - winning_prob_1
         
-        age_threshold1 = 27 #age from which endurance starts to fall
-        age_threshold2 = 34 #age at which winning probability decay 50% in the last set
-        
-        winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age, age_threshold1, age_threshold2, player_1_games_played)
-        winning_prob_2_in_sets = self.compute_prob_in_sets(winning_prob_2, player_2_age, age_threshold1, age_threshold2, player_2_games_played)
-            
+        winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age)
+        winning_prob_2_in_sets = self.compute_prob_in_sets(winning_prob_2, player_2_age)
+
         for i in range(num_sets):
             winning_prob_1_inthisset = winning_prob_1_in_sets[i] / (winning_prob_1_in_sets[i] + winning_prob_2_in_sets[i])
             if bool(np.random.uniform() < winning_prob_1_inthisset):
                 set_winner.append(player_1)
             else:
                 set_winner.append(player_2)
-                
+                                
         if set_winner.count(player_1) >= int(num_sets/2)+1:
             return player_1
         elif set_winner.count(player_2) >= int(num_sets/2)+1:
@@ -50,7 +52,7 @@ class Simulation():
 
     def find_initial_draw(self, data, year, tournament):
 
-        grand_slams = ['Australian Open', 'French Open', 'Wimbledon', 'US Open']
+        grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
         if tournament not in grand_slams:
             raise InvalidTournamentError(f'Invalid tournament, must be a Grand Slam: One of ', {grand_slams})
 
