@@ -1,21 +1,40 @@
 import pandas as pd
 
-# Function to convert American odds to implied probability
-def american_odds_to_probability(odds):
-    if odds > 0:
-        return 100 / (odds + 100)
-    else:
-        return -odds / (-odds + 100)
+class Odds():
+    def __init__(self):
+        pass
 
-# Load the CSV file into a DataFrame
-df = pd.read_csv('2024_US_Odds.csv')
+    def american_odds_to_probability(self,odds):
+        """
+        Creates function to convert odds to probabilities
 
-# Add a new column for implied winning probability (before normalization)
-df['Winning Probability'] = df['Betting Odds'].apply(american_odds_to_probability) * 100
+        Args:
+            odds (float): number input for the log function
 
-# Normalize the probabilities so they sum to 100%
-total_probability = df['Winning Probability'].sum()
-df['Normalized Winning Probability'] = (df['Winning Probability'] / total_probability)
+        Returns:
+            Final calculation of log function with given number
+        """
+        if odds > 0:
+            return 100 / (odds + 100)
+        else:
+            return -odds / (-odds + 100)
 
-# Export the modified DataFrame to a new CSV file
-df.to_csv('2024_US_Prob.csv', index=False)
+    def convert_odds(self, year, tournament):
+        """
+        Converts odds to probabilities based on the year and tournament.
+
+        Args:
+            year (float): number input for the log function
+
+        Returns:
+            Final calculation of log function with given number
+        """
+        tournament = tournament.replace(' ', '_')
+        odds_df = pd.read_csv(f'../data/{year}_{tournament}_Odds.csv')
+
+        odds_df['winning_probability'] = odds_df['Betting Odds'].apply(self.american_odds_to_probability) * 100
+
+        total_probability = odds_df['winning_probability'].sum()
+        odds_df['normalized_winning_probability'] = (odds_df['winning_probability'] / total_probability)
+
+        odds_df.to_csv(f'../data/{year}_{tournament}_Prob.csv', index=False)
