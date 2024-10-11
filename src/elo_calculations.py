@@ -2,6 +2,9 @@ import pandas as pd
 
 class ELO:
     def __init__(self):
+        """
+        Initializer for ELO class
+        """
         self.initial_rating = float(1500)
         self.current_year = 2023
         self.tennis_data = pd.read_csv('../data/tennis_data.csv')
@@ -12,11 +15,11 @@ class ELO:
         Reads list of surfaces and names of players/teams and creates the initial ELO dataframe across all surfaces.
 
         Args:
-        surfaces (list): A list of surfaces players are playing on. (Tennis could include Clay or Grass, Basketball could include Home or Away court)
-        names (list): Names of all teams/players for the sport.
+            surfaces (list): A list of surfaces players are playing on. (Tennis could include Clay or Grass, Basketball could include Home or Away court)
+            names (list): Names of all teams/players for the sport.
 
         Returns:
-        Final dataframe across all surfaces and players and their respective ELO scores.
+            Final dataframe across all surfaces and players and their respective ELO scores.
         """
 
         # Creates initial elo dictionary
@@ -37,10 +40,10 @@ class ELO:
         the winners and losers columns, then combines the set using union.
 
         Args:
-        data (pandas dataframe): Dataframe for given tennis dataset
+            data (pandas dataframe): Dataframe for given tennis dataset
 
         Returns:
-        List of player names from the tennis dataset
+            List of player names from the tennis dataset
         """
         # First set for winner names
         winner_names = set(data['winner_name'].unique())
@@ -57,10 +60,10 @@ class ELO:
         Creates logistic function used for ELO calculation.
 
         Args:
-        x (float): number input for the log function
+            x (float): number input for the log function
 
         Returns:
-        Final calculation of log function with given number
+            Final calculation of log function with given number
         """
         return 1 / (1 + 10**-x)
     
@@ -69,12 +72,12 @@ class ELO:
         Calculates expected game score based on logistic function
 
         Args:
-        first_elo (float): The first elo for a given team/player
-        second_elo (float): The second elo for a given team/player
-        S (int): Scaling factor
+            first_elo (float): The first elo for a given team/player
+            second_elo (float): The second elo for a given team/player
+            S (int): Scaling factor
 
         Returns:
-        Final calculation for an expected game score.
+            Final calculation for an expected game score.
         """
         return self.logistic((first_elo - second_elo)/S)
     
@@ -83,12 +86,12 @@ class ELO:
         Calculates ELO scores for each tennis player based on previous match history
 
         Args:
-        data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
-        elo_df (pandas dataframe): Dataframe of ELO scores for players on all surfaces.
-        K (int): Sensitivity Constant
+            data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
+            elo_df (pandas dataframe): Dataframe of ELO scores for players on all surfaces.
+            K (int): Sensitivity Constant
 
         Returns:
-        New Elo dataframe for players updated ELO scores.
+            New Elo dataframe for players updated ELO scores.
         """
         data_training = data[data['Year'] < self.current_year]
 
@@ -115,9 +118,9 @@ class ELO:
                 K = K * 0.5 # Davis Cup has little effect on ELO scores.
 
             # Adjusts ELO calculation rating based off given years.
-            if row['Year'] <= 2015:
+            if row['Year'] <= 2017:
                 K = K * 0.05
-            elif (row['Year'] > 2015 and row['Year'] <= 2020):
+            elif (row['Year'] > 2017 and row['Year'] <= 2020):
                 K = K * 0.1
             elif (row['Year'] == 2021):
                 K = K  * 0.5
@@ -148,10 +151,10 @@ class ELO:
         Calculates an estimated current age for each player in the dataset.
 
         Args:
-        data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
+            data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
 
         Returns:
-        Series for the estimated current age of a given tennis player.
+            Series for the estimated current age of a given tennis player.
         """
         # Creates a new dataframe sorted on year
         df_sorted = data.sort_values(by = 'Year', ascending=False)
@@ -202,10 +205,10 @@ class ELO:
         Calculates the number of games a player has played
 
         Args:
-        data: Dataframe for previous match history for each tennis tournament and professional match.
+            data: Dataframe for previous match history for each tennis tournament and professional match.
 
         Returns:
-        Series for the number of games a player has played.
+            Series for the number of games a player has played.
         """
         # Counts all values for each winner and loser names in the dataframe, indicating how many matches played
         games_played_winner = pd.DataFrame(data['winner_name'].value_counts())
@@ -220,10 +223,10 @@ class ELO:
         Creates the final elo csv which has ELO calculations for all surfaces
 
         Args:
-        data: Dataframe for previous match history for each tennis tournament and professional match.
+            data: Dataframe for previous match history for each tennis tournament and professional match.
 
         Returns:
-        Series for the number of games a player has played.
+            Series for the number of games a player has played.
         """
         names = self.get_names(self.tennis_data)
         surfaces = self.tennis_data['surface'].unique()[0:3]
