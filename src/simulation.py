@@ -214,7 +214,6 @@ class Simulation():
 
         matrix_winners = final_matrix/trials
 
-        # Creates the dataframe that I submit.
         column_names = ["Round_64", "Round_32", "Round_16", "Round_8", "Round_4", "Round_2", "Runner_up", "Champion"]
         Winners_data = pd.DataFrame(matrix_winners)
         Winners_data.columns = column_names
