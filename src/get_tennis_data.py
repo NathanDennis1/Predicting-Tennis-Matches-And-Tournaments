@@ -18,8 +18,8 @@ class GetTennisData():
         Reads data from github url and creates dataframe for each url.
 
         Args:
-        year_lower (int): The lower bound for the years you want data for.
-        year_upper (int): The upper bound (Exclusive) for the years you want data for.
+        year_lower (int): The lower bound for the years you want data for. Default set to 2000
+        year_upper (int): The upper bound (Exclusive) for the years you want data for. Default set to 2025
 
         Returns:
         Final dataframe across every github url for given years.
