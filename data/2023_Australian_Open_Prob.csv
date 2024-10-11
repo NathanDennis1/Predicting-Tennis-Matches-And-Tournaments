@@ -1,4 +1,4 @@
-Player,Betting Odds,Winning Probability,Normalized Winning Probability
+Player,Betting Odds,winning_probability,normalized_winning_probability
 Novak Djokovic,-120.0,54.54545454545454,0.3486164653257051
 Stefanos Tsitsipas,1400.0,6.666666666666667,0.04260867909536396
 Karen Khachanov,10000.0,0.9900990099009901,0.006328021647826331
