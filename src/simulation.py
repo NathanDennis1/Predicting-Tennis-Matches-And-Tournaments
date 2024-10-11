@@ -214,7 +214,6 @@ class Simulation():
 
         matrix_winners = final_matrix/trials
 
-        # Creates the dataframe that I submit.
         column_names = ["Round_64", "Round_32", "Round_16", "Round_8", "Round_4", "Round_2", "Runner_up", "Champion"]
         Winners_data = pd.DataFrame(matrix_winners)
         Winners_data.columns = column_names
@@ -225,3 +224,21 @@ class Simulation():
         Winners_data.to_csv(file_path, index=True)
 
         return Winners_data
+    
+    def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims):
+        grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
+
+        if tournament_name == 'Australian Open':
+            surface = 'Hard'
+        elif tournament_name == 'Roland Garros':
+            surface = 'Clay'
+        elif tournament_name == 'Wimbledon':
+            surface = 'Grass'
+        elif tournament_name == 'US Open':
+            surface = 'Hard'
+        else:
+            raise InvalidTournamentError(f'Invalid tournament, must be a Grand Slam: One of ', {grand_slams})
+
+        initial_draw = self.find_initial_draw(tennis_data, year, tournament_name)
+
+        self.simulate_tournament(initial_draw, surface, nsims)
