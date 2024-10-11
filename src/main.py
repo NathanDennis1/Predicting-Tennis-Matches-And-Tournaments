@@ -2,6 +2,7 @@ from simulation import Simulation
 from get_tennis_data import GetTennisData
 from elo_calculations import ELO
 from plot import Plot
+from Odds_to_Prob import Odds
 from error_metrics import Errors
 import pandas as pd
 
@@ -13,22 +14,24 @@ def main():
     tennis_data = GetTennisData()
     plot = Plot()
     error = Errors()
+    odds = Odds()
 
-
-    tennis_data.get_data(year_lower = 2010, year_upper = 2024)
+    odds.convert_odds(2023, 'Australian Open')
+    tennis_data.get_data(year_lower = 2014, year_upper = 2024)
 
     elo = ELO()
     elo.final_elo_csv()
 
     simulation = Simulation(player_elos)
 
-    initial_draw = simulation.find_initial_draw(data, 2023, 'Roland Garros')
+    initial_draw = simulation.find_initial_draw(data, 2023, 'Australian Open')
 
-    results = simulation.simulate_tournament(initial_draw, 'Clay')
+    results = simulation.simulate_tournament(initial_draw, 'Hard', 5000)
 
-    plot.plots('Roland Garros')
+    plot.plots('Australian Open')
 
-    error.displayErrors('Roland Garros')
+    error.displayErrors('Australian Open')
+
 
 
 
