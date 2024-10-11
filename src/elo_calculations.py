@@ -3,19 +3,20 @@ import pandas as pd
 class ELO:
     def __init__(self):
         self.initial_rating = float(1500)
-        self.current_year = 2024
+        self.current_year = 2023
         self.tennis_data = pd.read_csv('../data/tennis_data.csv')
+        self.elo_dataframe = None
 
     def initial_elos(self, surfaces, names):
         """
-        Reads dataframe and calculates initial ELO ratings.
+        Reads list of surfaces and names of players/teams and creates the initial ELO dataframe across all surfaces.
 
         Args:
         surfaces (list): A list of surfaces players are playing on. (Tennis could include Clay or Grass, Basketball could include Home or Away court)
         names (list): Names of all teams/players for the sport.
 
         Returns:
-        Final dataframe across all surfaces and players.
+        Final dataframe across all surfaces and players and their respective ELO scores.
         """
 
         # Creates initial elo dictionary
@@ -24,9 +25,11 @@ class ELO:
             elo_dict[f"{surface}_ELO"] = [self.initial_rating] * len(names)    
 
         # Makes the dictionary a dataframe
-        player_elos = pd.DataFrame(elo_dict, index=names)    
+        elo_df = pd.DataFrame(elo_dict, index=names)    
 
-        return player_elos
+        self.elo_dataframe = elo_df
+
+        return elo_df
     
     def get_names(self, data):
         """
@@ -87,7 +90,11 @@ class ELO:
         Returns:
         New Elo dataframe for players updated ELO scores.
         """
-        for index, row in data.iterrows():
+        data_training = data[data['Year'] < self.current_year]
+
+        surfaces = ['Hard', 'Clay', 'Grass']
+
+        for _, row in data_training.iterrows():
             winner = row['winner_name']
             loser = row['loser_name']
     
@@ -109,11 +116,11 @@ class ELO:
 
             # Adjusts ELO calculation rating based off given years.
             if row['Year'] <= 2015:
-                K = K * 0.02 + (row['Year']-2000) / 20
+                K = K * 0.05
             elif (row['Year'] > 2015 and row['Year'] <= 2020):
-                K = K * 0.05 + (row['Year']-2015) / 15
-            elif (row['Year'] > 2020 and row['Year'] <= 2022):
-                K = K  * 0.5 + (row['Year'] - 2020) * 5
+                K = K * 0.1
+            elif (row['Year'] == 2021):
+                K = K  * 0.5
             else:
                 K = K
     
@@ -125,6 +132,11 @@ class ELO:
 
             elo_df.loc[winner, f'{surface}_ELO'] = new_elo_winner
             elo_df.loc[loser, f'{surface}_ELO'] = new_elo_loser
+
+            for s in surfaces:
+                if s != surface:
+                    elo_df.loc[winner, f'{s}_ELO'] = elo_df.loc[winner][f'{s}_ELO'] + K * 0.5 * (1 - p_winner)
+                    elo_df.loc[loser, f'{s}_ELO'] = elo_df.loc[loser][f'{s}_ELO'] + K * 0.5 * (0 - p_loser)
 
             K = 20
             
