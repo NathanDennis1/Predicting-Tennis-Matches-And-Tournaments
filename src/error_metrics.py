@@ -1,67 +1,55 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.metrics import mean_squared_error
 
 # Each method takes in numpy-like input vectors x and y
 
-# Compute mean square error
-def RMSE(x,y):
-    return np.sqrt( np.sum( np.square(x-y) ) )
+class Errors():
+    def __init__(self):
+        pass
 
-# Computes the maximal element difference (L_inf)
-def Linf(x,y):
-    return np.max( np.absolute( x-y ) )
+    # Compute mean square error
+    def RMSE(self, x,y):
+        return np.sqrt( np.mean( np.square(x-y) ) )
 
-# Computes the average of absolute differences (L_1)
-def L1(x,y):
-    return np.average( np.absolute( x-y ) )
+    # Computes the maximal element difference (L_inf)
+    def Linf(self, x,y):
+        return np.max( np.abs( x-y ) )
 
-
-def barPlot(names, preds, actual):
-    """ Plots a bar-plot comparing predicted probabilities to those
-    obtained via betting odds.
-
-    Input:
-    names (list): list of names for each player
-    preds (list): predicted probabilities
-    actual (list): actual probabilities
-    """
-    # Create plots
-    fig, ax = plt.subplots(figsize=(16,8), layout='constrained')
-    bar_width = 0.4
-    idx = np.arange(len(names))
-
-    # Plot values
-    b1 = ax.bar(idx,             preds, bar_width, label='Predictions')
-    b2 = ax.bar(idx + bar_width, actual, bar_width, label='Actual')
-
-    # Touch-up plot labels
-    ax.set_title('Predicted Prob. vs. Betting Odds')
-    ax.set_xlabel('Name')
-    ax.set_ylabel('Probabilities')
-    ax.set_xticks(idx + bar_width/2)
-    ax.set_xticklabels(names, rotation=55)
-    ax.legend()
-    ax.grid(alpha=0.4)
-
-    plt.show()
+    # Computes the average of absolute differences (L_1)
+    def L1(self, x,y):
+        return np.mean( np.absolute( x-y ) )
 
 
-def displayErrors(preds, actual, display=True):
-    """ Given prediction probabilities, returns all the above error metrics.
 
-    Input:
-    preds (array-like): predicted probabilities
-    actual (array-like): probabilities (from betting odds)
-    display (boolean): whether to directly display metrics
-    Output:
-    (double) (x3): RMSE, Linf, and L1 metrics
-    """
+    def displayErrors(self, tournament_name, display=True):
+        """ Given prediction probabilities, returns all the above error metrics.
 
-    rmse = RMSE(preds, actual)
-    linf = Linf(preds, actual)
-    l1   = L1(preds, actual)
+        Input:
+        preds (array-like): predicted probabilities
+        actual (array-like): probabilities (from betting odds)
+        display (boolean): whether to directly display metrics
+        Output:
+        (double) (x3): RMSE, Linf, and L1 metrics
+        """
 
-    if display:
-        print("RMSE: {:0.3f} \nL_inf: {:0.3f}\nL_1: {:0.3f}".format(rmse, linf, l1))
-    
-    return rmse, linf, l1
+        tournament_name = tournament_name.replace(' ', '_')
+        odds = pd.read_csv(f'../data/2023_{tournament_name}_Prob.csv', index_col=0)
+
+        model = pd.read_csv(f'../data/tournament_results_{tournament_name}.csv', index_col = 0)
+
+        odds_comparison = odds[['Normalized Winning Probability']].join(model['Champion'], how='inner')
+        odds_comparison = odds_comparison.dropna()
+
+        actual = odds_comparison['Normalized Winning Probability']
+
+        preds = odds_comparison['Champion']
+        rmse = self.RMSE(preds, actual)
+        linf = self.Linf(preds, actual)
+        l1 = self.L1(preds, actual)
+
+        if display:
+            print("RMSE: {:0.5f} \nL_inf: {:0.5f}\nL_1: {:0.5f}".format(rmse, linf, l1))
+        
+        return rmse
