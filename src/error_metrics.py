@@ -68,10 +68,10 @@ class Errors():
 
         model = pd.read_csv(f'../data/tournament_results_{tournament_name}.csv', index_col = 0)
 
-        odds_comparison = odds[['Normalized Winning Probability']].join(model['Champion'], how='inner')
+        odds_comparison = odds[['normalized_winning_probability']].join(model['Champion'], how='inner')
         odds_comparison = odds_comparison.dropna()
 
-        actual = odds_comparison['Normalized Winning Probability']
+        actual = odds_comparison['normalized_winning_probability']
 
         preds = odds_comparison['Champion']
         rmse = self.RMSE(preds, actual)
