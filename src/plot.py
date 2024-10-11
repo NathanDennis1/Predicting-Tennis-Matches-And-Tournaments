@@ -20,16 +20,23 @@ class Plot():
         """
 
         tournament_name_underscore = tournament_name.replace(' ', '_')
-        odds = pd.read_csv(f'../data/2023_{tournament_name_underscore}_Prob.csv', index_col=0)
+        odds_df = pd.read_csv(f'../data/2023_{tournament_name_underscore}_Prob.csv', index_col=0)
 
-        data_fr = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}.csv', index_col = 0)
+        model_df = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}.csv', index_col = 0)
 
-        top_players = odds.nlargest(10, 'Normalized Winning Probability')
-        top_champions = top_players[['Normalized Winning Probability']].join(data_fr['Champion'], how='inner')
+        odds_df = odds_df.rename(index={'Felix Auger-Aliassime': 'Felix Auger Aliassime'})
+    
+        if tournament_name == 'Australian Open':
+            # He was injured hence did not play.
+            odds_df = odds_df.drop(index='Nick Kyrgios')
+
+
+        top_players = odds_df.nlargest(10, 'normalized_winning_probability')
+        top_champions = top_players[['normalized_winning_probability']].join(model_df['Champion'], how='inner')
 
         x = np.arange(len(top_champions.index))  # The label locations
 
-        plt.bar(x - self.bar_width/2, top_champions['Normalized Winning Probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
+        plt.bar(x - self.bar_width/2, top_champions['normalized_winning_probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
         plt.bar(x + self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Model Win Probability', color='orange')
 
         plt.xlabel('Player Name')
