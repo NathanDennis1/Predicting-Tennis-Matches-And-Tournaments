@@ -88,7 +88,7 @@ class ELO:
         Args:
             data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
             elo_df (pandas dataframe): Dataframe of ELO scores for players on all surfaces.
-            K (int): Sensitivity Constant
+            K (int): Sensitivity constant for ELO calculation.
 
         Returns:
             New Elo dataframe for players updated ELO scores.
@@ -136,13 +136,13 @@ class ELO:
             elo_df.loc[winner, f'{surface}_ELO'] = new_elo_winner
             elo_df.loc[loser, f'{surface}_ELO'] = new_elo_loser
 
+            # Slightly adjusts other surfaces ELO scores.
             for s in surfaces:
                 if s != surface:
                     elo_df.loc[winner, f'{s}_ELO'] = elo_df.loc[winner][f'{s}_ELO'] + K * 0.5 * (1 - p_winner)
                     elo_df.loc[loser, f'{s}_ELO'] = elo_df.loc[loser][f'{s}_ELO'] + K * 0.5 * (0 - p_loser)
 
             K = 20
-            
             
         return elo_df
     
@@ -205,7 +205,7 @@ class ELO:
         Calculates the number of games a player has played
 
         Args:
-            data: Dataframe for previous match history for each tennis tournament and professional match.
+            data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
 
         Returns:
             Series for the number of games a player has played.
@@ -220,10 +220,8 @@ class ELO:
     
     def final_elo_csv(self):
         """
-        Creates the final elo csv which has ELO calculations for all surfaces
-
-        Args:
-            data: Dataframe for previous match history for each tennis tournament and professional match.
+        Creates the final elo csv which has ELO calculations for all surfaces. Saves file to a csv titled
+        player_elos.csv, saved in the data folder.
 
         Returns:
             Series for the number of games a player has played.
