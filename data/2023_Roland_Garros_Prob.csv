@@ -1,4 +1,4 @@
-Player,Betting Odds,Winning Probability,Normalized Winning Probability
+Player,Betting Odds,winning_probability,normalized_winning_probability
 Novak Djokovic,250,28.57142857142857,0.18494248343596442
 Casper Ruud,1600,5.88235294117647,0.03807639364858091
 Carlos Alcaraz,165,37.735849056603776,0.24426365736825492

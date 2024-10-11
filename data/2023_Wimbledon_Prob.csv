@@ -1,4 +1,4 @@
-Player,Betting Odds,Winning Probability,Normalized Winning Probability
+Player,Betting Odds,winning_probability,normalized_winning_probability
 Carlos Alcaraz,350.0,22.22222222222222,0.14620413596475437
 Novak Djokovic,-175.0,63.63636363636363,0.4186754802627057
 Daniil Medvedev,2000.0,4.761904761904762,0.03132945770673308
