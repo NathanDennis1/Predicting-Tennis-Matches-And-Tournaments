@@ -4,6 +4,9 @@ import pandas as pd
 
 class Plot():
     def __init__(self):
+        """
+        Initializer for Plot class.
+        """
         self.bar_width = 0.3
 
     def plots(self, tournament_name):
