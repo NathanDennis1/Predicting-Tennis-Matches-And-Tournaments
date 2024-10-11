@@ -2,6 +2,7 @@ from simulation import Simulation
 from get_tennis_data import GetTennisData
 from elo_calculations import ELO
 from plot import Plot
+from error_metrics import Errors
 import pandas as pd
 
 def main():
@@ -11,6 +12,8 @@ def main():
 
     tennis_data = GetTennisData()
     plot = Plot()
+    error = Errors()
+
 
     tennis_data.get_data(year_lower = 2010, year_upper = 2024)
 
@@ -24,6 +27,8 @@ def main():
     results = simulation.simulate_tournament(initial_draw, 'Clay')
 
     plot.plots('Roland Garros')
+
+    error.displayErrors('Roland Garros')
 
 
 
