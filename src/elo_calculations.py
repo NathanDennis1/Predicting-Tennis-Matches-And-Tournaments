@@ -63,7 +63,7 @@ class ELO:
             x (float): number input for the log function
 
         Returns:
-            Final calculation of log function with given number
+            Final calculation of log function with given number as a float
         """
         return 1 / (1 + 10**-x)
     
@@ -93,6 +93,7 @@ class ELO:
         Returns:
             New Elo dataframe for players updated ELO scores.
         """
+        # Train ELO scores based off all past data besides current year.
         data_training = data[data['Year'] < self.current_year]
 
         surfaces = ['Hard', 'Clay', 'Grass']
@@ -136,7 +137,7 @@ class ELO:
             elo_df.loc[winner, f'{surface}_ELO'] = new_elo_winner
             elo_df.loc[loser, f'{surface}_ELO'] = new_elo_loser
 
-            # Slightly adjusts other surfaces ELO scores.
+            # Slightly adjusts other surfaces ELO scores based on results on this surface.
             for s in surfaces:
                 if s != surface:
                     elo_df.loc[winner, f'{s}_ELO'] = elo_df.loc[winner][f'{s}_ELO'] + K * 0.5 * (1 - p_winner)
@@ -148,7 +149,8 @@ class ELO:
     
     def get_most_recent_age(self, data):
         """
-        Calculates an estimated current age for each player in the dataset.
+        Calculates an estimated current age for each player in the dataset. This approach takes the last age a player lost and won
+        at and adjusts depending on the year the match was played in. 
 
         Args:
             data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
@@ -179,13 +181,11 @@ class ELO:
         # being their most recent age.
         recent_ages = recent_ages.pivot(index ='Player_name', columns = 'Result', values = 'most_recent_age').reset_index()
 
-        # Fills NaN values with 0 as placeholder, won't be used since the players age will be larger for either a win or loss.
         recent_ages.fillna(0)
 
         # Takes most recent year a player has played, used for age calculation
         recent_years = pd.concat([winner_ages[['Player_name', 'Year']], loser_ages[['Player_name', 'Year']]])
 
-        # Drops duplicates on player names, keeping only the most recent year a player has played (The dataframe is already sorted on year)
         recent_years = recent_years.drop_duplicates(subset='Player_name', keep='first')
 
         # Merges most recent ages alongside the most recent year a match was played, based off the players name.
@@ -200,23 +200,6 @@ class ELO:
 
         return recent_ages['Player_age']
     
-    def games_played(self, data):
-        """
-        Calculates the number of games a player has played
-
-        Args:
-            data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
-
-        Returns:
-            Series for the number of games a player has played.
-        """
-        # Counts all values for each winner and loser names in the dataframe, indicating how many matches played
-        games_played_winner = pd.DataFrame(data['winner_name'].value_counts())
-        games_played_loser = pd.DataFrame(data['loser_name'].value_counts())
-
-        # Concats both dataframe together for all players, winners or losers.
-        games_played = pd.concat([games_played_winner, games_played_loser])
-        return games_played.groupby(games_played.index).sum()['count']
     
     def final_elo_csv(self):
         """
