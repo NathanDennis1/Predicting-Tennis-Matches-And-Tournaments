@@ -161,17 +161,16 @@ class ELO:
         # Creates a new dataframe sorted on year
         df_sorted = data.sort_values(by = 'Year', ascending=False)
 
-        # Create a dataframe of each of the winners last ages in the dataset, keeping only the first in drop duplicates.
+        # Creates a dataframe of each of the winners last ages in the dataset. This keeps only the first in drop duplicates.
         winner_ages = df_sorted[['winner_name', 'winner_age', 'Year']].drop_duplicates('winner_name', keep='first')
 
         # Renames columns for proper naming. The winner name is the players name, and the most recent winning age.
         winner_ages.rename(columns={'winner_name': 'Player_name', 'winner_age': 'most_recent_age'}, inplace=True)
         winner_ages['Result'] = 'Match_winner'
 
-        # Create a dataframe of each of the losers last ages in the dataset, keeping only the first in drop duplicates.
+        # Use similar strategy from winner_ages to obtain loser_ages
         loser_ages = df_sorted[['loser_name', 'loser_age', 'Year']].drop_duplicates('loser_name',keep='first')
         
-        # Renames the columns similar to winners_ages for similar naming convention.
         loser_ages.rename(columns={'loser_name': 'Player_name', 'loser_age': 'most_recent_age'}, inplace=True)
         loser_ages['Result'] = 'Match_loser'
 
@@ -188,7 +187,6 @@ class ELO:
 
         recent_years = recent_years.drop_duplicates(subset='Player_name', keep='first')
 
-        # Merges most recent ages alongside the most recent year a match was played, based off the players name.
         recent_ages = recent_ages.merge(recent_years, on='Player_name')
 
         # Calculate the maximum current age for each player based off both columns.
@@ -217,4 +215,3 @@ class ELO:
 
         file_path = f'../data/player_elos.csv'
         player_elos.to_csv(file_path, index_label='Player_Name', index=True)
-    
