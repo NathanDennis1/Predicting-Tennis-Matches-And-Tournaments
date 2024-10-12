@@ -22,13 +22,13 @@ def main():
 
     simulation = Simulation(player_elos, S = 800)
 
-    simulation.user_tournament_simulation(data, 2023, 'Australian Open', 5000)
+    simulation.user_tournament_simulation(data, 2023, 'Roland Garros', 5000)
 
-    odds.convert_odds(2023, 'Australian Open')
+    odds.convert_odds(2023, 'Roland Garros')
 
-    plot.plots('Australian Open')
+    plot.plots('Roland Garros', 2023)
 
-    error.displayErrors('Australian Open')
+    error.displayErrors('Roland Garros')
 
 
 
