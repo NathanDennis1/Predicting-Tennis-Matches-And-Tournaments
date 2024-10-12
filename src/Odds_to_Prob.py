@@ -9,10 +9,10 @@ class Odds():
         Creates function to convert odds to probabilities
 
         Args:
-            odds (float): number input for the log function
+            odds (float): number input for the given odds
 
         Returns:
-            Final calculation of log function with given number
+            Final calculation of probability given american odds as a float.
         """
         if odds > 0:
             return 100 / (odds + 100)
@@ -24,7 +24,8 @@ class Odds():
         Converts odds to probabilities based on the year and tournament.
 
         Args:
-            year (float): number input for the log function
+            year (int): year of tournament
+            tournament (str): Name of tournament
 
         Returns:
             Final calculation of log function with given number
