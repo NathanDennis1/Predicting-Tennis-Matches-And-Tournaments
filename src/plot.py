@@ -34,13 +34,13 @@ class Plot():
         top_players = odds_df.nlargest(10, 'normalized_winning_probability')
         top_champions = top_players[['normalized_winning_probability']].join(model_df['Champion'], how='inner')
 
-        x = np.arange(len(top_champions.index))  # The label locations
+        x = np.arange(len(top_champions.index))  # The label locations, arranges based on the top champions.
 
         plt.bar(x - self.bar_width/2, top_champions['normalized_winning_probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
         plt.bar(x + self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Model Win Probability', color='orange')
 
         plt.xlabel('Player Name')
-        plt.ylabel('Probability')
+        plt.ylabel('Probability of Winning Championship')
         plt.title(f'Comparison of Odds and Model Win Probabilities for {tournament_name}')
         plt.xticks(x, top_champions.index, rotation=60, fontsize=10)
         plt.legend()
