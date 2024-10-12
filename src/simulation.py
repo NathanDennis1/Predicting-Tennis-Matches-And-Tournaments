@@ -30,7 +30,7 @@ class Simulation():
         """
         return 1 / (1 + 10**(-x))
 
-    def compute_prob_using_ELO(self, R_A, R_B):
+    def compute_prob_using_ELO(self, first_elo, second_elo):
         """
         Calculates expected game score based on the logistic function
 
@@ -42,7 +42,7 @@ class Simulation():
         Returns:
             Final calculation for an expected game score as a float.
         """
-        return self.logistic((R_A-R_B)/self.S)
+        return self.logistic((first_elo-second_elo)/self.S)
     
 
     def compute_prob_in_sets(self, winning_prob, age, sets):
@@ -79,7 +79,6 @@ class Simulation():
             player_2_elo (float): The surface ELO of player 2
             player_2_age (float): The age of player 2
             num_sets (int): Number of sets in a match
-            S (int): Scaling factor for elo calculation
 
         Returns:
             Player who won the match as a string.
@@ -187,9 +186,9 @@ class Simulation():
         return winners
 
 
-    def simulate_tournament(self, inital_draw, surface, trials):
+    def simulate_tournament(self, initial_draw, surface, trials):
         """
-        Simulates the a tennis tournament
+        Simulates a tournament through the initial draws for the tournament.
 
         Args:
             initial_draw (list): The initial draw of player matchups in the tournament
@@ -202,12 +201,12 @@ class Simulation():
 
         final_matrix = np.zeros((128, 8)) 
 
-        players = pd.concat([inital_draw['Player_1'], inital_draw['Player_2']]).to_list()
+        players = pd.concat([initial_draw['Player_1'], initial_draw['Player_2']]).to_list()
 
         # This is whats used for the tournament simulation. The end_matrix stores the matrix value for
         # where each team ended, adding it to final_matrix.
         for _ in range(trials):
-            matchup_current = inital_draw
+            matchup_current = initial_draw
             end_matrix = pd.DataFrame(np.zeros((128, 8)), index=players[:128])
             for round in range(0, 6):
                 winners = self.simulate_round(matchup_current, end_matrix, surface, round, 5)
