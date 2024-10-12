@@ -9,7 +9,7 @@ class Plot():
         """
         self.bar_width = 0.3
 
-    def plots(self, tournament_name):
+    def plots(self, tournament_name, year):
         """
         Creates the plotting function comparing the model's winning probabilities against the betting odds.
         A side by side bar plot comparing the top 10 players according to the betting odds is plot against the 
@@ -17,6 +17,7 @@ class Plot():
 
         Args:
             tournament_name (str): Name of tournament.
+            year (int): Year tournament was played in
         """
 
         tournament_name_underscore = tournament_name.replace(' ', '_')
@@ -24,12 +25,12 @@ class Plot():
 
         model_df = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}.csv', index_col = 0)
 
+        # Renames incorrect player name from csv file.
         odds_df = odds_df.rename(index={'Felix Auger-Aliassime': 'Felix Auger Aliassime'})
     
-        if tournament_name == 'Australian Open':
-            # He was injured hence did not play.
+        if tournament_name == 'Australian Open' and year == 2023:
+            # He was injured hence did not play in the 2023 Australian Open
             odds_df = odds_df.drop(index='Nick Kyrgios')
-
 
         top_players = odds_df.nlargest(10, 'normalized_winning_probability')
         top_champions = top_players[['normalized_winning_probability']].join(model_df['Champion'], how='inner')
