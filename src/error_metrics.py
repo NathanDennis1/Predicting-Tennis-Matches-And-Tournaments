@@ -1,9 +1,5 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.metrics import mean_squared_error
-
-# Each method takes in numpy-like input vectors x and y
 
 class Errors():
     def __init__(self):
@@ -47,7 +43,6 @@ class Errors():
             L-1 Norm score as a float
         """
         return np.mean(np.absolute(true-pred))
-
 
 
     def displayErrors(self, tournament_name, display=True):
