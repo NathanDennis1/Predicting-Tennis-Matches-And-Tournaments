@@ -214,7 +214,6 @@ class ELO:
         elo_df = self.initial_elos(surfaces, list(names))
         player_elos = self.elo_calculation(self.tennis_data[self.tennis_data['Year'] < 2024], elo_df)
         player_elos['Player_age'] = self.get_most_recent_age(self.tennis_data)
-        player_elos['Games_played'] = self.games_played(self.tennis_data)
 
         file_path = f'../data/player_elos.csv'
         player_elos.to_csv(file_path, index_label='Player_Name', index=True)
