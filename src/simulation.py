@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from scipy.stats import norm
+import math
 
 class InvalidTournamentError(ValueError):
         pass
@@ -45,7 +46,7 @@ class Simulation():
         return self.logistic((first_elo-second_elo)/self.S)
     
 
-    def compute_prob_in_sets(self, winning_prob, age, sets):
+    def compute_prob_in_sets(self, winning_prob, age, sets, surface):
         """
         Computes a players winning probability based off the number of sets in a match.
 
@@ -53,21 +54,32 @@ class Simulation():
             winning_prob (float): The initial winning probability for a given player
             age (float): The age of a player
             sets (int): The number of sets in a match
+            surface (str): The surface of a given match
 
         Returns:
             List of winning probability for the number of sets.
         """
-        mean = 25
-        std_dev = 25
+        if surface == 'Clay':
+            decay_rate = 0.015
+        else:
+            decay_rate = 0.0075
 
-        y = norm.pdf(age, mean, std_dev)
-        y_peak = norm.pdf(mean, mean, std_dev)
-        y_normalized = y / y_peak
+        if age <= 25:
+            factor =  1.0
+        else:
+            factor = math.exp(-decay_rate * (age-25))
 
-        return [winning_prob * y_normalized ** i for i in range(sets)]
+        #mean = 25
+        #std_dev = 25
+
+        #y = norm.pdf(age, mean, std_dev)
+        #y_peak = norm.pdf(mean, mean, std_dev)
+        #y_normalized = y / y_peak
+
+        return [winning_prob * factor ** i for i in range(sets)]
 
         
-    def simulating_game(self, player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets):
+    def simulating_game(self, player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets, surface):
         """
         Computes a game in a tennis match
 
@@ -79,6 +91,7 @@ class Simulation():
             player_2_elo (float): The surface ELO of player 2
             player_2_age (float): The age of player 2
             num_sets (int): Number of sets in a match
+            surface (str): Surface of a match
 
         Returns:
             Player who won the match as a string.
@@ -88,8 +101,8 @@ class Simulation():
         winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
         winning_prob_2 = 1 - winning_prob_1
         
-        winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age, num_sets)
-        winning_prob_2_in_sets = self.compute_prob_in_sets(winning_prob_2, player_2_age, num_sets)
+        winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age, num_sets, surface)
+        winning_prob_2_in_sets = self.compute_prob_in_sets(winning_prob_2, player_2_age, num_sets, surface)
 
         for i in range(num_sets):
             winning_prob_1_inthisset = winning_prob_1_in_sets[i] / (winning_prob_1_in_sets[i] + winning_prob_2_in_sets[i])
@@ -176,7 +189,7 @@ class Simulation():
             player_2 = matchup.iloc[1]
             player_2_age = self.elo_df.loc[player_2]['Player_age']
             player_2_elo = self.elo_df.loc[player_2][f'{surface}_ELO']
-            winner = self.simulating_game(player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets)
+            winner = self.simulating_game(player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets, surface)
             if winner == player_1:
                 results.loc[player_1,round] += 1
                 winners.append(player_1)
