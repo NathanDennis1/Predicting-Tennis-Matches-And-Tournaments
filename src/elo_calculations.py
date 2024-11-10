@@ -1,7 +1,8 @@
 import pandas as pd
+import math
 
 class ELO:
-    def __init__(self):
+    def __init__(self, initial_elo_rating):
         """
         Initializer for ELO class
         """
@@ -81,6 +82,19 @@ class ELO:
         """
         return self.logistic((first_elo - second_elo)/S)
     
+    def decay_factor(self, year_diff, decay_rate = 0.3):
+        """
+        Calculates the decay factor based off the year difference from the present to calculate ELO scores.
+
+        Args:
+            year_diff (int): The calculated difference in years (Earlier year minus furthest year)
+            decay_rate (float): Rate of decay for year difference
+
+        Returns:
+            Decay factor for the year difference
+        """
+        return math.exp(-decay_rate * abs(year_diff))
+
     def elo_calculation(self, data, elo_df, K = 20):
         """
         Calculates ELO scores for each tennis player based on previous match history
@@ -119,14 +133,11 @@ class ELO:
                 K = K * 0.5 # Davis Cup has little effect on ELO scores.
 
             # Adjusts ELO calculation rating based off given years.
-            if row['Year'] <= 2017:
-                K = K * 0.05
-            elif (row['Year'] > 2017 and row['Year'] <= 2020):
-                K = K * 0.1
-            elif (row['Year'] == 2021):
-                K = K  * 0.5
-            else:
-                K = K
+            year_diff = self.current_year - row['Year']
+            decay_factor_year = self.decay_factor(year_diff)
+
+            K = K * decay_factor_year
+
     
             p_winner = self.expected_game_score(winner_surface_elo, loser_surface_elo)
             p_loser = self.expected_game_score(loser_surface_elo, winner_surface_elo)
@@ -140,8 +151,8 @@ class ELO:
             # Slightly adjusts other surfaces ELO scores based on results on this surface.
             for s in surfaces:
                 if s != surface:
-                    elo_df.loc[winner, f'{s}_ELO'] = elo_df.loc[winner][f'{s}_ELO'] + K * 0.5 * (1 - p_winner)
-                    elo_df.loc[loser, f'{s}_ELO'] = elo_df.loc[loser][f'{s}_ELO'] + K * 0.5 * (0 - p_loser)
+                    elo_df.loc[winner, f'{s}_ELO'] = elo_df.loc[winner][f'{s}_ELO'] + K * 0.8 * (1 - p_winner)
+                    elo_df.loc[loser, f'{s}_ELO'] = elo_df.loc[loser][f'{s}_ELO'] + K * 0.8 * (0 - p_loser)
 
             K = 20
             
