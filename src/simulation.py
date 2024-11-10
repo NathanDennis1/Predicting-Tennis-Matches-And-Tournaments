@@ -59,6 +59,7 @@ class Simulation():
         Returns:
             List of winning probability for the number of sets.
         """
+        
         if surface == 'Clay':
             decay_rate = 0.015
         else:
