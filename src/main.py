@@ -10,7 +10,7 @@ def main():
     tennis_data = GetTennisData()
     plot = Plot()
     error = Errors()
-    elo = ELO()
+    elo = ELO(1500)
     odds = Odds()
 
     tennis_data.get_data(year_lower = 2014, year_upper = 2024)
@@ -22,13 +22,13 @@ def main():
 
     simulation = Simulation(player_elos, S = 800)
 
-    simulation.user_tournament_simulation(data, 2023, 'Roland Garros', 5000)
+    simulation.user_tournament_simulation(data, 2023, 'Wimbledon', 5000)
 
-    odds.convert_odds(2023, 'Roland Garros')
+    odds.convert_odds(2023, 'Wimbledon')
 
-    plot.plots('Roland Garros', 2023)
+    plot.plots('Wimbledon', 2023)
 
-    error.displayErrors('Roland Garros')
+    error.displayErrors('Wimbledon')
 
 
 
