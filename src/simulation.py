@@ -18,6 +18,8 @@ class Simulation():
         self.elo_df = player_elos
         self.tournament_name = None
         self.S = S
+        self.win_per = pd.read_csv('../data/win_percentage.csv', index_col='Player_Name')
+        self.games_played = pd.read_csv('../data/games_played_opponents.csv', index_col='Player_Name')    
 
     def logistic(self, x):
         """
@@ -45,6 +47,42 @@ class Simulation():
         """
         return self.logistic((first_elo-second_elo)/self.S)
     
+    def sigmoid(self, games_played, x_0=20, k=0.2):
+        """
+        Sigmoid function to adjust weight based on the number of games played.
+
+        Args:
+            games_played (int): Number of games played between 2 people
+            x_0 (int): Midpoint of sigmoid function when sigmoid equals 0.5
+            k (float): Steepness factor in sigmoid function
+        
+        Returns:
+            Sigmoid calculation as a float.
+        """
+        return 1 / (1 + math.exp(-k * (games_played - x_0)))
+    
+    def adjusted_win_probability(self, P_A, P_head_to_head, games_played, x_0=20, k=0.3):
+        """
+        Calculate the adjusted win probability for Player A based on the sigmoid-weighted head-to-head record.
+        
+        Args:
+            P_A: Probability played A beats player B
+            P_head_to_head: Historical head-to-head winning percentage for player A
+            games_played (int): Number of games played between played A and B
+            x_0 (int): Midpoint of sigmoid function when sigmoid equals 0.5
+            k (float): Steepness factor in sigmoid function
+        
+        Returns:
+            Adjusted win probability for Player A
+        """
+        # Calculate the sigmoid adjustment factor based on games played
+        adjustment_factor = self.sigmoid(games_played, x_0, k)
+        
+        # Calculate the adjusted win probability using the weighted average
+        P_A_adjusted = (1 - adjustment_factor) * P_A + adjustment_factor * P_head_to_head
+        
+        return P_A_adjusted
+    
 
     def compute_prob_in_sets(self, winning_prob, age, sets, surface):
         """
@@ -59,7 +97,7 @@ class Simulation():
         Returns:
             List of winning probability for the number of sets.
         """
-        
+
         if surface == 'Clay':
             decay_rate = 0.015
         else:
@@ -69,13 +107,6 @@ class Simulation():
             factor =  1.0
         else:
             factor = math.exp(-decay_rate * (age-25))
-
-        #mean = 25
-        #std_dev = 25
-
-        #y = norm.pdf(age, mean, std_dev)
-        #y_peak = norm.pdf(mean, mean, std_dev)
-        #y_normalized = y / y_peak
 
         return [winning_prob * factor ** i for i in range(sets)]
 
@@ -96,10 +127,16 @@ class Simulation():
 
         Returns:
             Player who won the match as a string.
-        """
+        """   
+
         set_winner = []
         
         winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
+
+        past_head_to_head = self.win_per[player_1][player_2]
+        past_games_played = self.games_played[player_1][player_2]
+
+        winning_prob_1 = self.adjusted_win_probability(winning_prob_1, past_head_to_head, past_games_played)
         winning_prob_2 = 1 - winning_prob_1
         
         winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age, num_sets, surface)
