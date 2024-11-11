@@ -2,12 +2,12 @@ import pandas as pd
 import math
 
 class ELO:
-    def __init__(self, initial_elo_rating):
+    def __init__(self, initial_elo_rating, current_year):
         """
         Initializer for ELO class
         """
-        self.initial_rating = float(1500)
-        self.current_year = 2023
+        self.initial_rating = float(initial_elo_rating)
+        self.current_year = current_year
         self.tennis_data = pd.read_csv('../data/tennis_data.csv')
         self.elo_dataframe = None
 
