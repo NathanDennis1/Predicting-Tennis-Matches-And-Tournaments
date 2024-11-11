@@ -45,17 +45,20 @@ class past_match_data():
                 win_percentage = total_wins / total_games if total_games > 0 else 0
                 win_percentages[player][opponent] = win_percentage
 
-        # Had to transpose dataframe to get it in the correct order, filled NA values with
-        # 0 which means the 2 players have never played each other.
-        win_percentage_df = pd.DataFrame(win_percentages).T.fillna(0)
+        # Make into dataframe, fill the NA values with 0 which means players never played each other
+        win_percentage_df = pd.DataFrame(win_percentages).fillna(0)
 
-        games_played_df = pd.DataFrame(games_played).T.fillna(0)
+        games_played_df = pd.DataFrame(games_played).fillna(0)
 
         file_path_games = f'../data/games_played_opponents.csv'
 
         file_path_win_percent = f'../data/win_percentage.csv'
 
-        games_played_df.to_csv(file_path_games, index=True)
+        games_played_df.index.name = 'Player_Name'
 
-        win_percentage_df.to_csv(file_path_win_percent, index=True)
+        win_percentage_df.index.name = 'Player_Name'
+
+        games_played_df.to_csv(file_path_games)
+
+        win_percentage_df.to_csv(file_path_win_percent)
 
