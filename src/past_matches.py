@@ -2,11 +2,24 @@ import pandas as pd
 
 
 class past_match_data():
+    """
+    Class to obtain past match data between players
+    """
     def __init__(self):
+        """
+        Initializer for past_match_data class
+        """
         pass
 
 
     def win_percentage_common_opponents(self, data):
+        """
+        Function for obtaining the winning percentage and number of games played for every player in the tennis
+        dataset.
+
+        Args:
+            data (pandas Dataframe): Dataframe for all of the past tennis match data.
+        """
         games_played = {}
         wins = {}
 
