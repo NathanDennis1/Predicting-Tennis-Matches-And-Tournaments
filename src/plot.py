@@ -72,6 +72,7 @@ class Plot():
             plt.bar(x - self.bar_width/2, top_champions['normalized_winning_probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
             plt.bar(x + self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Model Win Probability', color='orange')
 
+        # Plot labels and saving figure
         plt.xlabel('Player Name')
         plt.ylabel('Probability of Winning Championship')
         plt.title(f'Comparison of Odds and Model Win Probabilities for {tournament_name}')
