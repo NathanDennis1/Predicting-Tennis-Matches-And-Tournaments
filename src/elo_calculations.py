@@ -9,6 +9,10 @@ class ELO:
     def __init__(self, initial_elo_rating, current_year):
         """
         Initializer for ELO class
+
+        Args:
+            initial_elo_rating(float): The initial ELO rating given to players
+            current_year (int): The current year that data was obtained from.
         """
         self.initial_rating = float(initial_elo_rating)
         self.current_year = current_year
