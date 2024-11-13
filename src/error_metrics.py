@@ -12,7 +12,7 @@ class Errors():
         """ 
         Calculates RMSE score
 
-        Input:
+        Args:
             true (float): True value (betting odds probability)
             pred (float): Predicted value (model output probability)
 
@@ -25,7 +25,7 @@ class Errors():
         """ 
         Calculates L-Infinity Norm score, the maximum absolute error between the true and predicted values.
 
-        Input:
+        Args:
             true (float): True value (betting odds probability)
             pred (float): Predicted value (model output probability)
 
@@ -38,7 +38,7 @@ class Errors():
         """ 
         Calculates L-1 Norm score, the average absolute difference between the true and predicted values
 
-        Input:
+        Args:
             true (float): True value (betting odds probability)
             pred (float): Predicted value (model output probability)
 
@@ -53,7 +53,7 @@ class Errors():
         Given prediction probabilities, returns all the utilized error metrics including RMSE, L-Infinity Norm,
         and L-1 Norm.
 
-        Input:
+        Args:
             tournament_name (str): Name of tennis tournament
             k_list (None or list): The list of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
             display (boolean): Display calculated error metric values, default is True to display errors, False to not display errors.
