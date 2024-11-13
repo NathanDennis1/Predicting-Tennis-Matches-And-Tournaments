@@ -15,20 +15,20 @@ def main():
     odds = Odds()
     matches = past_match_data()
 
-    tennis_data.get_data(year_lower = 2014, year_upper = 2024)
+    #tennis_data.get_data(year_lower = 2014, year_upper = 2024)
 
-    elo.final_elo_csv()
+    #elo.final_elo_csv()
 
-    player_elos = pd.read_csv('../data/player_elos.csv', index_col = 'Player_Name')
-    data = pd.read_csv('../data/tennis_data.csv')
+    #player_elos = pd.read_csv('../data/player_elos.csv', index_col = 'Player_Name')
+    #data = pd.read_csv('../data/tennis_data.csv')
 
-    matches.win_percentage_common_opponents(data)
+    #matches.win_percentage_common_opponents(data)
 
-    simulation = Simulation(player_elos, S = 800, hth = True, k = 0.5)
+    #simulation = Simulation(player_elos, S = 800, hth = True, k = 0.5)
 
-    simulation.user_tournament_simulation(data, 2023, 'Australian Open', 5000)
+    #simulation.user_tournament_simulation(data, 2023, 'Australian Open', 5000)
 
-    odds.convert_odds(2023, 'Australian Open')
+    #odds.convert_odds(2023, 'Australian Open')
 
     plot.plots('Wimbledon', 2023)
 
