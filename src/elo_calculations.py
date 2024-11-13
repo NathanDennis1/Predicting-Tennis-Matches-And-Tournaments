@@ -2,6 +2,10 @@ import pandas as pd
 import math
 
 class ELO:
+    """
+    ELO class which is used to calculate ELO scores and gets the most recent age of each player in the tennis dataset.
+    Creates the CSV for the elo calculations,
+    """
     def __init__(self, initial_elo_rating, current_year):
         """
         Initializer for ELO class
@@ -16,7 +20,7 @@ class ELO:
         Reads list of surfaces and names of players/teams and creates the initial ELO dataframe across all surfaces.
 
         Args:
-            surfaces (list): A list of surfaces players are playing on. (Tennis could include Clay or Grass, Basketball could include Home or Away court)
+            surfaces (list): A list of surfaces players are playing on. (Clay, Grass, Hard)
             names (list): Names of all teams/players for the sport.
 
         Returns:
@@ -58,7 +62,7 @@ class ELO:
     
     def logistic(self, x):
         """
-        Creates logistic function used for ELO calculation.
+        Creates logistic function used for ELO calculation. Uses the common logistic equation
 
         Args:
             x (float): number input for the log function
@@ -70,7 +74,7 @@ class ELO:
     
     def expected_game_score(self, first_elo, second_elo, S=400):
         """
-        Calculates expected game score based on logistic function
+        Calculates expected game score based on logistic function.
 
         Args:
             first_elo (float): The first elo for a given team/player
@@ -88,10 +92,10 @@ class ELO:
 
         Args:
             year_diff (int): The calculated difference in years (Earlier year minus furthest year)
-            decay_rate (float): Rate of decay for year difference
+            decay_rate (float): Rate of decay for year difference equation
 
         Returns:
-            Decay factor for the year difference
+            Decay factor for the year difference as a float.
         """
         return math.exp(-decay_rate * abs(year_diff))
 
