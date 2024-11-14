@@ -7,17 +7,23 @@ class InvalidTournamentError(ValueError):
         pass
 
 class Simulation():
-    def __init__(self, player_elos, S = 400):
+    def __init__(self, player_elos, S = 400, hth = True, k = 0.1):
         """
-        Initializer for Plot class.
+        Initializer for Simulation class.
 
         Args:
             player_elos: Dataframe of player elo ratings
             S (int): Scale for difference in ELO ratings 
+            hth (boolean): Use head-to-head matchups in game winning calculations.
+            k (float): k decay factor utilized in head-to-head scaling calculation.
         """
         self.elo_df = player_elos
         self.tournament_name = None
         self.S = S
+        self.win_per = pd.read_csv('../data/win_percentage.csv', index_col='Player_Name')
+        self.games_played = pd.read_csv('../data/games_played_opponents.csv', index_col='Player_Name')
+        self.head_to_head = hth    
+        self.k = float(k)
 
     def logistic(self, x):
         """
@@ -45,21 +51,43 @@ class Simulation():
         """
         return self.logistic((first_elo-second_elo)/self.S)
     
+    def adjusted_win_probability(self, P_A, P_head_to_head, games_played):
+        """
+        Calculate the adjusted win probability for Player A based on the sigmoid-weighted head-to-head record.
+        
+        Args:
+            P_A (float): Probability played A beats player B
+            P_head_to_head (float): Historical head-to-head winning percentage for player A
+            games_played (int): Number of games played between played A and B
+            k (float): Steepness factor in sigmoid function
+        
+        Returns:
+            Adjusted win probability for Player A
+        """
+        adjustment_factor = 0.5 / (1 + math.exp(-self.k * (games_played - 10))) 
 
+        # Calculate the adjusted win probability
+        P_A_adjusted = P_A + adjustment_factor * (P_head_to_head - 0.5)
+
+        # Ensure the adjusted probability stays within the valid range [0, 1]
+        P_A_adjusted = max(0, min(1, P_A_adjusted))
+        
+        return P_A_adjusted
+    
     def compute_prob_in_sets(self, winning_prob, age, sets, surface):
         """
         Computes a players winning probability based off the number of sets in a match.
 
         Args:
             winning_prob (float): The initial winning probability for a given player
-            age (float): The age of a player
+            age (float): The age of a player in years
             sets (int): The number of sets in a match
             surface (str): The surface of a given match
 
         Returns:
             List of winning probability for the number of sets.
         """
-        
+
         if surface == 'Clay':
             decay_rate = 0.015
         else:
@@ -70,14 +98,8 @@ class Simulation():
         else:
             factor = math.exp(-decay_rate * (age-25))
 
-        #mean = 25
-        #std_dev = 25
-
-        #y = norm.pdf(age, mean, std_dev)
-        #y_peak = norm.pdf(mean, mean, std_dev)
-        #y_normalized = y / y_peak
-
         return [winning_prob * factor ** i for i in range(sets)]
+    
 
         
     def simulating_game(self, player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets, surface):
@@ -96,10 +118,19 @@ class Simulation():
 
         Returns:
             Player who won the match as a string.
-        """
+        """   
+
         set_winner = []
         
         winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
+        winning_prob_2 = 1 - winning_prob_1
+
+        if self.head_to_head is True:
+            past_head_to_head = self.win_per[player_1][player_2]
+            past_games_played = self.games_played[player_1][player_2]
+            if past_games_played != 0:
+                winning_prob_1 = self.adjusted_win_probability(winning_prob_1, past_head_to_head, past_games_played)
+
         winning_prob_2 = 1 - winning_prob_1
         
         winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age, num_sets, surface)
@@ -137,7 +168,7 @@ class Simulation():
 
         grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
         if tournament not in grand_slams:
-            raise InvalidTournamentError(f"Invalid tournament, must be a Grand Slam: One of {grand_slams}")
+            raise InvalidTournamentError(f'Invalid tournament, must be a Grand Slam: One of ', {grand_slams})
 
         tournament_results = data[(data['Year'] == year) & (data['tourney_name'] == tournament)]
 
@@ -238,7 +269,10 @@ class Simulation():
         Winners_data.columns = column_names
 
         self.tournament_name = self.tournament_name.replace(' ', '_')
-        file_path = f'../data/tournament_results_{self.tournament_name}.csv'
+        if self.head_to_head is True:
+            file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}.csv'
+        else:
+            file_path = f'../data/tournament_results_{self.tournament_name}.csv'
 
         Winners_data.to_csv(file_path, index=True)
 
