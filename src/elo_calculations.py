@@ -4,7 +4,7 @@ import math
 class ELO:
     """
     ELO class which is used to calculate ELO scores and gets the most recent age of each player in the tennis dataset.
-    Creates the CSV for the elo calculations,
+    Also creates the CSV for the elo calculations for each player in the data.
     """
     def __init__(self, initial_elo_rating, current_year):
         """
@@ -16,7 +16,6 @@ class ELO:
         """
         self.initial_rating = float(initial_elo_rating)
         self.current_year = current_year
-        self.tennis_data = pd.read_csv('../data/tennis_data.csv')
         self.elo_dataframe = None
 
     def initial_elos(self, surfaces, names):
@@ -52,8 +51,14 @@ class ELO:
             data (pandas dataframe): Dataframe for given tennis dataset
 
         Returns:
-            List of player names from the tennis dataset
+            Set of player names from the tennis dataset
+
+        Raises:
+            TypeError: Data input must be a dataframe
         """
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError("Data input must be of type pandas dataframe")
+
         # First set for winner names
         winner_names = set(data['winner_name'].unique())
 
@@ -72,7 +77,7 @@ class ELO:
             x (float): number input for the log function
 
         Returns:
-            Final calculation of log function with given number as a float
+            Final calculation of logistic function with given number as a float
         """
         return 1 / (1 + 10**-x)
     
@@ -87,7 +92,17 @@ class ELO:
 
         Returns:
             Final calculation for an expected game score.
+
+        Raises:
+            TypeError, the first and second ELO must be of type float. S must be of type int
         """
+        if not isinstance(first_elo, float):
+            raise TypeError(f"First ELO is not a float, it has to be of type float, it is {type(first_elo)}")
+        if not isinstance(second_elo, float):
+            raise TypeError(f"Second ELO is not a float, it has to be of type float, it is {type(second_elo)}")
+        if not isinstance(S, int):
+            raise TypeError(f"Scaling factor S must be an int, it is type {type(S)}")
+
         return self.logistic((first_elo - second_elo)/S)
     
     def decay_factor(self, year_diff, decay_rate = 0.3):
@@ -100,7 +115,15 @@ class ELO:
 
         Returns:
             Decay factor for the year difference as a float.
+
+        Raises:
+            TypeError: Year difference must be an int, decay rate must be a float. Raises errors if this is not the case.
         """
+        if not isinstance(year_diff, int):
+            raise TypeError(f"The difference in years must be an int, it is type {type(year_diff)}")
+        if not isinstance(decay_rate, float):
+            raise TypeError(f"Decay rate must be an float, it is type {type(decay_rate)}")
+        
         return math.exp(-decay_rate * abs(year_diff))
 
     def elo_calculation(self, data, elo_df, K = 20):
@@ -114,7 +137,18 @@ class ELO:
 
         Returns:
             New Elo dataframe for players updated ELO scores.
+
+        Raises:
+            TypeError: data and elo_df must be dataframes. K must be an int.
         """
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError(f"data must be an pandas dataframe, it is type {type(data)}")
+        if not isinstance(elo_df, pd.DataFrame):
+            raise TypeError(f"ELO dataframe must be a pandas dataframe, it is type {type(elo_df)}")
+        if not isinstance(K, int):
+            raise TypeError(f"Scaling factor K must be an int, it is type {type(K)}")
+        
+
         # Train ELO scores based off all past data besides current year.
         data_training = data[data['Year'] < self.current_year]
 
@@ -218,19 +252,22 @@ class ELO:
         return recent_ages['Player_age']
     
     
-    def final_elo_csv(self):
+    def final_elo_csv(self, tennis_data, file_path='../data/player_elos.csv'):
         """
         Creates the final elo csv which has ELO calculations for all surfaces. Saves file to a csv titled
         player_elos.csv, saved in the data folder.
 
+        Args:
+            tennis_data (pandas dataframe): The dataframe containing all tennis match data
+            file_path (str): Path of the file to save, default player_elos.csv
+
         Returns:
             Series for the number of games a player has played.
         """
-        names = self.get_names(self.tennis_data)
-        surfaces = self.tennis_data['surface'].unique()[0:3]
+        names = self.get_names(tennis_data)
+        surfaces = tennis_data['surface'].unique()[0:3]
         elo_df = self.initial_elos(surfaces, list(names))
-        player_elos = self.elo_calculation(self.tennis_data[self.tennis_data['Year'] < 2024], elo_df)
-        player_elos['Player_age'] = self.get_most_recent_age(self.tennis_data)
+        player_elos = self.elo_calculation(tennis_data[tennis_data['Year'] < 2024], elo_df)
+        player_elos['Player_age'] = self.get_most_recent_age(tennis_data)
 
-        file_path = f'../data/player_elos.csv'
         player_elos.to_csv(file_path, index_label='Player_Name', index=True)
