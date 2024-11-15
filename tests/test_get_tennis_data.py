@@ -1,5 +1,5 @@
 import pytest
-from get_tennis_data import GetTennisData
+from src.get_tennis_data import GetTennisData
 
 @pytest.fixture
 def tennis_data():
