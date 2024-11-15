@@ -60,11 +60,21 @@ class Errors():
 
         Output:
             Printed RMSE, Linf, and L1 metrics for given model(s).
+        
+        Raises:
+            ValueError: k_list has to be either None or a list of at most 3 elements.
         """
         self.k_list = k_list
         self.bar_width = 0.3
+        
         # Only stores k if the k_list was given, if it is None there are no k's
         if self.k_list is not None:
+            if not isinstance(k_list, list):
+                raise ValueError("k_list must be a list")
+            
+            if len(k_list) > 3:
+                raise ValueError("k_list must have at most 3 elements")
+            
             for i, k in enumerate(self.k_list):
                 setattr(self, f'k{i + 1}', k)
             self.hth = True
@@ -83,12 +93,13 @@ class Errors():
             for k in self.k_list:
                 csv_dict_k[k] = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}.csv', index_col=0)
 
-        odds_comparison = odds[['normalized_winning_probability']]
+        odds_comparison = odds[['normalized_winning_probability']].copy()
         actual = odds_comparison['normalized_winning_probability']
 
         for model_name, model_df in csv_dict_k.items():
             # Take the Champion column corresponding to the current model to append to odds.
             champion_column = model_df[f'Champion']
+            print(model_name)
             
             odds_comparison[f'Champion_{model_name}'] = champion_column
 
