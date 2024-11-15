@@ -5,29 +5,57 @@ import pandas as pd
 
 @pytest.fixture
 def elo():
+    """
+    Created ELO class for testing
+    """
     return ELO(initial_elo_rating=1500, current_year = 2023)
 
 @pytest.fixture
 def df():
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tennis_data.csv')
-    print(f"Looking for data at: {data_path}")
+    """
+    Mock dataframe with arbitrary player names.
+    """
+    data = {
+        'tourney_name': ['Australian Open', 'French Open', 'Wimbledon', 'US Open', 
+                        'French Open', 'French Open', 'Australian Open', 'Wimbledon', 
+                        'Wimbledon', 'US Open'],
+        'surface': ['Hard', 'Clay', 'Grass', 'Hard', 'Clay', 'Clay', 'Hard', 'Grass', 'Hard', 'Hard'],
+        'draw_size': [128, 128, 128, 128, 128, 128, 128, 128, 128, 128],
+        'tourney_level': ['Grand Slam', 'Grand Slam', 'Grand Slam', 'Grand Slam', 
+                        'Grand Slam', 'Grand Slam', 'Grand Slam', 'Grand Slam', 
+                        'Grand Slam', 'Grand Slam'],
+        'best_of': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+        'winner_name': ['Player_1', 'Player_3', 'Player_2', 'Player_4', 
+                        'Player_1', 'Player_3', 'Player_2', 'Player_4', 
+                        'Player_1', 'Player_3'],
+        'winner_age': [26, 24, 27, 31, 26, 24, 27, 31, 26, 24],
+        'loser_name': ['Player_2', 'Player_4', 'Player_3', 'Player_1', 
+                    'Player_4', 'Player_2', 'Player_1', 'Player_3', 
+                    'Player_2', 'Player_4'],
+        'loser_age': [28, 30, 25, 29, 30, 27, 29, 25, 28, 30],
+        'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]
+    }
+
+    final_df = pd.DataFrame(data)
     
-    if not os.path.exists(data_path):
-        raise FileNotFoundError(f"File not found: {data_path}")
-    
-    df = pd.read_csv(data_path)
-    
-    return df
+    return final_df
 
 @pytest.fixture
 def elo_df():
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'player_elos.csv')
-    print(f"Looking for data at: {data_path}")
-    
-    if not os.path.exists(data_path):
-        raise FileNotFoundError(f"File not found: {data_path}")
-    
-    elo_df = pd.read_csv(data_path, index_col = 'Player_Name')
+    """
+    Mock elo scores dataframes for the 4 arbitrary players
+    """
+    elo_data = {
+        'Player_Name': ['Player_1', 'Player_2', 'Player_3', 'Player_4' ],
+        'Hard_ELO': [1505.12, 1492.34, 1510.75, 1489.90],
+        'Clay_ELO': [1489.56, 1503.67, 1490.85, 1500.12],
+        'Grass_ELO': [1502.23, 1487.90, 1506.12, 1493.40],
+        'Player_age': [26, 28, 24, 30]
+    }
+
+    elo_df = pd.DataFrame(elo_data)
+
+    elo_df = elo_df.set_index('Player_Name')
     
     return elo_df
     
