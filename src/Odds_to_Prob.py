@@ -1,5 +1,8 @@
 import pandas as pd
 
+class InvalidTournamentError(ValueError):
+        pass
+
 class Odds():
     def __init__(self):
         pass
@@ -29,7 +32,20 @@ class Odds():
 
         Returns:
             Final calculation of log function with given number
+
+        Raises:
+            TypeError: Inputs must both be floats, true and pred, raises error if not.
+            InvalidTournamentError: Tournament must be a grand slam tournament.
         """
+        if not isinstance(year, int):
+            raise TypeError(f"Year must be of type int, it is {type(year)}")
+        if not isinstance(tournament, str):
+            raise TypeError(f"The tournament must be a string, it is {type(tournament)}")
+        
+        grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
+        if tournament not in grand_slams:
+            raise InvalidTournamentError(f'Invalid tournament, must be a Grand Slam: One of ', {grand_slams})
+        
         tournament = tournament.replace(' ', '_')
         odds_df = pd.read_csv(f'../data/{year}_{tournament}_Odds.csv')
 
