@@ -7,9 +7,9 @@ class Odds():
     def __init__(self):
         pass
 
-    def american_odds_to_probability(self,odds):
+    def american_odds_to_probability(self, odds):
         """
-        Creates function to convert odds to probabilities
+        Creates function to convert odds to probabilities.
 
         Args:
             odds (float): number input for the given odds
@@ -24,18 +24,16 @@ class Odds():
 
     def convert_odds(self, year, tournament):
         """
-        Converts odds to probabilities based on the year and tournament.
+        Converts odds to probabilities based on the year and tournament. Creates the probability dataframe based on the given
+        odds for a tournament in a year.
 
         Args:
             year (int): year of tournament
             tournament (str): Name of tournament
 
-        Returns:
-            Final calculation of log function with given number
-
         Raises:
             TypeError: Inputs must both be floats, true and pred, raises error if not.
-            InvalidTournamentError: Tournament must be a grand slam tournament.
+            InvalidTournamentError: Tournament must be a grand slam tournament, Australian Open, Roland Garros, Wimbledon, or US Open.
         """
         if not isinstance(year, int):
             raise TypeError(f"Year must be of type int, it is {type(year)}")
