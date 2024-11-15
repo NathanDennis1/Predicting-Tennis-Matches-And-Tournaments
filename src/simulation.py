@@ -116,7 +116,24 @@ class Simulation():
 
         Returns:
             Player who won the match as a string.
+
+        Raises:
+            TypeError: The player names must be strings and ages/elo scores must be floats
         """   
+        if not isinstance(player_1, str):
+            raise TypeError(f"The first player has to be a string, it is {type(player_1)}")
+        if not isinstance(player_2, str):
+            raise TypeError(f"The second player has to be a string, it is {type(player_2)}")
+
+        if not isinstance(player_1_elo, float):
+            raise TypeError(f"The first player ELO has to be a float, it is {type(player_1_elo)}")
+        if not isinstance(player_2_elo, float):
+            raise TypeError(f"The second players ELO to be a float, it is {type(player_2_elo)}")
+        
+        if not isinstance(player_1_age, float):
+            raise TypeError(f"The first players age has to be a float, it is {type(player_1_age)}")
+        if not isinstance(player_2_age, float):
+            raise TypeError(f"The second players age to be a float, it is {type(player_2_age)}")
 
         set_winner = []
         
