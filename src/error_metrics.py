@@ -18,7 +18,15 @@ class Errors():
 
         Return:
             RMSE score as a float
+
+        Raises:
+            TypeError: Inputs must both be floats, true and pred, raises error if not.
         """
+        if not isinstance(true, float):
+            raise TypeError(f"The true value is not a float, it has to be of type float, it is {type(true)}")
+        if not isinstance(pred, float):
+            raise TypeError(f"The predicted value is not a float, it has to be of type float, it is {type(pred)}")
+        
         return np.sqrt(np.mean(np.square(true-pred)))
 
     def Linf(self, true, pred):
@@ -31,7 +39,14 @@ class Errors():
 
         Output:
             L-Infinity Norm score as a float
+
+        Raises:
+            TypeError: Inputs must both be floats, true and pred, raises error if not.
         """
+        if not isinstance(true, float):
+            raise TypeError(f"The true value is not a float, it has to be of type float, it is {type(true)}")
+        if not isinstance(pred, float):
+            raise TypeError(f"The predicted value is not a float, it has to be of type float, it is {type(pred)}")
         return np.max(np.abs(true-pred))
 
     def L1(self, true, pred):
@@ -44,7 +59,14 @@ class Errors():
 
         Output:
             L-1 Norm score as a float
+
+        Raises:
+            TypeError: Inputs must both be floats, true and pred, raises error if not.
         """
+        if not isinstance(true, float):
+            raise TypeError(f"The true value is not a float, it has to be of type float, it is {type(true)}")
+        if not isinstance(pred, float):
+            raise TypeError(f"The predicted value is not a float, it has to be of type float, it is {type(pred)}")
         return np.mean(np.absolute(true-pred))
 
 
@@ -55,7 +77,7 @@ class Errors():
 
         Args:
             tournament_name (str): Name of tennis tournament
-            k_list (None or list): The list of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
+            k_list (None or list): The list (max length 3) of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
             display (boolean): Display calculated error metric values, default is True to display errors, False to not display errors.
 
         Output:
