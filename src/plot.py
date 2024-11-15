@@ -7,25 +7,20 @@ class Plot():
     """
     Plot class to plot models predicted tournament winner probabilities vs the betting odds probabilities.
     """
-    def __init__(self, k_list = None):
+    def __init__(self):
         """
         Initializer for Plot class.
-
-        Args:
-            k_list (None or list): The list of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
         """
         self.bar_width = 0.3
-        self.k_list = k_list
-        if self.k_list is not None:
-            for i, k in enumerate(self.k_list):
-                setattr(self, f'k{i + 1}', k)
-            self.hth = True
-            self.bar_width = 0.15
-        else:
-            self.hth = False
 
+    def get_project_root(self):
+        """
+        Returns the root directory of the project, which in our case is team_19. This was done
+        so that the test_plot.py would work.
+        """
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    def plots(self, tournament_name, year):
+    def plots(self, tournament_name, year, k_list = None):
         """
         Creates the plotting function comparing the model's winning probabilities against the betting odds.
         A side by side bar plot comparing the top 10 players according to the betting odds is plot against the 
@@ -34,6 +29,7 @@ class Plot():
         Args:
             tournament_name (str): Name of tournament.
             year (int): Year tournament was played in.
+            k_list (None or list): The list of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
 
         Outputs:
             A png file for the given tournament and probabilities of winning for top 10 players.
@@ -44,12 +40,25 @@ class Plot():
         """
         if not (1968 <= year <= 2024):
             raise ValueError(f"Invalid year: {year}. Year must be between 1968 and 2024.")
+        
+        self.k_list = k_list
+        if self.k_list is not None:
+            assert len(k_list) <= 3, f"The k_list must be at most length 3, it was {len(k_list)}"
+            for i, k in enumerate(self.k_list):
+                setattr(self, f'k{i + 1}', k)
+            self.hth = True
+            self.bar_width = 0.15
+
+        else:
+            self.hth = False
 
         tournament_name_underscore = tournament_name.replace(' ', '_')
 
-        odds_file = f'../data/2023_{tournament_name_underscore}_Prob.csv'
-        model_file = f'../data/tournament_results_{tournament_name_underscore}.csv'
-        
+        project_root = self.get_project_root()
+
+        odds_file = os.path.join(project_root, 'data', f'2023_{tournament_name_underscore}_Prob.csv')
+        model_file = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}.csv')
+
         # Check for the odds file
         if not os.path.exists(odds_file):
             raise FileNotFoundError(f"Error: The odds file {odds_file} does not exist")
@@ -65,7 +74,7 @@ class Plot():
         csv_dict_k = {}
         if self.k_list is not None:
             for k in self.k_list:
-                hth_file = f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}.csv'
+                hth_file = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_head_to_head_{k}.csv')
                 
                 # Check if head-to-head CSV exists for each k
                 if not os.path.exists(hth_file):
@@ -103,5 +112,6 @@ class Plot():
         plt.legend()
 
         plt.tight_layout()
-        plt.savefig(f'../imgs/{tournament_name_underscore}_plot.png', bbox_inches='tight')
+        imgs_dir = os.path.join(project_root, 'imgs')
+        plt.savefig(os.path.join(imgs_dir, f'{tournament_name_underscore}_plot.png'), bbox_inches='tight')
         plt.show()
