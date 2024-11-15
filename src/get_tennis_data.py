@@ -15,7 +15,7 @@ class GetTennisData():
 
     def get_data(self, year_lower = 2000, year_upper = 2025):
         """
-        Reads data from github url and creates dataframe for each url.
+        Reads data from github url and creates dataframe across all the years input.
 
         Args:
             year_lower (int): The lower bound for the years you want data for. Default set to 2000
