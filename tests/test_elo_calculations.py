@@ -90,7 +90,7 @@ class Test_elo_calculations():
         """
         Tests the inital elos function to return a float
         """
-        game_score = elo.expected_game_score(1500, 1500)
+        game_score = elo.expected_game_score(float(1500), float(1500))
         assert isinstance(game_score, float), f"Logistic function should return a float, instead returned {type(game_score)}"
 
     def test_decay_factor(self, elo):
