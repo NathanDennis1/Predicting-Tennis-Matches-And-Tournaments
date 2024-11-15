@@ -13,19 +13,19 @@ class Errors():
         Calculates RMSE score
 
         Args:
-            true (float): True value (betting odds probability)
-            pred (float): Predicted value (model output probability)
+            true (pandas series): True value (betting odds probability)
+            pred (pandas series): Predicted value (model output probability)
 
         Return:
             RMSE score as a float
 
         Raises:
-            TypeError: Inputs must both be floats, true and pred, raises error if not.
+            TypeError: Inputs must both be series, true and pred, raises error if not.
         """
-        if not isinstance(true, float):
-            raise TypeError(f"The true value is not a float, it has to be of type float, it is {type(true)}")
-        if not isinstance(pred, float):
-            raise TypeError(f"The predicted value is not a float, it has to be of type float, it is {type(pred)}")
+        if not isinstance(true, pd.Series):
+            raise TypeError(f"The true value is not a series, it has to be of type series, it is {type(true)}")
+        if not isinstance(pred, pd.Series):
+            raise TypeError(f"The predicted value is not a series, it has to be of type series, it is {type(pred)}")
         
         return np.sqrt(np.mean(np.square(true-pred)))
 
@@ -34,19 +34,19 @@ class Errors():
         Calculates L-Infinity Norm score, the maximum absolute error between the true and predicted values.
 
         Args:
-            true (float): True value (betting odds probability)
-            pred (float): Predicted value (model output probability)
+            true (pandas series): True value (betting odds probability)
+            pred (pandas series): Predicted value (model output probability)
 
         Output:
             L-Infinity Norm score as a float
 
         Raises:
-            TypeError: Inputs must both be floats, true and pred, raises error if not.
+            TypeError: Inputs must both be series, true and pred, raises error if not.
         """
-        if not isinstance(true, float):
-            raise TypeError(f"The true value is not a float, it has to be of type float, it is {type(true)}")
-        if not isinstance(pred, float):
-            raise TypeError(f"The predicted value is not a float, it has to be of type float, it is {type(pred)}")
+        if not isinstance(true, pd.Series):
+            raise TypeError(f"The true value is not a series, it has to be of type series, it is {type(true)}")
+        if not isinstance(pred, pd.Series):
+            raise TypeError(f"The predicted value is not a series, it has to be of type series, it is {type(pred)}")
         return np.max(np.abs(true-pred))
 
     def L1(self, true, pred):
@@ -54,19 +54,19 @@ class Errors():
         Calculates L-1 Norm score, the average absolute difference between the true and predicted values
 
         Args:
-            true (float): True value (betting odds probability)
-            pred (float): Predicted value (model output probability)
+            true (pandas series): True value (betting odds probability)
+            pred (pandas series): Predicted value (model output probability)
 
         Output:
             L-1 Norm score as a float
 
         Raises:
-            TypeError: Inputs must both be floats, true and pred, raises error if not.
+            TypeError: Inputs must both be series, true and pred, raises error if not.
         """
-        if not isinstance(true, float):
-            raise TypeError(f"The true value is not a float, it has to be of type float, it is {type(true)}")
-        if not isinstance(pred, float):
-            raise TypeError(f"The predicted value is not a float, it has to be of type float, it is {type(pred)}")
+        if not isinstance(true, pd.Series):
+            raise TypeError(f"The true value is not a series, it has to be of type series, it is {type(true)}")
+        if not isinstance(pred, pd.Series):
+            raise TypeError(f"The predicted value is not a series, it has to be of type series, it is {type(pred)}")
         return np.mean(np.absolute(true-pred))
 
 
