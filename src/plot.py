@@ -16,7 +16,7 @@ class Plot():
     def get_project_root(self):
         """
         Returns the root directory of the project, which in our case is team_19. This was done
-        so that the test_plot.py would work.
+        so that the test_plot.py test code would work.
         """
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -61,11 +61,11 @@ class Plot():
 
         # Check for the odds file
         if not os.path.exists(odds_file):
-            raise FileNotFoundError(f"Error: The odds file {odds_file} does not exist")
+            raise FileNotFoundError(f"The odds file {odds_file} does not exist")
         
         # Check for the model file
         if not os.path.exists(model_file):
-            raise FileNotFoundError(f"Error: The model results file {model_file} does not exist")
+            raise FileNotFoundError(f"The model results file {model_file} does not exist")
         
         # If files exist, proceed with the function logic
         odds_df = pd.read_csv(odds_file, index_col=0)
@@ -78,7 +78,7 @@ class Plot():
                 
                 # Check if head-to-head CSV exists for each k
                 if not os.path.exists(hth_file):
-                    raise FileNotFoundError(f"Error: The head-to-head file {hth_file} does not exist")
+                    raise FileNotFoundError(f"The head-to-head file {hth_file} does not exist")
                 csv_dict_k[k] = pd.read_csv(hth_file, index_col=0)
 
         # Renames incorrect player name from csv file.
