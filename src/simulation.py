@@ -20,8 +20,6 @@ class Simulation():
         self.elo_df = player_elos
         self.tournament_name = None
         self.S = S
-        self.win_per = pd.read_csv('../data/win_percentage.csv', index_col='Player_Name')
-        self.games_played = pd.read_csv('../data/games_played_opponents.csv', index_col='Player_Name')
         self.head_to_head = hth    
         self.k = float(k)
 
@@ -126,8 +124,8 @@ class Simulation():
         winning_prob_2 = 1 - winning_prob_1
 
         if self.head_to_head is True:
-            past_head_to_head = self.win_per[player_1][player_2]
-            past_games_played = self.games_played[player_1][player_2]
+            past_head_to_head = self.win_pct_df[player_1][player_2]
+            past_games_played = self.games_played_df[player_1][player_2]
             if past_games_played != 0:
                 winning_prob_1 = self.adjusted_win_probability(winning_prob_1, past_head_to_head, past_games_played)
 
@@ -231,7 +229,7 @@ class Simulation():
         return winners
 
 
-    def simulate_tournament(self, initial_draw, surface, trials):
+    def simulate_tournament(self, initial_draw, surface, trials, saves):
         """
         Simulates a tournament through the initial draws for the tournament.
 
@@ -242,7 +240,14 @@ class Simulation():
 
         Returns:
             Winners_data (pandas dataframe): Dataframe of probability to make a certain round in the tournament.
+
+        Raises:
+            ValueError: Invalid surface
         """
+        surface_options = ['Clay', 'Hard', 'Grass']
+        if surface not in surface_options:
+            raise ValueError(f"Invalid surface '{surface}'. Valid options are {surface_options}.")
+
 
         final_matrix = np.zeros((128, 8)) 
 
@@ -267,18 +272,29 @@ class Simulation():
         column_names = ["Round_64", "Round_32", "Round_16", "Round_8", "Round_4", "Round_2", "Runner_up", "Champion"]
         Winners_data = pd.DataFrame(matrix_winners)
         Winners_data.columns = column_names
+        if saves is True:
+            self.tournament_name = self.tournament_name.replace(' ', '_')
+            if self.head_to_head is True:
+                file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}.csv'
+            else:
+                file_path = f'../data/tournament_results_{self.tournament_name}.csv'
 
-        self.tournament_name = self.tournament_name.replace(' ', '_')
-        if self.head_to_head is True:
-            file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}.csv'
-        else:
-            file_path = f'../data/tournament_results_{self.tournament_name}.csv'
-
-        Winners_data.to_csv(file_path, index=True)
+            Winners_data.to_csv(file_path, index=True)
 
         return Winners_data
     
-    def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims):
+    def simulation_params(self, win_pct_df, games_played_df):
+        """
+        Initializes parameters for the simulation module
+
+        Args:
+            win_pct_df (pandas dataframe): Dataframe of the given win percentage for head-to-head matchups between players
+            games_played_df (pandas dataframe): Dataframe of the number of matches played for head-to-head matchups between players
+        """
+        self.win_pct_df = win_pct_df
+        self.games_played_df = games_played_df
+    
+    def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims, saves = True):
         """
         Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
         saves the results to a final csv used for visualization and validation.
@@ -288,10 +304,15 @@ class Simulation():
             year (int): Year of tournament user wants to simulate
             tournament_name (str): The name of the tournament the user wants to simulate
             nsims (int): Number of tournament simulations
+            saves (boolean): Save simulation to csv or not.
 
         Raises:
+            ValueError: User must have saves be a boolean value
             InvalidTournamentError: User must enter a grand slam tournament
         """
+        if not isinstance(saves, bool):
+            raise ValueError(f"Invalid value for 'saves, must be a boolean value (True or False), got {type(saves)}.")
+    
         grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
 
         if tournament_name == 'Australian Open':
@@ -307,4 +328,4 @@ class Simulation():
 
         initial_draw = self.find_initial_draw(tennis_data, year, tournament_name)
 
-        self.simulate_tournament(initial_draw, surface, nsims)
+        self.simulate_tournament(initial_draw, surface, nsims, saves)
