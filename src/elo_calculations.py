@@ -11,7 +11,7 @@ class ELO:
         Initializer for ELO class
 
         Args:
-            initial_elo_rating(float): The initial ELO rating given to players
+            initial_elo_rating (float): The initial ELO rating given to players
             current_year (int): The current year that data was obtained from.
         """
         self.initial_rating = float(initial_elo_rating)
@@ -176,11 +176,12 @@ class ELO:
 
             # Adjusts ELO calculation rating based off given years.
             year_diff = self.current_year - row['Year']
+
+            # Calculates decay factor based on the difference in years
             decay_factor_year = self.decay_factor(year_diff)
 
             K = K * decay_factor_year
 
-    
             p_winner = self.expected_game_score(winner_surface_elo, loser_surface_elo)
             p_loser = self.expected_game_score(loser_surface_elo, winner_surface_elo)
 
