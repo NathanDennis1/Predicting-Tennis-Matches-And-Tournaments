@@ -8,10 +8,20 @@
 
 import os
 import sys
+import sphinx
 
-sys.path.insert(0, os.path.abspath('../../src'))
+sys.path.insert(0, os.path.abspath('../../src/'))
 
+#def skip_src_module_name(app, what, name, obj, skip, options):
+#    if name.startswith("src."):
+#        return name[4:]  # Strip "src." prefix from module names
+#    return skip
+#
+# Connect the event to modify module names
+#def setup(app):
+#    app.connect("autodoc-skip-member", skip_src_module_name)
 
+# Additional settings to clean up documentation
 
 project = 'Team 19 Docs'
 copyright = '2024, Nathan Dennis, Yiming Chen, John Breedis'

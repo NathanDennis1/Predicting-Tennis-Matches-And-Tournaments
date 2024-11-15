@@ -37,6 +37,12 @@
 </section>
 <section id="module-src.Odds_to_Prob">
 <span id="src-odds-to-prob-module"></span><h2>src.Odds_to_Prob module<a class="headerlink" href="#module-src.Odds_to_Prob" title="Link to this heading">¶</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="src.Odds_to_Prob.InvalidTournamentError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.Odds_to_Prob.</span></span><span class="sig-name descname"><span class="pre">InvalidTournamentError</span></span><a class="headerlink" href="#src.Odds_to_Prob.InvalidTournamentError" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ValueError</span></code></p>
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="src.Odds_to_Prob.Odds">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.Odds_to_Prob.</span></span><span class="sig-name descname"><span class="pre">Odds</span></span><a class="headerlink" href="#src.Odds_to_Prob.Odds" title="Link to this definition">¶</a></dt>
@@ -69,6 +75,12 @@
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Final calculation of log function with given number</p>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> -- Inputs must both be floats, true and pred, raises error if not.</p></li>
+<li><p><a class="reference internal" href="#src.Odds_to_Prob.InvalidTournamentError" title="src.Odds_to_Prob.InvalidTournamentError"><strong>InvalidTournamentError</strong></a> -- Tournament must be a grand slam tournament.</p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
@@ -82,7 +94,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.elo_calculations.</span></span><span class="sig-name descname"><span class="pre">ELO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_elo_rating</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_year</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.elo_calculations.ELO" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>ELO class which is used to calculate ELO scores and gets the most recent age of each player in the tennis dataset.
-Creates the CSV for the elo calculations,</p>
+Also creates the CSV for the elo calculations for each player in the data.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.elo_calculations.ELO.decay_factor">
 <span class="sig-name descname"><span class="pre">decay_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year_diff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.elo_calculations.ELO.decay_factor" title="Link to this definition">¶</a></dt>
@@ -96,6 +108,9 @@ Creates the CSV for the elo calculations,</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Decay factor for the year difference as a float.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- Year difference must be an int, decay rate must be a float. Raises errors if this is not the case.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -115,6 +130,9 @@ Creates the CSV for the elo calculations,</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>New Elo dataframe for players updated ELO scores.</p>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- data and elo_df must be dataframes. K must be an int.</p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -133,17 +151,26 @@ Creates the CSV for the elo calculations,</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Final calculation for an expected game score.</p>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong><strong>, </strong><strong>the first and second ELO must be</strong><strong> of </strong><strong>type float. S must be</strong><strong> of </strong><strong>type int</strong> -- </p>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.elo_calculations.ELO.final_elo_csv">
-<span class="sig-name descname"><span class="pre">final_elo_csv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.elo_calculations.ELO.final_elo_csv" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">final_elo_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tennis_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'../data/player_elos.csv'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.elo_calculations.ELO.final_elo_csv" title="Link to this definition">¶</a></dt>
 <dd><p>Creates the final elo csv which has ELO calculations for all surfaces. Saves file to a csv titled
 player_elos.csv, saved in the data folder.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Series for the number of games a player has played.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tennis_data</strong> (<em>pandas dataframe</em>) -- The dataframe containing all tennis match data</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) -- Path of the file to save, default player_elos.csv</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Series for the number of games a player has played.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -173,7 +200,10 @@ the winners and losers columns, then combines the set using union.</p>
 <dd class="field-odd"><p><strong>data</strong> (<em>pandas dataframe</em>) -- Dataframe for given tennis dataset</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of player names from the tennis dataset</p>
+<dd class="field-even"><p>Set of player names from the tennis dataset</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- Data input must be a dataframe</p>
 </dd>
 </dl>
 </dd></dl>
@@ -204,7 +234,7 @@ the winners and losers columns, then combines the set using union.</p>
 <dd class="field-odd"><p><strong>x</strong> (<em>float</em>) -- number input for the log function</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Final calculation of log function with given number as a float</p>
+<dd class="field-even"><p>Final calculation of logistic function with given number as a float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -226,13 +256,18 @@ the winners and losers columns, then combines the set using union.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>true</strong> (<em>float</em>) -- True value (betting odds probability)</p></li>
-<li><p><strong>pred</strong> (<em>float</em>) -- Predicted value (model output probability)</p></li>
+<li><p><strong>true</strong> (<em>pandas series</em>) -- True value (betting odds probability)</p></li>
+<li><p><strong>pred</strong> (<em>pandas series</em>) -- Predicted value (model output probability)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="simple">
 <dt>Output:</dt><dd><p>L-1 Norm score as a float</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- Inputs must both be series, true and pred, raises error if not.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -244,13 +279,18 @@ the winners and losers columns, then combines the set using union.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>true</strong> (<em>float</em>) -- True value (betting odds probability)</p></li>
-<li><p><strong>pred</strong> (<em>float</em>) -- Predicted value (model output probability)</p></li>
+<li><p><strong>true</strong> (<em>pandas series</em>) -- True value (betting odds probability)</p></li>
+<li><p><strong>pred</strong> (<em>pandas series</em>) -- Predicted value (model output probability)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="simple">
 <dt>Output:</dt><dd><p>L-Infinity Norm score as a float</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- Inputs must both be series, true and pred, raises error if not.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -262,12 +302,15 @@ the winners and losers columns, then combines the set using union.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>true</strong> (<em>float</em>) -- True value (betting odds probability)</p></li>
-<li><p><strong>pred</strong> (<em>float</em>) -- Predicted value (model output probability)</p></li>
+<li><p><strong>true</strong> (<em>pandas series</em>) -- True value (betting odds probability)</p></li>
+<li><p><strong>pred</strong> (<em>pandas series</em>) -- Predicted value (model output probability)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>RMSE score as a float</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- Inputs must both be series, true and pred, raises error if not.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -281,13 +324,18 @@ and L-1 Norm.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tournament_name</strong> (<em>str</em>) -- Name of tennis tournament</p></li>
-<li><p><strong>k_list</strong> (<em>None</em><em> or </em><em>list</em>) -- The list of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.</p></li>
+<li><p><strong>k_list</strong> (<em>None</em><em> or </em><em>list</em>) -- The list (max length 3) of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.</p></li>
 <li><p><strong>display</strong> (<em>boolean</em>) -- Display calculated error metric values, default is True to display errors, False to not display errors.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="simple">
 <dt>Output:</dt><dd><p>Printed RMSE, Linf, and L1 metrics for given model(s).</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ValueError</strong> -- k_list has to be either None or a list of at most 3 elements.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -381,6 +429,14 @@ models probabilities. Saves plot to a png.</p>
 </dl>
 <dl class="simple">
 <dt>Outputs:</dt><dd><p>A png file for the given tournament and probabilities of winning for top 10 players.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> -- Year must be between 1968 and 2024.</p></li>
+<li><p><strong>FileNotFoundError</strong> -- One of the dataframes for the plotting function does not exist.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -537,7 +593,7 @@ models probabilities. Saves plot to a png.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.simulation.Simulation.simulate_tournament">
-<span class="sig-name descname"><span class="pre">simulate_tournament</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_draw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trials</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.simulate_tournament" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">simulate_tournament</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_draw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trials</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.simulate_tournament" title="Link to this definition">¶</a></dt>
 <dd><p>Simulates a tournament through the initial draws for the tournament.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -552,6 +608,9 @@ models probabilities. Saves plot to a png.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Winners_data (pandas dataframe)</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> -- Invalid surface</p>
 </dd>
 </dl>
 </dd></dl>
@@ -576,12 +635,29 @@ models probabilities. Saves plot to a png.</p>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Player who won the match as a string.</p>
 </dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- The player names must be strings and ages/elo scores must be floats</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.simulation.Simulation.simulation_params">
+<span class="sig-name descname"><span class="pre">simulation_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">win_pct_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">games_played_df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.simulation_params" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes parameters for the simulation module</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>win_pct_df</strong> (<em>pandas dataframe</em>) -- Dataframe of the given win percentage for head-to-head matchups between players</p></li>
+<li><p><strong>games_played_df</strong> (<em>pandas dataframe</em>) -- Dataframe of the number of matches played for head-to-head matchups between players</p></li>
+</ul>
+</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.simulation.Simulation.user_tournament_simulation">
-<span class="sig-name descname"><span class="pre">user_tournament_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tennis_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsims</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.user_tournament_simulation" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">user_tournament_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tennis_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saves</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.user_tournament_simulation" title="Link to this definition">¶</a></dt>
 <dd><p>Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
 saves the results to a final csv used for visualization and validation.</p>
 <dl class="field-list simple">
@@ -591,10 +667,14 @@ saves the results to a final csv used for visualization and validation.</p>
 <li><p><strong>year</strong> (<em>int</em>) -- Year of tournament user wants to simulate</p></li>
 <li><p><strong>tournament_name</strong> (<em>str</em>) -- The name of the tournament the user wants to simulate</p></li>
 <li><p><strong>nsims</strong> (<em>int</em>) -- Number of tournament simulations</p></li>
+<li><p><strong>saves</strong> (<em>boolean</em>) -- Save simulation to csv or not.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#src.simulation.InvalidTournamentError" title="src.simulation.InvalidTournamentError"><strong>InvalidTournamentError</strong></a> -- User must enter a grand slam tournament</p>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> -- User must have saves be a boolean value</p></li>
+<li><p><a class="reference internal" href="#src.simulation.InvalidTournamentError" title="src.simulation.InvalidTournamentError"><strong>InvalidTournamentError</strong></a> -- User must enter a grand slam tournament</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
