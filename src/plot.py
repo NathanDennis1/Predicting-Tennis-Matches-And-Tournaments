@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import os
 
 class Plot():
     """
@@ -12,7 +13,6 @@ class Plot():
 
         Args:
             k_list (None or list): The list of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
-
         """
         self.bar_width = 0.3
         self.k_list = k_list
@@ -37,17 +37,40 @@ class Plot():
 
         Outputs:
             A png file for the given tournament and probabilities of winning for top 10 players.
-        """
 
+        Raises:
+            ValueError: Year must be between 1968 and 2024.
+            FileNotFoundError: One of the dataframes for the plotting function does not exist.
+        """
+        if not (1968 <= year <= 2024):
+            raise ValueError(f"Invalid year: {year}. Year must be between 1968 and 2024.")
 
         tournament_name_underscore = tournament_name.replace(' ', '_')
-        odds_df = pd.read_csv(f'../data/2023_{tournament_name_underscore}_Prob.csv', index_col=0)
 
-        model_df = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}.csv', index_col = 0)
+        odds_file = f'../data/2023_{tournament_name_underscore}_Prob.csv'
+        model_file = f'../data/tournament_results_{tournament_name_underscore}.csv'
+        
+        # Check for the odds file
+        if not os.path.exists(odds_file):
+            raise FileNotFoundError(f"Error: The odds file {odds_file} does not exist")
+        
+        # Check for the model file
+        if not os.path.exists(model_file):
+            raise FileNotFoundError(f"Error: The model results file {model_file} does not exist")
+        
+        # If files exist, proceed with the function logic
+        odds_df = pd.read_csv(odds_file, index_col=0)
+        model_df = pd.read_csv(model_file, index_col=0)
+        
         csv_dict_k = {}
         if self.k_list is not None:
             for k in self.k_list:
-                csv_dict_k[k] = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}.csv', index_col=0)
+                hth_file = f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}.csv'
+                
+                # Check if head-to-head CSV exists for each k
+                if not os.path.exists(hth_file):
+                    raise FileNotFoundError(f"Error: The head-to-head file {hth_file} does not exist")
+                csv_dict_k[k] = pd.read_csv(hth_file, index_col=0)
 
         # Renames incorrect player name from csv file.
         odds_df = odds_df.rename(index={'Felix Auger-Aliassime': 'Felix Auger Aliassime'})
