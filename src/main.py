@@ -32,13 +32,13 @@ def main():
     simulation = Simulation(player_elos, S = 800, hth = True, k = 0.1)
 
     simulation.simulation_params(win_percentage_df, games_played)
-    simulation.user_tournament_simulation(data, 2023, 'Australian Open', 5000, saves = True)
+    simulation.user_tournament_simulation(data, 2023, 'Wimbledon', 5000, saves = True)
 
-    odds.convert_odds(2023, 'Australian Open')
+    odds.convert_odds(2023, 'Wimbledon')
 
-    plot.plots('Australian Open', 2023, [0.05, 0.1, 0.5])
+    plot.plots('Wimbledon', 2023, [0.05, 0.1, 0.5])
 
-    error.displayErrors('Australian Open', [0.05, 0.1, 0.5])
+    error.displayErrors('Wimbledon', [0.05, 0.1, 0.5])
 
 
 
