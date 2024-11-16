@@ -54,5 +54,13 @@ A working example of this is in the 'main.py' script in src. This file runs ever
 
 We note that to fully utilize the plot and errors class, ensure you have the sufficient csv files created to do so when using the head-to-head data. You may need to run simulation multiple times for different head-to-head k factors before plotting and getting the error metrics.
 
-To run test cases, you can run 'PYTHONPATH=. pytest --cov=src -W ignore::DeprecationWarning -v tests/___.py' Where ___ would be the specific testing file you would like to run
+**Test Cases**
+
+To run test cases, you can run: 
+
+```bash
+PYTHONPATH=. pytest --cov=src -W ignore::DeprecationWarning -v tests/___.py
+```
+
+Where ___ would be the specific testing file you would like to run
 
