@@ -35,14 +35,20 @@ class Plot():
             A png file for the given tournament and probabilities of winning for top 10 players.
 
         Raises:
-            ValueError: Year must be between 1968 and 2024.
+            ValueError: Year must be between 1968 and 2024. Year must also be of type int. If k_list is not None, then it must be a list.
             FileNotFoundError: One of the dataframes for the plotting function does not exist.
         """
+        if not isinstance(year, int):
+            raise TypeError(f"Year must be of type int, it is {type(year)}")
+        
         if not (1968 <= year <= 2024):
             raise ValueError(f"Invalid year: {year}. Year must be between 1968 and 2024.")
         
         self.k_list = k_list
         if self.k_list is not None:
+            if not isinstance(k_list, list):
+                raise ValueError("k_list must be a list")
+            
             assert len(k_list) <= 3, f"The k_list must be at most length 3, it was {len(k_list)}"
             for i, k in enumerate(self.k_list):
                 setattr(self, f'k{i + 1}', k)
