@@ -15,7 +15,7 @@ class past_match_data():
     def win_percentage_common_opponents(self, data):
         """
         Function for obtaining the winning percentage and number of games played for every player in the tennis
-        dataset.
+        dataset. Creates a csv file for both win percentage and games played between every player in the dataset.
 
         Args:
             data (pandas Dataframe): Dataframe for all of the past tennis match data.
