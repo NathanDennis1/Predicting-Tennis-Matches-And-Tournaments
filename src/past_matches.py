@@ -19,7 +19,12 @@ class past_match_data():
 
         Args:
             data (pandas Dataframe): Dataframe for all of the past tennis match data.
+
+        Raises:
+            TypeError: data must be of type dataframe.
         """
+        if not isinstance(data, pd.DataFrame):
+            raise TypeError("Data input must be of type pandas dataframe")
         games_played = {}
         wins = {}
 
