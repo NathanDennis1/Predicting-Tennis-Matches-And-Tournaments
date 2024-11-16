@@ -1,7 +1,7 @@
 import pytest
 from unittest import mock
 import pandas as pd
-from plot import Plot
+from src.plot import Plot
 import matplotlib.pyplot as plt
 
 @pytest.fixture
@@ -21,12 +21,11 @@ class TestPlot:
         """
         Tests to ensure a figure is created when calling plot
         """
-        # Call the plot function
         plot.plots('Wimbledon', 2023, [0.05, 0.1])
 
-        # Check if a figure has been created by checking the current figure
-        fig = plt.gcf()  # Get the current figure
+        # This checks to make sure a figure was created
+        fig = plt.gcf() 
 
-        # Assert that the figure is an instance of a matplotlib Figure object
+        # Assert that the figure is a matplotlib figure
         assert isinstance(fig, plt.Figure), "No figure was created."
 
