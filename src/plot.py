@@ -102,13 +102,13 @@ class Plot():
         # If hth is true, also plot h2h model predicted probabilities. If not, skip the extra bars.
         if self.hth is True:
             plt.bar(x - self.bar_width - self.bar_width/2, top_champions['normalized_winning_probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
-            plt.bar(x - self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Model Win Probability', color='orange')
+            plt.bar(x - self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Baseline Model Win Probability', color='orange')
             for i, (model_name, model_df_hth) in enumerate(csv_dict_k.items()):
                 top_champions_hth = top_players[['normalized_winning_probability']].join(model_df_hth['Champion'], how='inner')
                 plt.bar(x + i * self.bar_width + self.bar_width/2, top_champions_hth['Champion'], width=self.bar_width, label=f'Model Win Head to Head k = {model_name} Probability')
         else:
             plt.bar(x - self.bar_width/2, top_champions['normalized_winning_probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
-            plt.bar(x + self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Model Win Probability', color='orange')
+            plt.bar(x + self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Baseline Model Win Probability', color='orange')
 
         # Plot labels and saving figure
         plt.xlabel('Player Name')
