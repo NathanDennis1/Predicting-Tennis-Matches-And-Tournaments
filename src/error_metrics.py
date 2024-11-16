@@ -10,11 +10,11 @@ class Errors():
 
     def RMSE(self, true, pred):
         """ 
-        Calculates RMSE score
+        Calculates RMSE score, the root mean squared error.
 
         Args:
-            true (pandas series): True value (betting odds probability)
-            pred (pandas series): Predicted value (model output probability)
+            true (pandas series): True values (betting odds probability)
+            pred (pandas series): Predicted values (model output probability)
 
         Return:
             RMSE score as a float
@@ -34,8 +34,8 @@ class Errors():
         Calculates L-Infinity Norm score, the maximum absolute error between the true and predicted values.
 
         Args:
-            true (pandas series): True value (betting odds probability)
-            pred (pandas series): Predicted value (model output probability)
+            true (pandas series): True values (betting odds probability)
+            pred (pandas series): Predicted values (model output probability)
 
         Output:
             L-Infinity Norm score as a float
@@ -54,8 +54,8 @@ class Errors():
         Calculates L-1 Norm score, the average absolute difference between the true and predicted values
 
         Args:
-            true (pandas series): True value (betting odds probability)
-            pred (pandas series): Predicted value (model output probability)
+            true (pandas series): True values (betting odds probability)
+            pred (pandas series): Predicted values (model output probability)
 
         Output:
             L-1 Norm score as a float
