@@ -67,7 +67,7 @@ class Plot():
         if not os.path.exists(model_file):
             raise FileNotFoundError(f"The model results file {model_file} does not exist")
         
-        # If files exist, proceed with the function logic
+        # Reads in dataframes for odds and model
         odds_df = pd.read_csv(odds_file, index_col=0)
         model_df = pd.read_csv(model_file, index_col=0)
         
@@ -93,7 +93,7 @@ class Plot():
 
         x = np.arange(len(top_champions.index))  # The label locations, arranges based on the top champions.
         
-        # If hth is true, also plot h2h model predicted probabilities.
+        # If hth is true, also plot h2h model predicted probabilities. If not, skip the extra bars.
         if self.hth is True:
             plt.bar(x - self.bar_width - self.bar_width/2, top_champions['normalized_winning_probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
             plt.bar(x - self.bar_width/2, top_champions['Champion'], width=self.bar_width, label='Model Win Probability', color='orange')
