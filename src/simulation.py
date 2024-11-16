@@ -324,11 +324,13 @@ class Simulation():
             saves (boolean): Save simulation to csv or not.
 
         Raises:
-            ValueError: User must have saves be a boolean value
+            ValueError: User must have saves be a boolean value, and year to be of type int
             InvalidTournamentError: User must enter a grand slam tournament
         """
         if not isinstance(saves, bool):
             raise ValueError(f"Invalid value for 'saves, must be a boolean value (True or False), got {type(saves)}.")
+        if not isinstance(year, int):
+            raise TypeError(f"Year must be of type int, it is {type(year)}")
     
         grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
 
