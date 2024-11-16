@@ -20,6 +20,22 @@ You can clone our repository to your local machine by running:
 git clone https://code.harvard.edu/AM215/team_19.git
 ```
 
+2. **Navigate to directory**
+
+Navigate into the project folder
+
+```bash
+cd src
+```
+
+3. **Run main file**
+
+To run the code and simulate tournaments, run the main.py file. Feel free to edit this file to change the tournament, year, and other variables.
+
+```bash
+python main.py
+```
+
 In this repository we present a tennis tournament simulator for the 4 major Grand Slam tournaments: Roland Garros, Wimbledon, Australian Open, and US Open. 
 
 To begin, you can obtain tennis match data between 1960 and 2024 through the 'get_tennis_data.py' script under the GetTennisData class, which allows users to input a year interval between 1960 and 2024 to obtain tennis data. This data includes all relevant tournament match outcomes between the years, the winners and losers, their ages, the surface of the tournament, and the tournament level.
