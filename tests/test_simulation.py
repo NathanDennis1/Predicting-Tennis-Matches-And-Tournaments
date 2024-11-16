@@ -118,8 +118,7 @@ def tennis_data():
                     'Player_4', 'Player_2', 'Player_1', 'Player_3', 
                     'Player_2', 'Player_4'],
         'loser_age': [28, 30, 25, 29, 30, 27, 29, 25, 28, 30],
-        'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]
-    }
+        'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]}
 
     final_df = pd.DataFrame(data)
     
@@ -131,7 +130,7 @@ def player_elo_df():
     Creates mock player elo dataset
 
     Returns:
-        Mock dataframe of tennis players elo ratings
+        Mock dataframe of tennis players elo ratings, given random elo ratings and ages.
     """
     elo_data = {
         'Player_Name': ['Player_1', 'Player_2', 'Player_3', 'Player_4' ],
@@ -150,7 +149,7 @@ def player_elo_df():
 @pytest.fixture
 def win_pct_df():
     """
-    Creates mock tennis dataset for win percentage
+    Creates mock tennis dataset for win percentage, using random values for players.
 
     Returns:
         Mock dataframe of tennis players win percentages
@@ -161,8 +160,7 @@ def win_pct_df():
         'Player_1': [0, 0.2, 0.4, 0.6],
         'Player_2': [0.8, 0, 0, 0.4],
         'Player_3': [0.6, 1, 0, 0.5],
-        'Player_4': [0.4, 0.6, 0.5, 0]
-    }
+        'Player_4': [0.4, 0.6, 0.5, 0]}
 
 
     Pct_df = pd.DataFrame(win_pct_data, index=players)
@@ -183,8 +181,7 @@ def games_played_df():
         'Player_1': [0, 5, 5, 5],
         'Player_2': [5, 0, 2, 5],
         'Player_3': [5, 2, 0, 4],
-        'Player_4': [5, 5, 4, 0]
-    }
+        'Player_4': [5, 5, 4, 0]}
 
     gp_df = pd.DataFrame(games_played_data, index=players)
     

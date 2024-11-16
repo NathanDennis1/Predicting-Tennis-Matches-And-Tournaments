@@ -33,8 +33,7 @@ def df():
                     'Player_4', 'Player_2', 'Player_1', 'Player_3', 
                     'Player_2', 'Player_4'],
         'loser_age': [28, 30, 25, 29, 30, 27, 29, 25, 28, 30],
-        'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]
-    }
+        'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]}
 
     final_df = pd.DataFrame(data)
     
@@ -43,15 +42,14 @@ def df():
 @pytest.fixture
 def elo_df():
     """
-    Mock elo scores dataframes for the 4 arbitrary players
+    Mock elo scores dataframes for the 4 arbitrary players, random elo scores and ages.
     """
     elo_data = {
         'Player_Name': ['Player_1', 'Player_2', 'Player_3', 'Player_4' ],
         'Hard_ELO': [1505.12, 1492.34, 1510.75, 1489.90],
         'Clay_ELO': [1489.56, 1503.67, 1490.85, 1500.12],
         'Grass_ELO': [1502.23, 1487.90, 1506.12, 1493.40],
-        'Player_age': [26, 28, 24, 30]
-    }
+        'Player_age': [26, 28, 24, 30]}
 
     elo_df = pd.DataFrame(elo_data)
 
