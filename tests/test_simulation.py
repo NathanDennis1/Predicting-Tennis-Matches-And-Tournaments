@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import numpy as np
-from src.simulation import Simulation, InvalidTournamentError
+from src.simulation import Simulation
 import os
 
 # We begin by reading the ORIGINAL data from the csv files to test the simulate full tournament code.
@@ -88,6 +88,9 @@ def original_simulation(original_player_elo_df):
     Initializes original simulation class with original players
     """
     return Simulation(player_elos=original_player_elo_df)
+
+
+# This is for the mock data.
 
 @pytest.fixture
 def tennis_data():
@@ -227,7 +230,7 @@ class Test_simulation():
         Tests simulating game function, ensures a string is returned for the winner
         """
         simulation.simulation_params(win_pct_df, games_played_df)
-        winner = simulation.simulating_game("Player_1", 1600, 25, "Player_2", 1400, 30, 3, "Hard")
+        winner = simulation.simulating_game("Player_1", float(1600), float(25), "Player_2", float(1400), float(30), 3, "Hard")
         assert isinstance(winner, str), "Returns string"
 
     def test_find_initial_draw(self, simulation):
