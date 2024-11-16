@@ -11,7 +11,7 @@ class ELO:
         Initializer for ELO class
 
         Args:
-            initial_elo_rating (float): The initial ELO rating given to players
+            initial_elo_rating (float): The initial ELO rating given to players.
             current_year (int): The current year that data was obtained from.
         """
         self.initial_rating = float(initial_elo_rating)
@@ -86,9 +86,9 @@ class ELO:
         Calculates expected game score based on logistic function.
 
         Args:
-            first_elo (float): The first elo for a given team/player
-            second_elo (float): The second elo for a given team/player
-            S (int): Scaling factor
+            first_elo (float): The first elo for a given team/player.
+            second_elo (float): The second elo for a given team/player.
+            S (int): Scaling factor.
 
         Returns:
             Final calculation for an expected game score.
