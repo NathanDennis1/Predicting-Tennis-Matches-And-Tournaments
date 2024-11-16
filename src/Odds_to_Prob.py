@@ -22,6 +22,7 @@ class Odds():
             return 100 / (odds + 100)
         else:
             return -odds / (-odds + 100)
+        
     def get_project_root(self):
         """
         Returns the root directory of the project, which in our case is team_19. This was done
@@ -41,6 +42,7 @@ class Odds():
         Raises:
             TypeError: Inputs must both be floats, true and pred, raises error if not.
             InvalidTournamentError: Tournament must be a grand slam tournament, Australian Open, Roland Garros, Wimbledon, or US Open.
+            FileNotFoundError: csv files for the odds is not found
         """
         if not isinstance(year, int):
             raise TypeError(f"Year must be of type int, it is {type(year)}")
@@ -55,12 +57,12 @@ class Odds():
 
         tournament = tournament.replace(' ', '_')
 
+        # Finds the file path for the odds data, which is in the data folder.
         odds_file = os.path.join(project_root, 'data', f'{year}_{tournament}_Odds.csv')
 
         # Check for the odds file
         if not os.path.exists(odds_file):
             raise FileNotFoundError(f"The odds file {odds_file} does not exist")
-        
     
         odds_df = pd.read_csv(odds_file)
 
