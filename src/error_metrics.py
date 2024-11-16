@@ -13,8 +13,8 @@ class Errors():
         Calculates RMSE score, the root mean squared error.
 
         Args:
-            true (pandas series): True values (betting odds probability)
-            pred (pandas series): Predicted values (model output probability)
+            true (pandas series): Series of true values (betting odds probability)
+            pred (pandas series): Series of predicted values (model output probability)
 
         Return:
             RMSE score as a float
@@ -34,8 +34,8 @@ class Errors():
         Calculates L-Infinity Norm score, the maximum absolute error between the true and predicted values.
 
         Args:
-            true (pandas series): True values (betting odds probability)
-            pred (pandas series): Predicted values (model output probability)
+            true (pandas series): Series of true values (betting odds probability)
+            pred (pandas series): Series of predicted values (model output probability)
 
         Output:
             L-Infinity Norm score as a float
@@ -119,9 +119,8 @@ class Errors():
         actual = odds_comparison['normalized_winning_probability']
 
         for model_name, model_df in csv_dict_k.items():
-            # Take the Champion column corresponding to the current model to append to odds.
+            # Take the Champion column corresponding to the current model to append to odds
             champion_column = model_df[f'Champion']
-            print(model_name)
             
             odds_comparison[f'Champion_{model_name}'] = champion_column
 
@@ -134,9 +133,8 @@ class Errors():
                 linf_value = self.Linf(actual, champion_column)
                 l1_value = self.L1(actual, champion_column)
 
-                # Print results for the current model
                 print(f"Model: {model_name}")
                 print(f"  RMSE: {rmse_value}")
                 print(f"  Linf: {linf_value}")
                 print(f"  L1: {l1_value}")
-                print('-' * 20)  # Used to separate the output
+                print('-' * 20)  # Used to separate the output in a nice fashion
