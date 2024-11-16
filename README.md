@@ -17,7 +17,9 @@ To display error metrics (RMSE, L1, and Linf scores), first the Odds_to_prob.py 
 
 To plot the data, use the 'plot.py' script and Plot class. Run the plots function with the input tournament, year, and optimal k scaling factors to include head-to-head model data in the plots.
 
-A working example of this is in the 'main.py' script in src. This file runs everything from top to bottom and creates the plot/error metrics for a given tournament.
+A working example of this is in the 'main.py' script in src. This file runs everything from top to bottom and creates the plot/error metrics for a given tournament. To replicate this, navigate to the source code using 'cd src' in your terminal. Then run 'python main.py' to output the plot image and calculate error metrics.
 
 We note that to fully utilize the plot and errors class, ensure you have the sufficient csv files created to do so when using the head-to-head data. You may need to run simulation multiple times for different head-to-head k factors before plotting and getting the error metrics.
+
+To run test cases, you can run 'PYTHONPATH=. pytest --cov=src -W ignore::DeprecationWarning -v tests/___.py' Where ___ would be the specific testing file you would like to run
 
