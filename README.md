@@ -3,7 +3,22 @@
 ## Group Members:
 Nathan Dennis, John Breedis, Yiming Chen (Team 19)
 
-## Project Description:
+### Prerequisites
+
+Ensure you have met these requirements:
+
+- Python 3.8 or higher
+- `pip`
+  
+### Installation Steps
+
+1. **Clone the Repository**
+
+You can clone our repository to your local machine by running:
+
+```bash
+git clone https://code.harvard.edu/AM215/team_19.git
+
 
 In this repository we present a tennis tournament simulator for the 4 major Grand Slam tournaments: Roland Garros, Wimbledon, Australian Open, and US Open. 
 
