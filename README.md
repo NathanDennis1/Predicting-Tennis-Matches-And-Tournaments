@@ -10,11 +10,11 @@ Ensure you have met these requirements:
 - Python 3.8 or higher
 - `pip`
 - Python libraries:
- - matplotlib
- - numpy
- - pandas
- - pytest
- - requests
+  - matplotlib
+  - numpy
+  - pandas
+  - pytest
+  - requests
   
 ### Installation Steps
 
