@@ -1,7 +1,12 @@
-# Predicting Tennis Matches and Tournaments
+# Predicting Singles and Doubles Tennis Matches and Tournaments
 
 ## Group Members:
 Nathan Dennis, John Breedis, Yiming Chen (Team 19)
+
+## IN PROGRESS:
+
+Currently the repository supports singles grand slam tennis tournaments predictions. We are currently working on implementing this for doubles tournaments.
+
 
 ### Prerequisites
 
