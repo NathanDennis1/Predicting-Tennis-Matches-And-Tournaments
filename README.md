@@ -49,7 +49,7 @@ python main.py
 
 ### Content Overview
 
-In this repository we present a tennis tournament simulator for the 4 major Grand Slam tournaments: Roland Garros, Wimbledon, Australian Open, and US Open. All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explainations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to both simulate major grand slam tournaments, but also validate results against betting odds.
+In this repository we present a tennis tournament simulator for the 4 major Grand Slam tournaments: Roland Garros, Wimbledon, Australian Open, and US Open. All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explainations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to  simulate major grand slam tournaments and validate these results against betting odds.
 
 All python scripts are in the src folder.
 
