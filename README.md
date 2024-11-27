@@ -5,7 +5,7 @@ Nathan Dennis, John Breedis, Yiming Chen (Team 19)
 
 ## IN PROGRESS:
 
-Currently implementing new metrics to simulate and predict tennis matches and tournaments, including the Glicko and TrueSkill based systems.
+Currently implementing new metrics to simulate and predict tennis matches and tournaments, including the Glicko and TrueSkill based systems. The objective is to have these metrics as potential options to use rather than just an ELO based system to predict tennis tournaments.
 
 
 ### Prerequisites
@@ -49,7 +49,7 @@ python main.py
 
 ### Content Overview
 
-In this repository we present a tennis tournament simulator for the 4 major Grand Slam tournaments: Roland Garros, Wimbledon, Australian Open, and US Open. All tournament simulation data can be found under the src folder.
+In this repository we present a tennis tournament simulator for the 4 major Grand Slam tournaments: Roland Garros, Wimbledon, Australian Open, and US Open. All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explainations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to both simulate major grand slam tournaments, but also validate results against betting odds.
 
 All python scripts are in the src folder.
 
