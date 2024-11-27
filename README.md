@@ -28,7 +28,7 @@ Ensure you have met these requirements:
 You can clone our repository to your local machine by running:
 
 ```bash
-git clone https://code.harvard.edu/AM215/team_19.git
+git clone https://code.harvard.edu/AM215/final_19.git
 ```
 
 2. **Navigate to directory**
