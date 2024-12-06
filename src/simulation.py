@@ -163,7 +163,7 @@ class Simulation():
             player_2_elo = self.rating_df.loc[player_2][f'{surface}_ELO']
             winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
         elif self.rating_system == 'skillO':
-            winning_prob_1 = self.compute_prob_using_trueskill(player_1, player_2, surface)
+            winning_prob_1 = self.compute_prob_using_skillo(player_1, player_2, surface)
 
         if self.head_to_head is True:
             past_head_to_head = self.win_pct_df[player_1][player_2]
