@@ -254,14 +254,22 @@ class Simulation():
         """
         winners = []
         for _, matchup in matchups.iterrows():
-            player_1 = matchup.iloc[0]
-            player_1_age = self.elo_df.loc[player_1]['Player_age']
-            player_1_elo = self.elo_df.loc[player_1][f'{surface}_ELO']
+            if self.rating_system == 'ELO':
+                player_1 = matchup.iloc[0]
+                player_1_age = self.rating_df.loc[player_1]['Player_age']
 
-            player_2 = matchup.iloc[1]
-            player_2_age = self.elo_df.loc[player_2]['Player_age']
-            player_2_elo = self.elo_df.loc[player_2][f'{surface}_ELO']
-            winner = self.simulating_game(player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets, surface)
+                player_2 = matchup.iloc[1]
+                player_2_age = self.rating_df.loc[player_2]['Player_age']
+                winner = self.simulating_game(player_1, player_1_age, player_2, player_2_age, num_sets, surface)
+
+            elif self.rating_system == 'skillO':
+                player_1 = matchup.iloc[0]
+                player_1_age = self.rating_df.loc[player_1]['Player_age']
+
+                player_2 = matchup.iloc[1]
+                player_2_age = self.rating_df.loc[player_2]['Player_age']
+
+                winner = self.simulating_game(player_1, player_1_age, player_2, player_2_age, num_sets, surface)
             if winner == player_1:
                 results.loc[player_1,round] += 1
                 winners.append(player_1)
@@ -317,9 +325,9 @@ class Simulation():
         if saves is True:
             self.tournament_name = self.tournament_name.replace(' ', '_')
             if self.head_to_head is True:
-                file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}.csv'
+                file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}_{self.rating_system}.csv'
             else:
-                file_path = f'../data/tournament_results_{self.tournament_name}.csv'
+                file_path = f'../data/tournament_results_{self.tournament_name}_{self.rating_system}.csv'
 
             Winners_data.to_csv(file_path, index=True)
 
