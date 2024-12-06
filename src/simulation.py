@@ -7,17 +7,19 @@ class InvalidTournamentError(ValueError):
         pass
 
 class Simulation():
-    def __init__(self, player_elos, S = 400, hth = True, k = 0.1):
+    def __init__(self, rating_df, rating_system, S = 400, hth = True, k = 0.1):
         """
         Initializer for Simulation class.
 
         Args:
             player_elos: Dataframe of player elo ratings
+            rating_system (str): String representing the rating system to be used.
             S (int): Scale for difference in ELO ratings 
             hth (boolean): Use head-to-head matchups in game winning calculations.
             k (float): k decay factor utilized in head-to-head scaling calculation.
         """
-        self.elo_df = player_elos
+        self.rating_df = rating_df
+        self.rating_system = rating_system
         self.tournament_name = None
         self.S = S
         self.head_to_head = hth    
