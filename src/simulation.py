@@ -128,16 +128,14 @@ class Simulation():
     
 
         
-    def simulating_game(self, player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets, surface):
+    def simulating_game(self, player_1, player_1_age, player_2, player_2_age, num_sets, surface):
         """
         Computes a game in a tennis match
 
         Args:
             player_1 (str): Name of player 1
-            player_1_elo (float): The surface ELO of player 1
             player_1_age (float): The age of player 1
             player_2 (str): Name of player 2
-            player_2_elo (float): The surface ELO of player 2
             player_2_age (float): The age of player 2
             num_sets (int): Number of sets in a match
             surface (str): Surface of a match
@@ -153,11 +151,6 @@ class Simulation():
         if not isinstance(player_2, str):
             raise TypeError(f"The second player has to be a string, it is {type(player_2)}")
 
-        if not isinstance(player_1_elo, float):
-            raise TypeError(f"The first player ELO has to be a float, it is {type(player_1_elo)}")
-        if not isinstance(player_2_elo, float):
-            raise TypeError(f"The second players ELO to be a float, it is {type(player_2_elo)}")
-        
         if not isinstance(player_1_age, float):
             raise TypeError(f"The first players age has to be a float, it is {type(player_1_age)}")
         if not isinstance(player_2_age, float):
@@ -165,8 +158,12 @@ class Simulation():
 
         set_winner = []
         
-        winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
-        winning_prob_2 = 1 - winning_prob_1
+        if self.rating_system == 'ELO':
+            player_1_elo = self.rating_df.loc[player_1][f'{surface}_ELO']
+            player_2_elo = self.rating_df.loc[player_2][f'{surface}_ELO']
+            winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
+        elif self.rating_system == 'skillO':
+            winning_prob_1 = self.compute_prob_using_trueskill(player_1, player_2, surface)
 
         if self.head_to_head is True:
             past_head_to_head = self.win_pct_df[player_1][player_2]
