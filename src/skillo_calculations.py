@@ -46,3 +46,22 @@ class skillO:
         skill_df = pd.DataFrame(skill_dict, index=names)
         self.skill_dataframe = skill_df
         return skill_df
+
+    def expected_game_score(self, mean_1, mean_2, variance_1, variance_2, beta=0.1):
+        """
+        Calculates the expected outcome of a match between two players based on their skill and uncertainty.
+        
+        Args:
+            mean_1 (float): Skill of player 1, their mean.
+            mean_2 (float): Skill of player 2, their mean.
+            variance_1 (float): Uncertainty of player 1, their variance.
+            variance_2 (float): Uncertainty of player 2, their variance.
+            beta (float): Noise factor that controls the degree of uncertainty in performance.
+        
+        Returns:
+            float: Expected probability that player 1 wins.
+        """
+        # Calculate expected score using a logistic function
+        skill_diff = mean_1 - mean_2
+        uncertainty = np.sqrt(variance_1 + variance_2 + beta**2)
+        return 1 / (1 + np.exp(-skill_diff / uncertainty))
