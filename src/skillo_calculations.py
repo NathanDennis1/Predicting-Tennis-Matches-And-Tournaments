@@ -194,3 +194,20 @@ class skillO:
         
         return final_df
 
+    def final_csv(self, tennis_data, file_path='../data/skillo.csv'):
+        """
+        Creates the final csv.
+
+        Args:
+            tennis_data (pandas dataframe): The dataframe containing all tennis match data
+            file_path (str): Path of the file to save, default player_elos.csv
+
+        Returns:
+            Series for the number of games a player has played.
+        """
+        names = self.elo_instance.get_names(tennis_data)
+        surfaces = tennis_data['surface'].unique()[0:3]
+        updated_df = self.simulate_multiple_runs(tennis_data, 30, surfaces, list(names))
+        updated_df['Player_age'] = self.elo_instance.get_most_recent_age(tennis_data)
+
+        updated_df.to_csv(file_path, index_label='Player_Name', index=True)
