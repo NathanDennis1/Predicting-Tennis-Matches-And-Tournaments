@@ -66,13 +66,14 @@ class skillO:
         uncertainty = np.sqrt(variance_1 + variance_2 + beta**2)
         return 1 / (1 + np.exp(-skill_diff / uncertainty))
 
-    def trueskill_calculation(self, data, trueskill_df, tau=0.1, gamma = 0.1, beta=0.4):
+    def skillO_calculation(self, data, SkillO_df, tau=0.1, gamma = 0.1, beta=0.4):
         """
-        Calculates TrueSkill for each player based on match history.
+        Calculates SkillO for each player based on match history.
 
         Args:
             data (pd.DataFrame): Match data containing winner, loser, surface, and year of match.
-            trueskill_df (int): Adjustment factor for skill update.
+            SkillO_df (pd.DataFrame): Dataframe of SkillO ratings.
+            gamma (float): SkillO adjustment factor
             beta (float): Noise factor for performance uncertainty.
 
         Returns:
@@ -83,7 +84,7 @@ class skillO:
 
         surfaces = ['Hard', 'Clay', 'Grass']
 
-        # Train SkillO scores based off all past data besides current year.
+        # Train skillO scores based off all past data besides current year.
         data_training = data[data['Year'] < self.current_year]
         
         for _, row in data_training.iterrows():
@@ -109,10 +110,10 @@ class skillO:
             gamma = gamma * decay_factor_year
 
             # Player skills, mean and variance
-            winner_mean = trueskill_df.loc[winner, f"{surface}_mean"]
-            loser_mean = trueskill_df.loc[loser, f"{surface}_mean"]
-            winner_variance = trueskill_df.loc[winner, f"{surface}_variance"]
-            loser_variance = trueskill_df.loc[loser, f"{surface}_variance"]
+            winner_mean = SkillO_df.loc[winner, f"{surface}_mean"]
+            loser_mean = SkillO_df.loc[loser, f"{surface}_mean"]
+            winner_variance = SkillO_df.loc[winner, f"{surface}_variance"]
+            loser_variance = SkillO_df.loc[loser, f"{surface}_variance"]
 
             # Calculate expected probabilities
             p_winner = self.expected_game_score(winner_mean, loser_mean, winner_variance, loser_variance, beta)
@@ -134,25 +135,62 @@ class skillO:
                 loser_new_variance = loser_variance * (1 + gamma * (1 - p_loser))  # Unexpected loss, increase more
 
             # Apply updated skill and uncertainty to the dataframe
-            trueskill_df.loc[winner, f"{surface}_mean"] = winner_new_mean
-            trueskill_df.loc[loser, f"{surface}_mean"] = loser_new_mean
-            trueskill_df.loc[winner, f"{surface}_variance"] = winner_new_variance
-            trueskill_df.loc[loser, f"{surface}_variance"] = loser_new_variance
-        
+            SkillO_df.loc[winner, f"{surface}_mean"] = winner_new_mean
+            SkillO_df.loc[loser, f"{surface}_mean"] = loser_new_mean
+            SkillO_df.loc[winner, f"{surface}_variance"] = winner_new_variance
+            SkillO_df.loc[loser, f"{surface}_variance"] = loser_new_variance
+
             for s in surfaces:
                 if s != surface:
-                    trueskill_df.loc[winner, f"{s}_mean"] = trueskill_df.loc[winner, f"{s}_mean"] + gamma_scale * 0.8 * (1 - p_winner)
-                    trueskill_df.loc[loser, f"{s}_mean"] = trueskill_df.loc[loser, f"{s}_mean"] + gamma_scale * 0.8 * (0 - p_loser)
+                    SkillO_df.loc[winner, f"{s}_mean"] = SkillO_df.loc[winner, f"{s}_mean"] + gamma_scale * 0.8 * (1 - p_winner)
+                    SkillO_df.loc[loser, f"{s}_mean"] = SkillO_df.loc[loser, f"{s}_mean"] + gamma_scale * 0.8 * (0 - p_loser)
 
                     if p_winner > 0.5:
                         # Expected win
-                        trueskill_df.loc[winner, f"{s}_variance"] = trueskill_df.loc[winner, f"{s}_variance"] * (1 - gamma * 0.8 * (1 - p_winner))  # Expected win, decrease variance
-                        trueskill_df.loc[loser, f"{s}_variance"] = trueskill_df.loc[loser, f"{s}_variance"] * (1 - gamma * 0.8 * p_loser)  # Expected loss, decrease variance
+                        SkillO_df.loc[winner, f"{s}_variance"] = SkillO_df.loc[winner, f"{s}_variance"] * (1 - gamma * 0.8 * (1 - p_winner))  # Expected win, decrease variance
+                        SkillO_df.loc[loser, f"{s}_variance"] = SkillO_df.loc[loser, f"{s}_variance"] * (1 - gamma * 0.8 * p_loser)  # Expected loss, decrease variance
                     else:
                         # Unexpected win
-                        trueskill_df.loc[winner, f"{s}_variance"] = trueskill_df.loc[winner, f"{s}_variance"] * (1 + gamma * 0.8 * p_winner)  # Unexpected win, increase variance
-                        trueskill_df.loc[loser, f"{s}_variance"] = trueskill_df.loc[loser, f"{s}_variance"] * (1 + gamma * 0.8 * (1 - p_loser))  # Unexpected loss, increase variance
+                        SkillO_df.loc[winner, f"{s}_variance"] = SkillO_df.loc[winner, f"{s}_variance"] * (1 + gamma * 0.8 * p_winner)  # Unexpected win, increase variance
+                        SkillO_df.loc[loser, f"{s}_variance"] = SkillO_df.loc[loser, f"{s}_variance"] * (1 + gamma * 0.8 * (1 - p_loser))  # Unexpected loss, increase variance
 
             gamma = 0.1
-        return trueskill_df
+        return SkillO_df
+
+    def simulate_multiple_runs(self, data, num_simulations, surfaces, names):
+        """
+        Run the skillO calculation multiple times and take the average mean and variance for each player.
+
+        Args:
+            data (pd.DataFrame): Match data containing winner, loser, surface, and year of match.
+            num_simulations (int): Number of times to run the simulation.
+            surfaces (list): List of surfaces (Hard, Clay, Grass)
+            names (list): List of player names.
+
+        Returns:
+            pd.DataFrame: Dataframe with average mean and variance across all simulations.
+        """
+        # Initialize a list to store the skill results after each simulation.
+        all_means = []
+        all_variances = []
+        
+        for _ in range(num_simulations):
+            # Reset the initial skill dataframe for each simulation to the initial skill level.
+            skill_df = self.initial_skills(surfaces, names)
+            
+            updated_df = self.skillO_calculation(data, skill_df)
+            
+            # Store the means and variances from the current simulation.
+            all_means.append(updated_df[[f"{s}_mean" for s in surfaces]])
+            all_variances.append(updated_df[[f"{s}_variance" for s in surfaces]])
+        
+        # Calculate the average mean and variance for each player across all simulations.
+        mean_df = pd.concat(all_means, axis=0)
+        mean_df = mean_df.groupby(mean_df.index).mean()
+        variance_df = pd.concat(all_variances, axis=0)
+        variance_df = variance_df.groupby(variance_df.index).mean()
+        final_df = pd.concat([mean_df, variance_df], axis=1)
+        final_df.columns = [f"{s}_mean" for s in surfaces] + [f"{s}_variance" for s in surfaces]
+        
+        return final_df
 
