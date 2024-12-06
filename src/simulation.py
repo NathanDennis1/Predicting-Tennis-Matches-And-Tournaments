@@ -50,6 +50,32 @@ class Simulation():
             Final calculation for an expected game score as a float.
         """
         return self.logistic((first_elo-second_elo)/self.S)
+
+    def compute_prob_using_skillo(self, player_1, player_2, surface, beta=2):
+        """
+        Calculates expected game score based on SkillO ratings (mean and variance).
+
+        Args:
+            player_1 (str): Name of player 1.
+            player_2 (str): Name of player 2.
+            surface (str): Surface match is being played on.
+            beta (float): Adjustment parameter to scale variance weight.
+        
+        Returns:
+            Winning probability of player 1 as a float through the logistic function.
+        """
+        # Get the SkillO mean and variance for both players
+        ts_mean_1 = self.rating_df.loc[player_1][f'{surface}_mean']
+        ts_mean_2 = self.rating_df.loc[player_2][f'{surface}_mean']
+        ts_variance_1 = self.rating_df.loc[player_1][f'{surface}_variance']
+        ts_variance_2 = self.rating_df.loc[player_2][f'{surface}_variance']
+
+        # Calculate the skill difference and uncertainty
+        skill_diff = ts_mean_1 - ts_mean_2
+        uncertainty = np.sqrt(ts_variance_1 + ts_variance_2 + beta ** 2)
+
+        # Return the logistic probability
+        return self.logistic(skill_diff / uncertainty)
     
     def adjusted_win_probability(self, P_A, P_head_to_head, games_played):
         """
