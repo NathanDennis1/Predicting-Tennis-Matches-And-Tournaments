@@ -15,7 +15,7 @@ class Plot():
 
     def get_project_root(self):
         """
-        Returns the root directory of the project, which in our case is team_19. This was done
+        Returns the root directory of the project, which in our case is final_19. This was done
         so that the test_plot.py test code would work.
         """
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -63,9 +63,12 @@ class Plot():
         project_root = self.get_project_root()
 
         odds_file = os.path.join(project_root, 'data', f'2023_{tournament_name_underscore}_Prob.csv')
+        
         if simulation_num is not None:
+            project_root = self.get_project_root()
             model_file = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_{rating_system}_{simulation_num}.csv')
         else:
+            project_root = self.get_project_root()
             model_file = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_{rating_system}.csv')
 
         # Check for the odds file
