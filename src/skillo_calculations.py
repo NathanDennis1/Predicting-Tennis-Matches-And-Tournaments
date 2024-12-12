@@ -1,6 +1,11 @@
 import pandas as pd
 import numpy as np
 import math
+import sys
+import os
+
+# Add the src directory to the Python path so imports work during tests
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 from elo_calculations import ELO
 
 class skillO:
@@ -8,7 +13,7 @@ class skillO:
     SkillO class to calculate player skill and uncertainty updates for tennis matches.
     """
 
-    def __init__(self, initial_mean, initial_variance, current_year, beta = 0.5, year_decay = 0.7):
+    def __init__(self, initial_mean, initial_variance, current_year, beta = 2, year_decay = 0.7, gamma = 0.1):
         """
         Initializer for skillO class
 
@@ -16,6 +21,9 @@ class skillO:
             initial_mean (float): Initial skill level of players.
             initial_variance (float): Initial uncertainty in the skill level, their variance
             current_year (int): The current year that data was obtained from.
+            beta (float): Beta scaling parameter used in SkillO calculations. Default set to 2.
+            year_decay (float): Year decay factor determining how much past years are weighted. Default set to 0.7
+            gamma (float): Weight factor to determine how much players SkillO ratings change after a given match. Default set to 0.1.
         """
         self.initial_mean = float(initial_mean)
         self.initial_variance = float(initial_variance)
@@ -23,6 +31,7 @@ class skillO:
         self.skill_dataframe = None
         self.beta = beta
         self.year_decay = year_decay
+        self.gamma = gamma
 
         # Initializes mock ELO class to import functions over
         self.elo_instance = ELO(1500, current_year)
@@ -155,7 +164,7 @@ class skillO:
                         SkillO_df.loc[winner, f"{s}_variance"] = SkillO_df.loc[winner, f"{s}_variance"] * (1 + gamma * 0.8 * p_winner)  # Unexpected win, increase variance
                         SkillO_df.loc[loser, f"{s}_variance"] = SkillO_df.loc[loser, f"{s}_variance"] * (1 + gamma * 0.8 * (1 - p_loser))  # Unexpected loss, increase variance
 
-            gamma = 0.1
+            gamma = self.gamma
         return SkillO_df
 
     def simulate_multiple_runs(self, data, num_simulations, surfaces, names):
@@ -179,7 +188,7 @@ class skillO:
             # Reset the initial skill dataframe for each simulation to the initial skill level.
             skill_df = self.initial_skills(surfaces, names)
             
-            updated_df = self.skillO_calculation(data, skill_df)
+            updated_df = self.skillO_calculation(data, skill_df, gamma = self.gamma)
             
             # Store the means and variances from the current simulation.
             all_means.append(updated_df[[f"{s}_mean" for s in surfaces]])
