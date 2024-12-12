@@ -42,5 +42,5 @@ jobs:
 
       - name: Run plot script
         run: |
-          python src/plot.py
+          python final_19/src/plot.py  # Specify the correct relative path to your script
         working-directory: ./final_19
