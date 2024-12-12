@@ -40,7 +40,3 @@ jobs:
           name: coverage-report
           path: htmlcov
 
-      - name: Run plot script
-        run: |
-          python final_19/src/plot.py  # Specify the correct relative path to your script
-        working-directory: ./final_19
