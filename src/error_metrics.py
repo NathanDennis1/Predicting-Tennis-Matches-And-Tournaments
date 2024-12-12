@@ -88,6 +88,31 @@ class Errors():
         # Avoid division by zero or invalid percentage error
         return np.mean(np.abs((true - pred) / true)) * 100
 
+    def R_squared(self, true, pred):
+        """ 
+        Calculates the R-squared (coefficient of determination) between the true and predicted values.
+
+        Args:
+            true (pandas series): Series of true values.
+            pred (pandas series): Series of predicted values.
+
+        Returns:
+            R-squared score as a float
+        """
+        if not isinstance(true, pd.Series):
+            raise TypeError(f"The true value is not a series, it has to be of type series, it is {type(true)}")
+        if not isinstance(pred, pd.Series):
+            raise TypeError(f"The predicted value is not a series, it has to be of type series, it is {type(pred)}")
+
+        # Compute the residual sum of squares (RSS) and total sum of squares (TSS)
+        ss_res = np.sum((true - pred) ** 2)
+        ss_tot = np.sum((true - np.mean(true)) ** 2)
+        
+        # R-squared formula
+        r2 = 1 - (ss_res / ss_tot)
+        
+        return r2
+
 
 
 
@@ -153,6 +178,7 @@ class Errors():
             linf_value = self.Linf(actual, champion_column)
             l1_value = self.L1(actual, champion_column)
             mape_value = self.MAPE(actual, champion_column)
+            r2_value = self.R_squared(actual, champion_column)
 
             # Append the metrics to the list
             error_metrics.append({
@@ -160,7 +186,8 @@ class Errors():
                 'RMSE': rmse_value,
                 'Linf': linf_value,
                 'L1': l1_value,
-                'MAPE': mape_value
+                'MAPE': mape_value,
+                'R-squared': r2_value
             })
 
         # Convert the error metrics list to a DataFrame
