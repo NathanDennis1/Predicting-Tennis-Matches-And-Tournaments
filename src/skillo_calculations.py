@@ -8,7 +8,7 @@ class skillO:
     SkillO class to calculate player skill and uncertainty updates for tennis matches.
     """
 
-    def __init__(self, initial_mean, initial_variance, current_year):
+    def __init__(self, initial_mean, initial_variance, current_year, beta = 0.5, year_decay = 0.7):
         """
         Initializer for skillO class
 
@@ -21,6 +21,8 @@ class skillO:
         self.initial_variance = float(initial_variance)
         self.current_year = current_year
         self.skill_dataframe = None
+        self.beta = beta
+        self.year_decay = year_decay
 
         # Initializes mock ELO class to import functions over
         self.elo_instance = ELO(1500, current_year)
@@ -47,7 +49,7 @@ class skillO:
         self.skill_dataframe = skill_df
         return skill_df
 
-    def expected_game_score(self, mean_1, mean_2, variance_1, variance_2, beta=0.1):
+    def expected_game_score(self, mean_1, mean_2, variance_1, variance_2):
         """
         Calculates the expected outcome of a match between two players based on their skill and uncertainty.
         
@@ -56,17 +58,16 @@ class skillO:
             mean_2 (float): Skill of player 2, their mean.
             variance_1 (float): Uncertainty of player 1, their variance.
             variance_2 (float): Uncertainty of player 2, their variance.
-            beta (float): Noise factor that controls the degree of uncertainty in performance.
         
         Returns:
             float: Expected probability that player 1 wins.
         """
         # Calculate expected score using a logistic function
         skill_diff = mean_1 - mean_2
-        uncertainty = np.sqrt(variance_1 + variance_2 + beta**2)
+        uncertainty = np.sqrt(variance_1 + variance_2 + self.beta**2)
         return 1 / (1 + np.exp(-skill_diff / uncertainty))
 
-    def skillO_calculation(self, data, SkillO_df, tau=0.1, gamma = 0.1, beta=0.4):
+    def skillO_calculation(self, data, SkillO_df, tau=0.1, gamma = 0.1):
         """
         Calculates SkillO for each player based on match history.
 
@@ -105,7 +106,7 @@ class skillO:
             year_diff = self.current_year - row['Year']
 
             # Calculates decay factor based on the difference in years
-            decay_factor_year = self.elo_instance.decay_factor(year_diff, 0.7)
+            decay_factor_year = self.elo_instance.decay_factor(year_diff, self.year_decay)
 
             gamma = gamma * decay_factor_year
 
@@ -116,7 +117,7 @@ class skillO:
             loser_variance = SkillO_df.loc[loser, f"{surface}_variance"]
 
             # Calculate expected probabilities
-            p_winner = self.expected_game_score(winner_mean, loser_mean, winner_variance, loser_variance, beta)
+            p_winner = self.expected_game_score(winner_mean, loser_mean, winner_variance, loser_variance)
             p_loser = 1 - p_winner
 
             # Update skill (mean) based on match outcome
