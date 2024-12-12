@@ -19,7 +19,11 @@ class Plot():
         Returns the root directory of the project, which in our case is final_19. This was done
         so that the test_plot.py test code would work.
         """
-        return Path(__file__).resolve().parents[1]
+        project_root = Path(__file__).resolve().parents[1]
+        # Ensure 'final_19' is not part of the path twice
+        if project_root.name == 'final_19':
+            return project_root
+        return project_root / 'final_19'
 
     def plots(self, tournament_name, year, rating_system, simulation_num = None, k_list = None):
         """
@@ -161,6 +165,7 @@ class Plot():
         odds_file = os.path.join(project_root, 'data', f'2023_{tournament_name_underscore}_Prob.csv')
         model_file_ELO = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_ELO.csv')
         model_file_SkillO = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_SkillO_{simulation_num}.csv')
+
         # Check for the odds file
         if not os.path.exists(odds_file):
             raise FileNotFoundError(f"The odds file {odds_file} does not exist")
