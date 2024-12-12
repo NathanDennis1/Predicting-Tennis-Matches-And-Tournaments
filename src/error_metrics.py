@@ -69,8 +69,29 @@ class Errors():
             raise TypeError(f"The predicted value is not a series, it has to be of type series, it is {type(pred)}")
         return np.mean(np.absolute(true-pred))
 
+    def MAPE(self, true, pred):
+        """ 
+        Calculates the Mean Absolute Percentage Error (MAPE) between the true and predicted values.
 
-    def displayErrors(self, tournament_name, k_list = None, display=True):
+        Args:
+            true (pandas series): Series of true values.
+            pred (pandas series): Series of predicted values.
+
+        Returns:
+            MAPE score as a float
+        """
+        if not isinstance(true, pd.Series):
+            raise TypeError(f"The true value is not a series, it has to be of type series, it is {type(true)}")
+        if not isinstance(pred, pd.Series):
+            raise TypeError(f"The predicted value is not a series, it has to be of type series, it is {type(pred)}")
+        
+        # Avoid division by zero or invalid percentage error
+        return np.mean(np.abs((true - pred) / true)) * 100
+
+
+
+
+    def displayErrors(self, rating_system, tournament_name, simulation_number = None, k_list = None, display=True):
         """ 
         Given prediction probabilities, returns all the utilized error metrics including RMSE, L-Infinity Norm,
         and L-1 Norm.
@@ -86,9 +107,9 @@ class Errors():
         Raises:
             ValueError: k_list has to be either None or a list of at most 3 elements.
         """
+        self.rating_system = rating_system
         self.k_list = k_list
         self.bar_width = 0.3
-        
         # Only stores k if the k_list was given, if it is None there are no k's
         if self.k_list is not None:
             if not isinstance(k_list, list):
@@ -106,35 +127,44 @@ class Errors():
 
         tournament_name_underscore = tournament_name.replace(' ', '_')
         odds = pd.read_csv(f'../data/2023_{tournament_name_underscore}_Prob.csv', index_col=0)
-
-        model = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}.csv', index_col = 0)
+        if simulation_number is not None:
+            model = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_{self.rating_system}_{simulation_number}.csv', index_col = 0)
+        else:
+            model = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_{self.rating_system}.csv', index_col = 0)
 
         csv_dict_k = {}
         csv_dict_k['original'] = model
         if self.k_list is not None:
             for k in self.k_list:
-                csv_dict_k[k] = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}.csv', index_col=0)
+                csv_dict_k[k] = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}_{self.rating_system}.csv', index_col=0)
 
         odds_comparison = odds[['normalized_winning_probability']].copy()
         actual = odds_comparison['normalized_winning_probability']
 
+        error_metrics = []
+
         for model_name, model_df in csv_dict_k.items():
             # Take the Champion column corresponding to the current model to append to odds
             champion_column = model_df[f'Champion']
-            
             odds_comparison[f'Champion_{model_name}'] = champion_column
 
-        # Display only if display is True.
-        if display:
-            for model_name, model_df in csv_dict_k.items():
-                champion_column = odds_comparison[f'Champion_{model_name}']
-                    
-                rmse_value = self.RMSE(actual, champion_column)
-                linf_value = self.Linf(actual, champion_column)
-                l1_value = self.L1(actual, champion_column)
+            # Calculate error metrics
+            rmse_value = self.RMSE(actual, champion_column)
+            linf_value = self.Linf(actual, champion_column)
+            l1_value = self.L1(actual, champion_column)
+            mape_value = self.MAPE(actual, champion_column)
 
-                print(f"Model: {model_name}")
-                print(f"  RMSE: {rmse_value}")
-                print(f"  Linf: {linf_value}")
-                print(f"  L1: {l1_value}")
-                print('-' * 20)  # Used to separate the output in a nice fashion
+            # Append the metrics to the list
+            error_metrics.append({
+                'Model': self.rating_system,
+                'RMSE': rmse_value,
+                'Linf': linf_value,
+                'L1': l1_value,
+                'MAPE': mape_value
+            })
+
+        # Convert the error metrics list to a DataFrame
+        error_df = pd.DataFrame(error_metrics)
+
+        # Return the error DataFrame
+        return error_df
