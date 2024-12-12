@@ -20,7 +20,7 @@ class Plot():
         """
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    def plots(self, tournament_name, year, k_list = None):
+    def plots(self, tournament_name, year, rating_system, simulation_num = None, k_list = None):
         """
         Creates the plotting function comparing the model's winning probabilities against the betting odds.
         A side by side bar plot comparing the top 10 players according to the betting odds is plot against the 
@@ -63,7 +63,10 @@ class Plot():
         project_root = self.get_project_root()
 
         odds_file = os.path.join(project_root, 'data', f'2023_{tournament_name_underscore}_Prob.csv')
-        model_file = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}.csv')
+        if simulation_num is not None:
+            model_file = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_{rating_system}_{simulation_num}.csv')
+        else:
+            model_file = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_{rating_system}.csv')
 
         # Check for the odds file
         if not os.path.exists(odds_file):
