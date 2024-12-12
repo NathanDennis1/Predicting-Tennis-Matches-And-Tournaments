@@ -16,14 +16,21 @@ class Plot():
 
     def get_project_root(self):
         """
-        Returns the root directory of the project, which in our case is final_19. This was done
-        so that the test_plot.py test code would work.
+        Returns the root directory of the project (final_19).
+        Ensures 'final_19' is not included twice in the path and handles specific GitHub Actions paths.
         """
         project_root = Path(__file__).resolve().parents[1]
-        # Ensure 'final_19' is not part of the path twice
+        
+        # Handle case where GitHub Actions may introduce an extra 'final_19'
         if project_root.name == 'final_19':
             return project_root
-        return project_root / 'final_19'
+
+        # If we’re running in a GitHub Actions environment and the path has been duplicated,
+        # strip out the extra 'final_19' part from the path.
+        if 'final_19' in str(project_root):
+            project_root = Path(str(project_root).replace('final_19/final_19', 'final_19'))
+        
+        return project_root / 'final_19' if 'final_19' not in str(project_root) else project_root
 
     def plots(self, tournament_name, year, rating_system, simulation_num = None, k_list = None):
         """
