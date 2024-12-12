@@ -8,10 +8,6 @@ import matplotlib.pyplot as plt
 def plot():
     return Plot()
 
-@pytest.fixture
-def plot():
-    return Plot()
-
 class TestPlot:
     """
     Class to test plot script
@@ -21,7 +17,7 @@ class TestPlot:
         """
         Tests to ensure a figure is created when calling plot
         """
-        plot.plots('Wimbledon', 2023, 'SkillO', simulation_num = '2')
+        plot.plots('Wimbledon', 2023, 'SkillO', '2')
 
         # This checks to make sure a figure was created
         fig = plt.gcf() 
@@ -33,7 +29,7 @@ class TestPlot:
         """
         Tests to ensure a figure is created when calling plot
         """
-        plot.plot_ELO_vs_SkillO('Wimbledon', 2023, simulation_num = '2')
+        plot.plot_ELO_vs_SkillO('Wimbledon', 2023, '2')
 
         # This checks to make sure a figure was created
         fig = plt.gcf() 
