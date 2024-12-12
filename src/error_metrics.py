@@ -74,11 +74,14 @@ class Errors():
         Calculates the Mean Absolute Percentage Error (MAPE) between the true and predicted values.
 
         Args:
-            true (pandas series): Series of true values.
-            pred (pandas series): Series of predicted values.
+            true (pandas series): True values (betting odds probability)
+            pred (pandas series): Predicted values (model output probability)
 
         Returns:
             MAPE score as a float
+
+        Raises:
+            TypeError: Inputs must both be series, true and pred, raises error if not.
         """
         if not isinstance(true, pd.Series):
             raise TypeError(f"The true value is not a series, it has to be of type series, it is {type(true)}")
@@ -93,11 +96,14 @@ class Errors():
         Calculates the R-squared (coefficient of determination) between the true and predicted values.
 
         Args:
-            true (pandas series): Series of true values.
-            pred (pandas series): Series of predicted values.
+            true (pandas series): True values (betting odds probability)
+            pred (pandas series): Predicted values (model output probability)
 
         Returns:
             R-squared score as a float
+
+        Raises:
+            TypeError: Inputs must both be series, true and pred, raises error if not.
         """
         if not isinstance(true, pd.Series):
             raise TypeError(f"The true value is not a series, it has to be of type series, it is {type(true)}")
@@ -116,22 +122,28 @@ class Errors():
 
 
 
-    def displayErrors(self, rating_system, tournament_name, simulation_number = None, k_list = None, display=True):
+    def displayErrors(self, rating_system, tournament_name, simulation_number = None, k_list = None):
         """ 
         Given prediction probabilities, returns all the utilized error metrics including RMSE, L-Infinity Norm,
         and L-1 Norm.
 
         Args:
-            tournament_name (str): Name of tennis tournament
-            k_list (None or list): The list (max length 3) of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
-            display (boolean): Display calculated error metric values, default is True to display errors, False to not display errors.
+            rating_system (str): Name of given rating system, either ELO or SkillO.
+            tournament_name (str): Name of tennis tournament.
+            simulation_number (None or str): Optimal imput for simulation number to display errors for certain simulation number csv files created. Default set to None
+            k_list (None or list): The list (max length 3) of different k factors used in the H2H model to calculate error rates for. 
+                                   This can be none if the H2H model is not being used, which is the default.
 
-        Output:
-            Printed RMSE, Linf, and L1 metrics for given model(s).
+        Returns:
+            Dataframe across all 5 error metrics for given rating system.
         
         Raises:
             ValueError: k_list has to be either None or a list of at most 3 elements.
+            ValueError: rating_system must be 'ELO' or 'SkillO'.
         """
+        if rating_system not in ['ELO', 'SkillO']:
+            raise ValueError("rating_system must be 'ELO' or 'SkillO'.")
+
         self.rating_system = rating_system
         self.k_list = k_list
         self.bar_width = 0.3
