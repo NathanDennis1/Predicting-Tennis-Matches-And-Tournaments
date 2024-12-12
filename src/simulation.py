@@ -7,7 +7,7 @@ class InvalidTournamentError(ValueError):
         pass
 
 class Simulation():
-    def __init__(self, rating_df, rating_system, S = 400, hth = True, k = 0.1):
+    def __init__(self, rating_df, rating_system, S = 400, hth = True, k = 0.1, beta = 2):
         """
         Initializer for Simulation class.
 
@@ -17,6 +17,7 @@ class Simulation():
             S (int): Scale for difference in ELO ratings 
             hth (boolean): Use head-to-head matchups in game winning calculations.
             k (float): k decay factor utilized in head-to-head scaling calculation.
+            beta (float): Scaling factor
         """
         self.rating_df = rating_df
         self.rating_system = rating_system
@@ -24,6 +25,7 @@ class Simulation():
         self.S = S
         self.head_to_head = hth    
         self.k = float(k)
+        self.beta = beta
 
     def logistic(self, x):
         """
@@ -51,7 +53,7 @@ class Simulation():
         """
         return self.logistic((first_elo-second_elo)/self.S)
 
-    def compute_prob_using_skillo(self, player_1, player_2, surface, beta=2):
+    def compute_prob_using_skillo(self, player_1, player_2, surface):
         """
         Calculates expected game score based on SkillO ratings (mean and variance).
 
@@ -72,7 +74,7 @@ class Simulation():
 
         # Calculate the skill difference and uncertainty
         skill_diff = ts_mean_1 - ts_mean_2
-        uncertainty = np.sqrt(ts_variance_1 + ts_variance_2 + beta ** 2)
+        uncertainty = np.sqrt(ts_variance_1 + ts_variance_2 + self.beta ** 2)
 
         # Return the logistic probability
         return self.logistic(skill_diff / uncertainty)
@@ -325,9 +327,15 @@ class Simulation():
         if saves is True:
             self.tournament_name = self.tournament_name.replace(' ', '_')
             if self.head_to_head is True:
-                file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}_{self.rating_system}.csv'
+                if self.simulation_number is not None:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}_{self.rating_system}_{self.simulation_number}.csv'
+                else:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}_{self.rating_system}.csv'
             else:
-                file_path = f'../data/tournament_results_{self.tournament_name}_{self.rating_system}.csv'
+                if self.simulation_number is not None:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_{self.rating_system}_{self.simulation_number}.csv'
+                else:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_{self.rating_system}.csv'
 
             Winners_data.to_csv(file_path, index=True)
 
@@ -344,7 +352,7 @@ class Simulation():
         self.win_pct_df = win_pct_df
         self.games_played_df = games_played_df
     
-    def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims, saves = True):
+    def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims, sim_num = 1, saves = True):
         """
         Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
         saves the results to a final csv used for visualization and validation.
