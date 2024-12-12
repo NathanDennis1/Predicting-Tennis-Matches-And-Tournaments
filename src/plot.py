@@ -16,22 +16,11 @@ class Plot():
 
     def get_project_root(self):
         """
-        Returns the root directory of the project (final_19).
-        Ensures 'final_19' is not included twice in the path and handles specific GitHub Actions paths.
+        Returns the root directory of the project, which in our case is team_19. This was done
+        so that the test_plot.py test code would work.
         """
-        project_root = Path(__file__).resolve().parents[1]
-        
-        # Handle case where GitHub Actions may introduce an extra 'final_19'
-        if project_root.name == 'final_19':
-            return project_root
-
-        # If we’re running in a GitHub Actions environment and the path has been duplicated,
-        # strip out the extra 'final_19' part from the path.
-        if 'final_19' in str(project_root):
-            project_root = Path(str(project_root).replace('final_19/final_19', 'final_19'))
-        
-        return project_root / 'final_19' if 'final_19' not in str(project_root) else project_root
-
+        return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
     def plots(self, tournament_name, year, rating_system, simulation_num = None, k_list = None):
         """
         Creates the plotting function comparing the model's winning probabilities against the betting odds.
@@ -171,7 +160,7 @@ class Plot():
 
         odds_file = os.path.join(project_root, 'data', f'2023_{tournament_name_underscore}_Prob.csv')
         model_file_ELO = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_ELO.csv')
-        model_file_SkillO = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_SkillO_{simulation_num}.csv')
+        model_file_SkillO = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_skillO_{simulation_num}.csv')
 
         # Check for the odds file
         if not os.path.exists(odds_file):
