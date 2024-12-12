@@ -121,3 +121,91 @@ class Plot():
         imgs_dir = os.path.join(project_root, 'imgs')
         plt.savefig(os.path.join(imgs_dir, f'{tournament_name_underscore}_plot.png'), bbox_inches='tight')
         plt.show()
+
+
+
+    def plot_ELO_vs_SkillO(self, tournament_name, year, simulation_num = None):
+        """
+        Creates the plotting function comparing the model's winning probabilities against the betting odds.
+        A side by side bar plot comparing the top 10 players according to the betting odds is plot against the 
+        models probabilities. Saves plot to a png.
+
+        Args:
+            tournament_name (str): Name of tournament.
+            year (int): Year tournament was played in.
+            simulation_num (None or int): Simulation number for title
+
+        Outputs:
+            A png file for the given tournament and probabilities of winning for top 10 players.
+
+        Raises:
+            ValueError: Year must be between 1968 and 2024. Year must also be of type int. If k_list is not None, then it must be a list.
+            FileNotFoundError: One of the dataframes for the plotting function does not exist.
+        """
+        self.bar_width = 0.2
+        self.simulation_num = simulation_num
+
+        if not isinstance(year, int):
+            raise TypeError(f"Year must be of type int, it is {type(year)}")
+        
+        if not (1968 <= year <= 2024):
+            raise ValueError(f"Invalid year: {year}. Year must be between 1968 and 2024.")
+
+        tournament_name_underscore = tournament_name.replace(' ', '_')
+
+        project_root = self.get_project_root()
+
+        odds_file = os.path.join(project_root, 'data', f'2023_{tournament_name_underscore}_Prob.csv')
+        model_file_ELO = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_ELO.csv')
+        model_file_SkillO = os.path.join(project_root, 'data', f'tournament_results_{tournament_name_underscore}_SkillO_{simulation_num}.csv')
+
+        # Check for the odds file
+        if not os.path.exists(odds_file):
+            raise FileNotFoundError(f"The odds file {odds_file} does not exist")
+        
+        # Check for the model file
+        if not os.path.exists(model_file_ELO):
+            raise FileNotFoundError(f"The model results file {model_file_ELO} does not exist")
+        
+        # Reads in dataframes for odds and model
+        odds_df = pd.read_csv(odds_file, index_col=0)
+        model_df_ELO = pd.read_csv(model_file_ELO, index_col=0)
+        model_df_SkillO = pd.read_csv(model_file_SkillO, index_col=0)
+        
+
+        # Renames incorrect player name from csv file.
+        odds_df = odds_df.rename(index={'Felix Auger-Aliassime': 'Felix Auger Aliassime'})
+    
+        if tournament_name == 'Australian Open' and year == 2023:
+            # He was injured hence did not play in the 2023 Australian Open
+            odds_df = odds_df.drop(index='Nick Kyrgios')
+
+        top_players = odds_df.nlargest(10, 'normalized_winning_probability')
+        top_champions_ELO = top_players[['normalized_winning_probability']].join(model_df_ELO['Champion'], how='inner')
+        top_champions_SkillO = top_players[['normalized_winning_probability']].join(model_df_SkillO['Champion'], how='inner')
+
+        x = np.arange(len(top_champions_ELO.index))  # The label locations, arranges based on the top champions.
+        
+        # If hth is true, also plot h2h model predicted probabilities. If not, skip the extra bars.
+        plt.bar(x - self.bar_width, top_champions_ELO['normalized_winning_probability'], width=self.bar_width, label='Odds Win Probability', color='blue')
+        plt.bar(x, top_champions_ELO['Champion'], width=self.bar_width, label='ELO Model Win Probability', color='orange')
+        plt.bar(x + self.bar_width, top_champions_SkillO['Champion'], width=self.bar_width, label='SkillO Model Win Probability', color='green')
+
+        # Plot labels and saving figure
+        plt.xlabel('Player Name')
+        plt.ylabel('Probability of Winning Championship')
+
+        if self.simulation_num is not None:
+            plt.title(f'Comparison of Odds vs SkillO and ELO Model Win Probabilities for {tournament_name}\nSimulation #{self.simulation_num}', fontsize=10)
+        else:
+            plt.title(f'Comparison of Odds vs SkillO and ELO Model Win Probabilities for {tournament_name}', fontsize=10)
+        plt.xticks(x, top_champions_ELO.index, rotation=60, fontsize=10)
+        plt.legend()
+
+        plt.tight_layout()
+        imgs_dir = os.path.join(project_root, 'imgs')
+        if self.simulation_num is not None:
+            plt.savefig(os.path.join(imgs_dir, f'{tournament_name_underscore}_plot_comparison_simulation_{self.simulation_num}.png'), bbox_inches='tight')
+        else:
+            plt.savefig(os.path.join(imgs_dir, f'{tournament_name_underscore}_plot_comparison.png'), bbox_inches='tight')
+        plt.show()
