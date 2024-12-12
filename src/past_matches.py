@@ -20,6 +20,9 @@ class past_match_data():
         Args:
             data (pandas Dataframe): Dataframe for all of the past tennis match data.
 
+        Returns:
+            Dataframe of win percentage and games played as a tuple.
+
         Raises:
             TypeError: data must be of type dataframe.
         """
@@ -79,4 +82,6 @@ class past_match_data():
         games_played_df.to_csv(file_path_games)
 
         win_percentage_df.to_csv(file_path_win_percent)
+
+        return win_percentage_df, games_played_df
 
