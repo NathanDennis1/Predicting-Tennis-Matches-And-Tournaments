@@ -17,7 +17,7 @@ class TestPlot:
         """
         Tests to ensure a figure is created when calling plot
         """
-        plot.plots('Wimbledon', 2023, 'SkillO', '2')
+        plot.plots('Wimbledon', 2023, 'skillO', '2')
 
         # This checks to make sure a figure was created
         fig = plt.gcf() 
