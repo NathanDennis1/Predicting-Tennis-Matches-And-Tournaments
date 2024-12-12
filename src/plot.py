@@ -126,14 +126,13 @@ class Plot():
 
     def plot_ELO_vs_SkillO(self, tournament_name, year, simulation_num = None):
         """
-        Creates the plotting function comparing the model's winning probabilities against the betting odds.
-        A side by side bar plot comparing the top 10 players according to the betting odds is plot against the 
-        models probabilities. Saves plot to a png.
+        Creates plot to compare ELO and SkillO simulation compared to betting odds as a side by side bar plot for the top 10 players
+        according to betting odds.
 
         Args:
             tournament_name (str): Name of tournament.
             year (int): Year tournament was played in.
-            simulation_num (None or int): Simulation number for title
+            simulation_num (None or int): Simulation number for title. Default set to None.
 
         Outputs:
             A png file for the given tournament and probabilities of winning for top 10 players.
