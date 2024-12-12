@@ -161,7 +161,7 @@ class Simulation():
         if not isinstance(player_1_age, float):
             raise TypeError(f"The first players age has to be a float, it is {type(player_1_age)}")
         if not isinstance(player_2_age, float):
-            raise TypeError(f"The second players age to be a float, it is {type(player_2_age)}")
+            raise TypeError(f"The second players age has to be a float, it is {type(player_2_age)}")
 
         set_winner = []
         
