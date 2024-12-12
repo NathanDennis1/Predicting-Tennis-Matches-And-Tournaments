@@ -111,7 +111,7 @@ class ELO:
 
         Args:
             year_diff (int): The calculated difference in years (Earlier year minus furthest year)
-            decay_rate (float): Rate of decay for year difference equation
+            decay_rate (float): Rate of decay for year difference equation. Default set to 0.3.
 
         Returns:
             Decay factor for the year difference as a float.
@@ -133,7 +133,7 @@ class ELO:
         Args:
             data (pandas dataframe): Dataframe for previous match history for each tennis tournament and professional match.
             elo_df (pandas dataframe): Dataframe of ELO scores for players on all surfaces.
-            K (int): Sensitivity constant for ELO calculation.
+            K (int): Sensitivity constant for ELO calculation. Default set to 20.
 
         Returns:
             New Elo dataframe for players updated ELO scores.
@@ -260,7 +260,7 @@ class ELO:
 
         Args:
             tennis_data (pandas dataframe): The dataframe containing all tennis match data
-            file_path (str): Path of the file to save, default player_elos.csv
+            file_path (str): Path of the file to save, default ../data/player_elos.csv.
 
         Returns:
             Series for the number of games a player has played.
