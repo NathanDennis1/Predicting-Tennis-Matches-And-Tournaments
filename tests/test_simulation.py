@@ -45,6 +45,25 @@ def original_player_elo_df():
     return elo_df
 
 @pytest.fixture
+def original_player_skillo_df():
+    """
+    Obtains original player SkillO dataframe
+
+    Returns:
+        Dataframe of player SkillO ratings data
+
+    Raises:
+        FileNotFoundError: File was not found in data folder
+    """
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'skillo_2.csv')    
+    if not os.path.exists(data_path):
+        raise FileNotFoundError(f"File not found: {data_path}")
+    
+    skillo_df = pd.read_csv(data_path, index_col = 'Player_Name')
+    
+    return skillo_df
+
+@pytest.fixture
 def original_win_pct_df():
     """
     Obtains original win percentage dataframe
@@ -87,7 +106,14 @@ def original_simulation(original_player_elo_df):
     """
     Initializes original simulation class with original players
     """
-    return Simulation(player_elos=original_player_elo_df)
+    return Simulation(rating_df=original_player_elo_df, rating_system = 'ELO')
+
+@pytest.fixture
+def original_simulation_skillO(original_player_skillo_df):
+    """
+    Initializes original simulation class with original players
+    """
+    return Simulation(rating_df=original_player_skillo_df, rating_system = 'SkillO')
 
 
 # This is for the mock data.
@@ -147,6 +173,31 @@ def player_elo_df():
     return elo_df
 
 @pytest.fixture
+def player_skillo_df():
+    """
+    Creates mock player elo dataset
+
+    Returns:
+        Mock dataframe of tennis players elo ratings, given random elo ratings and ages.
+    """
+    skillo_data = {
+        'Player_Name': ['Player_1', 'Player_2', 'Player_3', 'Player_4' ],
+        'Hard_mean': [25, 24.5, 25.4, 25.8],
+        'Clay_mean': [24.5, 25.5, 25.2, 25.9],
+        'Grass_mean': [24.9, 23.9, 25.1, 26.1],
+        'Hard_variance': [2.33, 1.5, 1.8, 1.7],
+        'Clay_variance': [2.33, 1.5, 1.8, 1.7],
+        'Grass_variance': [2.33, 1.5, 1.8, 1.7],
+        'Player_age': [26, 28, 24, 30]
+    }
+
+    skillo_df = pd.DataFrame(skillo_data)
+
+    skillo_df = skillo_df.set_index('Player_Name')
+    
+    return skillo_df
+
+@pytest.fixture
 def win_pct_df():
     """
     Creates mock tennis dataset for win percentage, using random values for players.
@@ -192,7 +243,14 @@ def simulation(player_elo_df):
     """
     Creates simulation class for mock player elos
     """
-    return Simulation(player_elos=player_elo_df)
+    return Simulation(rating_df=player_elo_df, rating_system = 'ELO')
+
+@pytest.fixture
+def simulation_skillo(player_skillo_df):
+    """
+    Creates simulation class for mock player elos
+    """
+    return Simulation(rating_df=player_skillo_df, rating_system = 'skillO')
 
 class Test_simulation():
     """
@@ -222,12 +280,19 @@ class Test_simulation():
         assert len(win_probs) == 5, "Should compute probabilities for the number of sets"
         assert all(0 <= p <= 1 for p in win_probs), "Probabilities should be between 0 and 1"
 
-    def test_simulating_game(self, simulation, win_pct_df, games_played_df):
+    def test_simulating_game_elo(self, simulation, win_pct_df, games_played_df):
         """
         Tests simulating game function, ensures a string is returned for the winner
         """
         simulation.simulation_params(win_pct_df, games_played_df)
-        winner = simulation.simulating_game("Player_1", float(1600), float(25), "Player_2", float(1400), float(30), 3, "Hard")
+        winner = simulation.simulating_game("Player_1", float(25), "Player_2", float(30), 3, "Hard")
+        assert isinstance(winner, str), "Returns string"
+
+    def test_simulating_game_skillo(self, simulation_skillo):
+        """
+        Tests simulating game function, ensures a string is returned for the winner
+        """
+        winner = simulation_skillo.simulating_game("Player_1", float(25), "Player_2", float(30), 3, "Hard")
         assert isinstance(winner, str), "Returns string"
 
     def test_find_initial_draw(self, simulation):
@@ -257,7 +322,43 @@ class Test_simulation():
         """
         original_simulation.simulation_params(original_win_pct_df, original_games_played_df)
         draw = original_simulation.find_initial_draw(original_tennis_data, 2023, 'Wimbledon')
-        print(original_games_played_df['Carlos Alcaraz'])
         tournament = original_simulation.simulate_tournament(draw, 'Grass', 1, False)
         assert isinstance(tournament, pd.DataFrame), "Not df"
-        
+
+    def test_simulating_game_type_error_player_1_string(self, simulation):
+        """
+        Test that TypeError is raised when tournament is not a string.
+        """
+        with pytest.raises(TypeError, match="The first player has to be a string"):
+            simulation.simulating_game(1, float(25), "Player_2", float(30), 3, "Hard")
+
+    def test_simulating_game_type_error_player_2_string(self, simulation):
+        """
+        Test that TypeError is raised when tournament is not a string.
+        """
+        with pytest.raises(TypeError, match="The second player has to be a string"):
+            simulation.simulating_game("Player_1", float(25), 2, float(30), 3, "Hard")
+
+    def test_simulating_game_type_error_player_1_age(self, simulation):
+        """
+        Test that TypeError is raised when tournament is not a string.
+        """
+        with pytest.raises(TypeError, match="The first players age has to be a float"):
+            simulation.simulating_game("Player_1", 'Age', "Player_2", float(30), 3, "Hard")
+
+    def test_simulating_game_type_error_player_2_age(self, simulation):
+        """
+        Test that TypeError is raised when tournament is not a string.
+        """
+        with pytest.raises(TypeError, match="The second players age has to be a float"):
+            simulation.simulating_game("Player_1", float(25), "Player_2", 'age', 3, "Hard")
+
+    def test_simulate_round_skillo(self, simulation_skillo):
+        """
+        Tests simulate round function. Ensures the length of winners is correct and the set of winners is a subset of the original players.
+        """
+        matchups = pd.DataFrame({'Player_1': ['Player_2', 'Player_3'], 'Player_2': ['Player_3', 'Player_4']})
+        results = pd.DataFrame(0, index=['Player_1', 'Player_2', 'Player_3', 'Player_4'], columns=range(8))
+        winners = simulation_skillo.simulate_round(matchups, results, "Hard", 1, 5)
+        assert len(winners) == 2, "There should be two winners from two matchups"
+        assert set(winners).issubset(['Player_1', 'Player_2', 'Player_3', 'Player_4']), "Winners should be from the original players"
