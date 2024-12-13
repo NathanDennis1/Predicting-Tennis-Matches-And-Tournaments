@@ -259,6 +259,9 @@ class Test_simulation():
     def test_compute_prob_using_elo(self, simulation):
         """
         Tests compute probability using elo function, checks probability is between 0 and 1 and higher ELO has higher win probability.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         prob = simulation.compute_prob_using_ELO(1600, 1500)
         assert 0 <= prob <= 1, "Winning probability should be between 0 and 1"
@@ -266,7 +269,10 @@ class Test_simulation():
 
     def test_adjusted_win_probability(self, simulation):
         """
-        Tests adjusted win probability function, probability is between 0 and 1 and adjusted probability is higher for favorite based on head-to-head
+        Tests adjusted win probability function, probability is between 0 and 1 and adjusted probability is higher for favorite based on head-to-head.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         prob_adjusted = simulation.adjusted_win_probability(0.6, 0.65, 15)
         assert 0 <= prob_adjusted <= 1, "Adjusted probability should be between 0 and 1"
@@ -275,6 +281,9 @@ class Test_simulation():
     def test_compute_prob_in_sets(self, simulation):
         """
         Tests compute probability in sets, ensures it returns a list of length 5 and all probabilities are between 0 and 1.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         win_probs = simulation.compute_prob_in_sets(0.8, 30, 5, 'Clay')
         assert len(win_probs) == 5, "Should compute probabilities for the number of sets"
@@ -282,7 +291,12 @@ class Test_simulation():
 
     def test_simulating_game_elo(self, simulation, win_pct_df, games_played_df):
         """
-        Tests simulating game function, ensures a string is returned for the winner
+        Tests simulating game function, ensures a string is returned for the winner alongside incorporating win percentage and games played.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
+            win_pct_df (pd dataframe): Win percentage dataframe.
+            games_played_df (pd dataframe): Games played dataframe.
         """
         simulation.simulation_params(win_pct_df, games_played_df)
         winner = simulation.simulating_game("Player_1", float(25), "Player_2", float(30), 3, "Hard")
@@ -290,7 +304,10 @@ class Test_simulation():
 
     def test_simulating_game_skillo(self, simulation_skillo):
         """
-        Tests simulating game function, ensures a string is returned for the winner
+        Tests simulating game function, ensures a string is returned for the winner.
+
+        Parameters:
+            simulation_skillo (class): An instance of the Simulation class to be tested using SkillO.
         """
         winner = simulation_skillo.simulating_game("Player_1", float(25), "Player_2", float(30), 3, "Hard")
         assert isinstance(winner, str), "Returns string"
@@ -298,6 +315,9 @@ class Test_simulation():
     def test_find_initial_draw(self, simulation):
         """
         Tests finding initial draw, ensures initial draw is of length 64 for grand slam tournaments.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         data = pd.DataFrame({'Year': [2023] * 127, 'tourney_name': ['Wimbledon'] * 127,
                             'winner_name': ['Player A'] * 64 + ['Player B'] * 63,
@@ -308,6 +328,11 @@ class Test_simulation():
     def test_simulate_round(self, simulation, win_pct_df, games_played_df):
         """
         Tests simulate round function. Ensures the length of winners is correct and the set of winners is a subset of the original players.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
+            win_pct_df (pd dataframe): Win percentage dataframe.
+            games_played_df (pd dataframe): Games played dataframe.
         """
         matchups = pd.DataFrame({'Player_1': ['Player_2', 'Player_3'], 'Player_2': ['Player_3', 'Player_4']})
         results = pd.DataFrame(0, index=['Player_1', 'Player_2', 'Player_3', 'Player_4'], columns=range(8))
@@ -319,6 +344,12 @@ class Test_simulation():
     def test_simulate_tournament(self, original_simulation, original_win_pct_df, original_games_played_df, original_tennis_data):
         """
         Tests simulate tournament functin with original data. Ensures output is a dataframe.
+
+        Parameters:
+            original_simulation (class): An instance of the Simulation class to be tested.
+            original_win_pct_df (pd dataframe): Original in percentage dataframe.
+            original_games_played_df (pd dataframe): Original games played dataframe.
+            original_tennis_data (pd dataframe): Original tennis dataframe.
         """
         original_simulation.simulation_params(original_win_pct_df, original_games_played_df)
         draw = original_simulation.find_initial_draw(original_tennis_data, 2023, 'Wimbledon')
@@ -327,28 +358,40 @@ class Test_simulation():
 
     def test_simulating_game_type_error_player_1_string(self, simulation):
         """
-        Test that TypeError is raised when tournament is not a string.
+        Test that TypeError is raised when player 1's name is not a string
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         with pytest.raises(TypeError, match="The first player has to be a string"):
             simulation.simulating_game(1, float(25), "Player_2", float(30), 3, "Hard")
 
     def test_simulating_game_type_error_player_2_string(self, simulation):
         """
-        Test that TypeError is raised when tournament is not a string.
+        Test that TypeError is raised when player 2's name is not a string
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         with pytest.raises(TypeError, match="The second player has to be a string"):
             simulation.simulating_game("Player_1", float(25), 2, float(30), 3, "Hard")
 
     def test_simulating_game_type_error_player_1_age(self, simulation):
         """
-        Test that TypeError is raised when tournament is not a string.
+        Test that TypeError is raised when player 1's age is not a float
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         with pytest.raises(TypeError, match="The first players age has to be a float"):
             simulation.simulating_game("Player_1", 'Age', "Player_2", float(30), 3, "Hard")
 
     def test_simulating_game_type_error_player_2_age(self, simulation):
         """
-        Test that TypeError is raised when tournament is not a string.
+        Test that TypeError is raised when player 2's age is not a float
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
         """
         with pytest.raises(TypeError, match="The second players age has to be a float"):
             simulation.simulating_game("Player_1", float(25), "Player_2", 'age', 3, "Hard")
@@ -356,6 +399,9 @@ class Test_simulation():
     def test_simulate_round_skillo(self, simulation_skillo):
         """
         Tests simulate round function. Ensures the length of winners is correct and the set of winners is a subset of the original players.
+
+        Parameters:
+            simulation_skillo (class): An instance of the Simulation class to be tested using SkillO.
         """
         matchups = pd.DataFrame({'Player_1': ['Player_2', 'Player_3'], 'Player_2': ['Player_3', 'Player_4']})
         results = pd.DataFrame(0, index=['Player_1', 'Player_2', 'Player_3', 'Player_4'], columns=range(8))
