@@ -4,6 +4,9 @@ from src.get_tennis_data import GetTennisData
 
 @pytest.fixture
 def tennis_data():
+    """
+    Class of tennis data to run tests. Returns tennis data class.
+    """
     return GetTennisData()
 
 def test_get_data_type_error(tennis_data):
