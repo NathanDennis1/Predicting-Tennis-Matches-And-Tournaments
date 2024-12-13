@@ -2,10 +2,16 @@ import pandas as pd
 import os
 
 class InvalidTournamentError(ValueError):
+        """
+        Class to return invalid tournament error if user does not input a correct tournament name.
+        """
         pass
 
 class Odds():
     def __init__(self):
+        """
+        Initializes odds class.
+        """
         pass
 
     def american_odds_to_probability(self, odds):
@@ -25,7 +31,7 @@ class Odds():
         
     def get_project_root(self):
         """
-        Returns the root directory of the project, which in our case is team_19. This was done
+        Returns the root directory of the project, which in our case is final_19. This was done
         so that the test_odds_to_prob.py test code would work.
         """
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
