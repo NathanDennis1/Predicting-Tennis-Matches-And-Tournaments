@@ -13,7 +13,7 @@ def elo():
 @pytest.fixture
 def df():
     """
-    Mock dataframe with arbitrary player names.
+    Mock dataframe with arbitrary player names for tennis data in a given year.
     """
     data = {
         'tourney_name': ['Australian Open', 'French Open', 'Wimbledon', 'US Open', 
@@ -33,7 +33,7 @@ def df():
                     'Player_4', 'Player_2', 'Player_1', 'Player_3', 
                     'Player_2', 'Player_4'],
         'loser_age': [27, 31, 24, 26, 30, 27, 26, 24, 27, 31],
-        'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]}
+        'Year': [2022, 2022, 2022, 2023, 2023, 2023, 2023, 2023, 2023, 2023]}
 
     final_df = pd.DataFrame(data)
     
@@ -63,7 +63,10 @@ class Test_elo_calculations():
     """
     def test_initial_elos(self, elo):
         """
-        Tests the inital elos function to return a dataframe
+        Tests the inital elos function to return a dataframe.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         surfaces = ['Clay', 'Hard']
         names = ['Player', 'Player_2']
@@ -72,7 +75,11 @@ class Test_elo_calculations():
 
     def test_get_names(self, elo, df):
         """
-        Tests the get names function to return a set
+        Tests the get names function to return a set.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
+            df (pandas dataframe): Mock dataframe of tennis match history data.
         """
         names = elo.get_names(df)
         assert isinstance(names, set), f"get_names should return a set, instead returned {type(names)}"
@@ -80,6 +87,9 @@ class Test_elo_calculations():
     def test_logistic(self, elo):
         """
         Tests the logistic function to return a float
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         log = elo.logistic(1)
         assert isinstance(log, float), f"Logistic function should return a float, instead returned {type(log)}"
@@ -87,6 +97,9 @@ class Test_elo_calculations():
     def test_expected_game_score(self, elo):
         """
         Tests the inital elos function to return a float
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         game_score = elo.expected_game_score(float(1500), float(1500))
         assert isinstance(game_score, float), f"Logistic function should return a float, instead returned {type(game_score)}"
@@ -94,6 +107,9 @@ class Test_elo_calculations():
     def test_decay_factor(self, elo):
         """
         Tests the decay factor function to return a float
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         decay_rate = elo.decay_factor(2)
         assert isinstance(decay_rate, float), f"Decay factor should return a float, instead returned {type(decay_rate)}"
@@ -101,6 +117,11 @@ class Test_elo_calculations():
     def test_elo_calculation(self, elo, df, elo_df):
         """
         Tests the elo calculation function to return a dataframe
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
+            df (pandas dataframe): Mock dataframe of tennis match history data.
+            elo_df (pandas dataframe): Mock dataframe of player elo ratings.
         """
         elo_calc = elo.elo_calculation(df, elo_df)
         assert isinstance(elo_calc, pd.DataFrame), f"Elo calculation should return a dataframe, instead returned {type(elo_calc)}"
@@ -108,6 +129,10 @@ class Test_elo_calculations():
     def test_get_most_recent_age(self, elo, df):
         """
         Tests the get most recent age function to return a series
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
+            df (pandas dataframe): Mock dataframe of tennis match history data.
         """
         recent_age = elo.get_most_recent_age(df)
         assert isinstance(recent_age, pd.Series), f"Get most recent age should return a series, instead returned {type(recent_age)}"
@@ -115,6 +140,11 @@ class Test_elo_calculations():
     def test_final_elo_csv(self, elo, tmp_path, df):
         """
         Tests the final elo csv function to create a csv in data.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
+            tmp_path: A temporary directory path provided by pytest to store the generated CSV file.
+            df (pandas dataframe): Mock dataframe of tennis match history data.
         """
         file_path = tmp_path / "player_elos.csv"
 
@@ -125,6 +155,9 @@ class Test_elo_calculations():
     def test_expected_game_score_first_elo_type_error(self, elo):
         """
         Test that a TypeError is raised if first_elo is not a float.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="First ELO is not a float"):
             elo.expected_game_score(first_elo="2000", second_elo=1800.0, S=400)
@@ -133,6 +166,9 @@ class Test_elo_calculations():
     def test_expected_game_score_second_elo_type_error(self, elo):
         """
         Test that a TypeError is raised if second_elo is not a float.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="Second ELO is not a float"):
             elo.expected_game_score(first_elo=2000.0, second_elo="1800", S=400)
@@ -141,6 +177,9 @@ class Test_elo_calculations():
     def test_expected_game_score_scaling_factor_type_error(self, elo):
         """
         Test that a TypeError is raised if S is not an int.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="Scaling factor S must be an int"):
             elo.expected_game_score(first_elo=2000.0, second_elo=1800.0, S="400")
@@ -148,6 +187,9 @@ class Test_elo_calculations():
     def test_decay_factor_year_difftype_error(self, elo):
         """
         Test that a TypeError is raised if year_diff is not an int.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="The difference in years must be an int"):
             elo.decay_factor(year_diff="5", decay_rate=0.3)
@@ -155,6 +197,9 @@ class Test_elo_calculations():
     def test_decay_factor_decay_ratetype_error(self, elo):
         """
         Test that a TypeError is raised if year_diff is not an int.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="Decay rate must be an float"):
             elo.decay_factor(year_diff=5, decay_rate="0.3")
@@ -162,6 +207,9 @@ class Test_elo_calculations():
     def test_elo_calculation_invalid_data_type(self, elo):
         """
         Test that a TypeError is raised if 'data' is not a pandas DataFrame.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="data must be an pandas dataframe"):
             elo.elo_calculation(data="invalid_data", elo_df=pd.DataFrame(), K=20)
@@ -170,6 +218,9 @@ class Test_elo_calculations():
     def test_elo_calculation_invalid_elo_df_type(self, elo):
         """
         Test that a TypeError is raised if 'elo_df' is not a pandas DataFrame.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="ELO dataframe must be a pandas dataframe"):
             elo.elo_calculation(data=pd.DataFrame(), elo_df="invalid_elo_df", K=20)
@@ -178,6 +229,9 @@ class Test_elo_calculations():
     def test_elo_calculation_invalid_K_type(self, elo):
         """
         Test that a TypeError is raised if 'K' is not an integer.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
         """
         with pytest.raises(TypeError, match="Scaling factor K must be an int"):
             elo.elo_calculation(data=pd.DataFrame(), elo_df=pd.DataFrame(), K="invalid_K")
@@ -185,6 +239,10 @@ class Test_elo_calculations():
     def test_get_most_recent_age(self, elo, df):
         """
         Tests that the get_most_recent_age method returns a pandas Series with the correct player ages.
+
+        Parameters:
+            elo (class): An instance of the ELO class to be tested.
+            df (pandas dataframe): Mock dataframe of tennis match history data.
         """
         recent_age = elo.get_most_recent_age(df)
 
