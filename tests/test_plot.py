@@ -6,16 +6,21 @@ import matplotlib.pyplot as plt
 
 @pytest.fixture
 def plot():
+    """
+    Class for plot to run tests. Returns Plot class.
+    """
     return Plot()
 
 class TestPlot:
     """
     Class to test plot script
     """
-
     def test_plot(self, plot):
         """
-        Tests to ensure a figure is created when calling plot
+        Tests to ensure a figure is created when calling plot.
+
+        Parameters:
+            plot (class): An instance of the Plot class to be tested.
         """
         plot.plots('Wimbledon', 2023, 'skillO', '2')
 
@@ -27,7 +32,10 @@ class TestPlot:
 
     def test_plot_comparison(self, plot):
         """
-        Tests to ensure a figure is created when calling plot
+        Tests to ensure a figure is created when calling plot.
+
+        Parameters:
+            plot (class): An instance of the Plot class to be tested.
         """
         plot.plot_ELO_vs_SkillO('Wimbledon', 2023, '2')
 
