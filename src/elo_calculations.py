@@ -94,7 +94,7 @@ class ELO:
             Final calculation for an expected game score.
 
         Raises:
-            TypeError: The first and second ELO must be of type float. S must be of type int
+            TypeError: The first and second ELO must be of type float. S must be of type int.
         """
         if not isinstance(first_elo, float):
             raise TypeError(f"First ELO is not a float, it has to be of type float, it is {type(first_elo)}")
