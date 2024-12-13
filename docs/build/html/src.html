@@ -109,7 +109,7 @@ Also creates the CSV for the elo calculations for each player in the data.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>year_diff</strong> (<em>int</em>) -- The calculated difference in years (Earlier year minus furthest year)</p></li>
-<li><p><strong>decay_rate</strong> (<em>float</em>) -- Rate of decay for year difference equation</p></li>
+<li><p><strong>decay_rate</strong> (<em>float</em>) -- Rate of decay for year difference equation. Default set to 0.3.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -130,7 +130,7 @@ Also creates the CSV for the elo calculations for each player in the data.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>data</strong> (<em>pandas dataframe</em>) -- Dataframe for previous match history for each tennis tournament and professional match.</p></li>
 <li><p><strong>elo_df</strong> (<em>pandas dataframe</em>) -- Dataframe of ELO scores for players on all surfaces.</p></li>
-<li><p><strong>K</strong> (<em>int</em>) -- Sensitivity constant for ELO calculation.</p></li>
+<li><p><strong>K</strong> (<em>int</em>) -- Sensitivity constant for ELO calculation. Default set to 20.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -172,7 +172,7 @@ player_elos.csv, saved in the data folder.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>tennis_data</strong> (<em>pandas dataframe</em>) -- The dataframe containing all tennis match data</p></li>
-<li><p><strong>file_path</strong> (<em>str</em>) -- Path of the file to save, default player_elos.csv</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) -- Path of the file to save, default ../data/player_elos.csv.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -302,6 +302,26 @@ the winners and losers columns, then combines the set using union.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="src.error_metrics.Errors.MAPE">
+<span class="sig-name descname"><span class="pre">MAPE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.error_metrics.Errors.MAPE" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the Mean Absolute Percentage Error (MAPE) between the true and predicted values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>true</strong> (<em>pandas series</em>) -- True values (betting odds probability)</p></li>
+<li><p><strong>pred</strong> (<em>pandas series</em>) -- Predicted values (model output probability)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>MAPE score as a float</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- Inputs must both be series, true and pred, raises error if not.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="src.error_metrics.Errors.RMSE">
 <span class="sig-name descname"><span class="pre">RMSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.error_metrics.Errors.RMSE" title="Link to this definition">¶</a></dt>
 <dd><p>Calculates RMSE score, the root mean squared error.</p>
@@ -322,26 +342,48 @@ the winners and losers columns, then combines the set using union.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="src.error_metrics.Errors.R_squared">
+<span class="sig-name descname"><span class="pre">R_squared</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.error_metrics.Errors.R_squared" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the R-squared (coefficient of determination) between the true and predicted values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>true</strong> (<em>pandas series</em>) -- True values (betting odds probability)</p></li>
+<li><p><strong>pred</strong> (<em>pandas series</em>) -- Predicted values (model output probability)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>R-squared score as a float</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- Inputs must both be series, true and pred, raises error if not.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="src.error_metrics.Errors.displayErrors">
-<span class="sig-name descname"><span class="pre">displayErrors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.error_metrics.Errors.displayErrors" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">displayErrors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rating_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.error_metrics.Errors.displayErrors" title="Link to this definition">¶</a></dt>
 <dd><p>Given prediction probabilities, returns all the utilized error metrics including RMSE, L-Infinity Norm,
 and L-1 Norm.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>tournament_name</strong> (<em>str</em>) -- Name of tennis tournament</p></li>
-<li><p><strong>k_list</strong> (<em>None</em><em> or </em><em>list</em>) -- The list (max length 3) of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.</p></li>
-<li><p><strong>display</strong> (<em>boolean</em>) -- Display calculated error metric values, default is True to display errors, False to not display errors.</p></li>
+<li><p><strong>rating_system</strong> (<em>str</em>) -- Name of given rating system, either ELO or SkillO.</p></li>
+<li><p><strong>tournament_name</strong> (<em>str</em>) -- Name of tennis tournament.</p></li>
+<li><p><strong>simulation_number</strong> (<em>None</em><em> or </em><em>str</em>) -- Optimal imput for simulation number to display errors for certain simulation number csv files created. Default set to None</p></li>
+<li><p><strong>k_list</strong> (<em>None</em><em> or </em><em>list</em>) -- The list (max length 3) of different k factors used in the H2H model to calculate error rates for.
+This can be none if the H2H model is not being used, which is the default.</p></li>
 </ul>
 </dd>
-</dl>
-<dl class="simple">
-<dt>Output:</dt><dd><p>Printed RMSE, Linf, and L1 metrics for given model(s).</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe across all 5 error metrics for given rating system.</p>
 </dd>
-</dl>
-<dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ValueError</strong> -- k_list has to be either None or a list of at most 3 elements.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> -- k_list has to be either None or a list of at most 3 elements.</p></li>
+<li><p><strong>ValueError</strong> -- rating_system must be 'ELO' or 'SkillO'.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -406,8 +448,11 @@ dataset. Creates a csv file for both win percentage and games played between eve
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>data</strong> (<em>pandas Dataframe</em>) -- Dataframe for all of the past tennis match data.</p>
 </dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>TypeError</strong> -- data must be of type dataframe.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe of win percentage and games played as a tuple.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>TypeError</strong> -- data must be of type dataframe.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -430,8 +475,36 @@ so that the test_plot.py test code would work.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="src.plot.Plot.plot_ELO_vs_SkillO">
+<span class="sig-name descname"><span class="pre">plot_ELO_vs_SkillO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.plot.Plot.plot_ELO_vs_SkillO" title="Link to this definition">¶</a></dt>
+<dd><p>Creates plot to compare ELO and SkillO simulation compared to betting odds as a side by side bar plot for the top 10 players
+according to betting odds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tournament_name</strong> (<em>str</em>) -- Name of tournament.</p></li>
+<li><p><strong>year</strong> (<em>int</em>) -- Year tournament was played in.</p></li>
+<li><p><strong>simulation_num</strong> (<em>None</em><em> or </em><em>int</em>) -- Simulation number for title. Default set to None.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Outputs:</dt><dd><p>A png file for the given tournament and probabilities of winning for top 10 players.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> -- Year must be between 1968 and 2024. Year must also be of type int. If k_list is not None, then it must be a list.</p></li>
+<li><p><strong>FileNotFoundError</strong> -- One of the dataframes for the plotting function does not exist.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="src.plot.Plot.plots">
-<span class="sig-name descname"><span class="pre">plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.plot.Plot.plots" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.plot.Plot.plots" title="Link to this definition">¶</a></dt>
 <dd><p>Creates the plotting function comparing the model's winning probabilities against the betting odds.
 A side by side bar plot comparing the top 10 players according to the betting odds is plot against the
 models probabilities. Saves plot to a png.</p>
@@ -471,7 +544,7 @@ models probabilities. Saves plot to a png.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="src.simulation.Simulation">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.simulation.</span></span><span class="sig-name descname"><span class="pre">Simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_elos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.simulation.</span></span><span class="sig-name descname"><span class="pre">Simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rating_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating_system</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">S</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.simulation.Simulation.adjusted_win_probability">
@@ -525,6 +598,24 @@ models probabilities. Saves plot to a png.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Final calculation for an expected game score as a float.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.simulation.Simulation.compute_prob_using_skillo">
+<span class="sig-name descname"><span class="pre">compute_prob_using_skillo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.compute_prob_using_skillo" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates expected game score based on SkillO ratings (mean and variance).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>player_1</strong> (<em>str</em>) -- Name of player 1.</p></li>
+<li><p><strong>player_2</strong> (<em>str</em>) -- Name of player 2.</p></li>
+<li><p><strong>surface</strong> (<em>str</em>) -- Surface match is being played on.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Winning probability of player 1 as a float through the logistic function.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -592,11 +683,11 @@ models probabilities. Saves plot to a png.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>matchups</strong> (<em>list</em>) -- The matchups of the round in a tournament</p></li>
-<li><p><strong>results</strong> (<em>matrix</em>) -- Matrix of tournament results</p></li>
+<li><p><strong>matchups</strong> (<em>list</em>) -- The matchups of the round in a tournament.</p></li>
+<li><p><strong>results</strong> (<em>matrix</em>) -- Matrix of tournament results.</p></li>
 <li><p><strong>surface</strong> (<em>str</em>) -- Name of the surface playing on.</p></li>
-<li><p><strong>round</strong> (<em>int</em>) -- Round number in the tournament</p></li>
-<li><p><strong>num_sets</strong> (<em>int</em>) -- Number of sets for a match</p></li>
+<li><p><strong>round</strong> (<em>int</em>) -- Round number in the tournament.</p></li>
+<li><p><strong>num_sets</strong> (<em>int</em>) -- Number of sets for a match.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -615,9 +706,10 @@ models probabilities. Saves plot to a png.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>initial_draw</strong> (<em>list</em>) -- The initial draw of player matchups in the tournament</p></li>
+<li><p><strong>initial_draw</strong> (<em>list</em>) -- The initial draw of player matchups in the tournament.</p></li>
 <li><p><strong>surface</strong> (<em>str</em>) -- Name of the surface playing on.</p></li>
-<li><p><strong>trials</strong> (<em>int</em>) -- Number of times to simulate tournament</p></li>
+<li><p><strong>trials</strong> (<em>int</em>) -- Number of times to simulate tournament.</p></li>
+<li><p><strong>saves</strong> (<em>boolean</em>) -- Boolean to save results to csv file.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -634,16 +726,14 @@ models probabilities. Saves plot to a png.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.simulation.Simulation.simulating_game">
-<span class="sig-name descname"><span class="pre">simulating_game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_1_elo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_1_age</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_2_elo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_2_age</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_sets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.simulating_game" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">simulating_game</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">player_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_1_age</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">player_2_age</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_sets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surface</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.simulating_game" title="Link to this definition">¶</a></dt>
 <dd><p>Computes a game in a tennis match</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>player_1</strong> (<em>str</em>) -- Name of player 1</p></li>
-<li><p><strong>player_1_elo</strong> (<em>float</em>) -- The surface ELO of player 1</p></li>
 <li><p><strong>player_1_age</strong> (<em>float</em>) -- The age of player 1</p></li>
 <li><p><strong>player_2</strong> (<em>str</em>) -- Name of player 2</p></li>
-<li><p><strong>player_2_elo</strong> (<em>float</em>) -- The surface ELO of player 2</p></li>
 <li><p><strong>player_2_age</strong> (<em>float</em>) -- The age of player 2</p></li>
 <li><p><strong>num_sets</strong> (<em>int</em>) -- Number of sets in a match</p></li>
 <li><p><strong>surface</strong> (<em>str</em>) -- Surface of a match</p></li>
@@ -653,7 +743,7 @@ models probabilities. Saves plot to a png.</p>
 <dd class="field-even"><p>Player who won the match as a string.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>TypeError</strong> -- The player names must be strings and ages/elo scores must be floats</p>
+<dd class="field-odd"><p><strong>TypeError</strong> -- The player names must be strings and ages must be floats.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -674,7 +764,7 @@ models probabilities. Saves plot to a png.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.simulation.Simulation.user_tournament_simulation">
-<span class="sig-name descname"><span class="pre">user_tournament_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tennis_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saves</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.user_tournament_simulation" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">user_tournament_simulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tennis_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tournament_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nsims</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sim_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saves</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.user_tournament_simulation" title="Link to this definition">¶</a></dt>
 <dd><p>Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
 saves the results to a final csv used for visualization and validation.</p>
 <dl class="field-list simple">

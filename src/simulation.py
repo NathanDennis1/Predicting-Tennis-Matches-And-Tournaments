@@ -7,21 +7,31 @@ class InvalidTournamentError(ValueError):
         pass
 
 class Simulation():
-    def __init__(self, player_elos, S = 400, hth = True, k = 0.1):
+    def __init__(self, rating_df, rating_system, S = 400, hth = False, k = 0.1, beta = 2):
         """
         Initializer for Simulation class.
 
         Args:
-            player_elos: Dataframe of player elo ratings
-            S (int): Scale for difference in ELO ratings 
-            hth (boolean): Use head-to-head matchups in game winning calculations.
-            k (float): k decay factor utilized in head-to-head scaling calculation.
+            rating_df: Dataframe of player ratings.
+            rating_system (str): String representing the rating system to be used (ELO or SkillO).
+            S (int): Scale for difference in ELO ratings. Default set to 400.
+            hth (boolean): Use head-to-head matchups in game winning calculations. Default set to False.
+            k (float): k decay factor utilized in head-to-head scaling calculation. Default set to 0.1.
+            beta (float): Scaling factor for variance in SkillO calculation. Default set to 2.
+
+        Raises:
+            ValueError: rating_system must be 'ELO' or 'SkillO'.
         """
-        self.elo_df = player_elos
+        if rating_system not in ['ELO', 'SkillO', 'skillO']:
+            raise ValueError("rating_system must be 'ELO' or 'SkillO'. The S in SkillO can be lower case or uppercase")
+        
+        self.rating_df = rating_df
+        self.rating_system = rating_system
         self.tournament_name = None
         self.S = S
         self.head_to_head = hth    
         self.k = float(k)
+        self.beta = beta
 
     def logistic(self, x):
         """
@@ -48,6 +58,31 @@ class Simulation():
             Final calculation for an expected game score as a float.
         """
         return self.logistic((first_elo-second_elo)/self.S)
+
+    def compute_prob_using_skillo(self, player_1, player_2, surface):
+        """
+        Calculates expected game score based on SkillO ratings (mean and variance).
+
+        Args:
+            player_1 (str): Name of player 1.
+            player_2 (str): Name of player 2.
+            surface (str): Surface match is being played on.
+        
+        Returns:
+            Winning probability of player 1 as a float through the logistic function.
+        """
+        # Get the SkillO mean and variance for both players
+        ts_mean_1 = self.rating_df.loc[player_1][f'{surface}_mean']
+        ts_mean_2 = self.rating_df.loc[player_2][f'{surface}_mean']
+        ts_variance_1 = self.rating_df.loc[player_1][f'{surface}_variance']
+        ts_variance_2 = self.rating_df.loc[player_2][f'{surface}_variance']
+
+        # Calculate the skill difference and uncertainty
+        skill_diff = ts_mean_1 - ts_mean_2
+        uncertainty = np.sqrt(ts_variance_1 + ts_variance_2 + self.beta ** 2)
+
+        # Return the logistic probability
+        return self.logistic(skill_diff / uncertainty)
     
     def adjusted_win_probability(self, P_A, P_head_to_head, games_played):
         """
@@ -100,16 +135,14 @@ class Simulation():
     
 
         
-    def simulating_game(self, player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets, surface):
+    def simulating_game(self, player_1, player_1_age, player_2, player_2_age, num_sets, surface):
         """
         Computes a game in a tennis match
 
         Args:
             player_1 (str): Name of player 1
-            player_1_elo (float): The surface ELO of player 1
             player_1_age (float): The age of player 1
             player_2 (str): Name of player 2
-            player_2_elo (float): The surface ELO of player 2
             player_2_age (float): The age of player 2
             num_sets (int): Number of sets in a match
             surface (str): Surface of a match
@@ -118,27 +151,26 @@ class Simulation():
             Player who won the match as a string.
 
         Raises:
-            TypeError: The player names must be strings and ages/elo scores must be floats
+            TypeError: The player names must be strings and ages must be floats.
         """   
         if not isinstance(player_1, str):
             raise TypeError(f"The first player has to be a string, it is {type(player_1)}")
         if not isinstance(player_2, str):
             raise TypeError(f"The second player has to be a string, it is {type(player_2)}")
 
-        if not isinstance(player_1_elo, float):
-            raise TypeError(f"The first player ELO has to be a float, it is {type(player_1_elo)}")
-        if not isinstance(player_2_elo, float):
-            raise TypeError(f"The second players ELO to be a float, it is {type(player_2_elo)}")
-        
         if not isinstance(player_1_age, float):
             raise TypeError(f"The first players age has to be a float, it is {type(player_1_age)}")
         if not isinstance(player_2_age, float):
-            raise TypeError(f"The second players age to be a float, it is {type(player_2_age)}")
+            raise TypeError(f"The second players age has to be a float, it is {type(player_2_age)}")
 
         set_winner = []
         
-        winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
-        winning_prob_2 = 1 - winning_prob_1
+        if self.rating_system == 'ELO':
+            player_1_elo = self.rating_df.loc[player_1][f'{surface}_ELO']
+            player_2_elo = self.rating_df.loc[player_2][f'{surface}_ELO']
+            winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
+        elif self.rating_system == 'skillO':
+            winning_prob_1 = self.compute_prob_using_skillo(player_1, player_2, surface)
 
         if self.head_to_head is True:
             past_head_to_head = self.win_pct_df[player_1][player_2]
@@ -218,25 +250,33 @@ class Simulation():
         Simulates the round of a tennis tournament
 
         Args:
-            matchups (list): The matchups of the round in a tournament
-            results (matrix): Matrix of tournament results
+            matchups (list): The matchups of the round in a tournament.
+            results (matrix): Matrix of tournament results.
             surface (str): Name of the surface playing on.
-            round (int): Round number in the tournament
-            num_sets (int): Number of sets for a match
+            round (int): Round number in the tournament.
+            num_sets (int): Number of sets for a match.
 
         Returns:
             winners (list): List of winners in a given round.
         """
         winners = []
         for _, matchup in matchups.iterrows():
-            player_1 = matchup.iloc[0]
-            player_1_age = self.elo_df.loc[player_1]['Player_age']
-            player_1_elo = self.elo_df.loc[player_1][f'{surface}_ELO']
+            if self.rating_system == 'ELO':
+                player_1 = matchup.iloc[0]
+                player_1_age = self.rating_df.loc[player_1]['Player_age']
 
-            player_2 = matchup.iloc[1]
-            player_2_age = self.elo_df.loc[player_2]['Player_age']
-            player_2_elo = self.elo_df.loc[player_2][f'{surface}_ELO']
-            winner = self.simulating_game(player_1, player_1_elo, player_1_age, player_2, player_2_elo, player_2_age, num_sets, surface)
+                player_2 = matchup.iloc[1]
+                player_2_age = self.rating_df.loc[player_2]['Player_age']
+                winner = self.simulating_game(player_1, player_1_age, player_2, player_2_age, num_sets, surface)
+
+            elif self.rating_system == 'skillO':
+                player_1 = matchup.iloc[0]
+                player_1_age = self.rating_df.loc[player_1]['Player_age']
+
+                player_2 = matchup.iloc[1]
+                player_2_age = self.rating_df.loc[player_2]['Player_age']
+
+                winner = self.simulating_game(player_1, player_1_age, player_2, player_2_age, num_sets, surface)
             if winner == player_1:
                 results.loc[player_1,round] += 1
                 winners.append(player_1)
@@ -251,9 +291,10 @@ class Simulation():
         Simulates a tournament through the initial draws for the tournament.
 
         Args:
-            initial_draw (list): The initial draw of player matchups in the tournament
+            initial_draw (list): The initial draw of player matchups in the tournament.
             surface (str): Name of the surface playing on.
-            trials (int): Number of times to simulate tournament
+            trials (int): Number of times to simulate tournament.
+            saves (boolean): Boolean to save results to csv file.
 
         Returns:
             Winners_data (pandas dataframe): Dataframe of probability to make a certain round in the tournament.
@@ -292,9 +333,15 @@ class Simulation():
         if saves is True:
             self.tournament_name = self.tournament_name.replace(' ', '_')
             if self.head_to_head is True:
-                file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}.csv'
+                if self.simulation_number is not None:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}_{self.rating_system}_{self.simulation_number}.csv'
+                else:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_head_to_head_{self.k}_{self.rating_system}.csv'
             else:
-                file_path = f'../data/tournament_results_{self.tournament_name}.csv'
+                if self.simulation_number is not None:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_{self.rating_system}_{self.simulation_number}.csv'
+                else:
+                    file_path = f'../data/tournament_results_{self.tournament_name}_{self.rating_system}.csv'
 
             Winners_data.to_csv(file_path, index=True)
 
@@ -311,7 +358,7 @@ class Simulation():
         self.win_pct_df = win_pct_df
         self.games_played_df = games_played_df
     
-    def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims, saves = True):
+    def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims, sim_num = 1, saves = True):
         """
         Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
         saves the results to a final csv used for visualization and validation.
@@ -327,6 +374,7 @@ class Simulation():
             ValueError: User must have saves be a boolean value, and year to be of type int
             InvalidTournamentError: User must enter a grand slam tournament
         """
+        self.simulation_number = sim_num
         if not isinstance(saves, bool):
             raise ValueError(f"Invalid value for 'saves, must be a boolean value (True or False), got {type(saves)}.")
         if not isinstance(year, int):

@@ -38,3 +38,17 @@ class Test_odds_to_prob():
 
         assert os.path.exists(file_path), f"File {file_path} does not exist."
 
+    def test_invalid_year_type(self, odds):
+        """
+        Test that TypeError is raised when year is not an integer.
+        """
+        with pytest.raises(TypeError):
+            odds.convert_odds("2022", "Australian Open")  # passing a string instead of an integer for year
+
+    def test_invalid_tournament_type(self, odds):
+        """
+        Test that TypeError is raised when tournament is not a string.
+        """
+        with pytest.raises(TypeError):
+            odds.convert_odds(2022, 1234)  # passing an integer instead of a string for tournament
+

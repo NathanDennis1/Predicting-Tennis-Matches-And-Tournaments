@@ -1,4 +1,5 @@
 import pytest
+import pandas as pd
 from src.get_tennis_data import GetTennisData
 
 @pytest.fixture
@@ -12,3 +13,8 @@ def test_get_data_type_error(tennis_data):
 def test_get_data_value_error(tennis_data):
     with pytest.raises(SystemExit):
         tennis_data.get_data(year_lower=1960, year_upper=1970)
+
+def test_get_data_returns_dataframe(tennis_data):
+    result_df = tennis_data.get_data(year_lower=2000, year_upper=2024)
+    
+    assert isinstance(result_df, pd.DataFrame), "The result is not a pandas DataFrame"

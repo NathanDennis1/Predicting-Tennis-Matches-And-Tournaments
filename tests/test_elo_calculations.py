@@ -32,7 +32,7 @@ def df():
         'loser_name': ['Player_2', 'Player_4', 'Player_3', 'Player_1', 
                     'Player_4', 'Player_2', 'Player_1', 'Player_3', 
                     'Player_2', 'Player_4'],
-        'loser_age': [28, 30, 25, 29, 30, 27, 29, 25, 28, 30],
+        'loser_age': [27, 31, 24, 26, 30, 27, 26, 24, 27, 31],
         'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]}
 
     final_df = pd.DataFrame(data)
@@ -121,3 +121,84 @@ class Test_elo_calculations():
         elo.final_elo_csv(df, file_path=str(file_path))
 
         assert file_path.exists(), "The player_elos.csv file was not created"
+
+    def test_expected_game_score_first_elo_type_error(self, elo):
+        """
+        Test that a TypeError is raised if first_elo is not a float.
+        """
+        with pytest.raises(TypeError, match="First ELO is not a float"):
+            elo.expected_game_score(first_elo="2000", second_elo=1800.0, S=400)
+
+
+    def test_expected_game_score_second_elo_type_error(self, elo):
+        """
+        Test that a TypeError is raised if second_elo is not a float.
+        """
+        with pytest.raises(TypeError, match="Second ELO is not a float"):
+            elo.expected_game_score(first_elo=2000.0, second_elo="1800", S=400)
+
+
+    def test_expected_game_score_scaling_factor_type_error(self, elo):
+        """
+        Test that a TypeError is raised if S is not an int.
+        """
+        with pytest.raises(TypeError, match="Scaling factor S must be an int"):
+            elo.expected_game_score(first_elo=2000.0, second_elo=1800.0, S="400")
+
+    def test_decay_factor_year_difftype_error(self, elo):
+        """
+        Test that a TypeError is raised if year_diff is not an int.
+        """
+        with pytest.raises(TypeError, match="The difference in years must be an int"):
+            elo.decay_factor(year_diff="5", decay_rate=0.3)
+
+    def test_decay_factor_decay_ratetype_error(self, elo):
+        """
+        Test that a TypeError is raised if year_diff is not an int.
+        """
+        with pytest.raises(TypeError, match="Decay rate must be an float"):
+            elo.decay_factor(year_diff=5, decay_rate="0.3")
+
+    def test_elo_calculation_invalid_data_type(self, elo):
+        """
+        Test that a TypeError is raised if 'data' is not a pandas DataFrame.
+        """
+        with pytest.raises(TypeError, match="data must be an pandas dataframe"):
+            elo.elo_calculation(data="invalid_data", elo_df=pd.DataFrame(), K=20)
+
+
+    def test_elo_calculation_invalid_elo_df_type(self, elo):
+        """
+        Test that a TypeError is raised if 'elo_df' is not a pandas DataFrame.
+        """
+        with pytest.raises(TypeError, match="ELO dataframe must be a pandas dataframe"):
+            elo.elo_calculation(data=pd.DataFrame(), elo_df="invalid_elo_df", K=20)
+
+
+    def test_elo_calculation_invalid_K_type(self, elo):
+        """
+        Test that a TypeError is raised if 'K' is not an integer.
+        """
+        with pytest.raises(TypeError, match="Scaling factor K must be an int"):
+            elo.elo_calculation(data=pd.DataFrame(), elo_df=pd.DataFrame(), K="invalid_K")
+
+    def test_get_most_recent_age(self, elo, df):
+        """
+        Tests that the get_most_recent_age method returns a pandas Series with the correct player ages.
+        """
+        recent_age = elo.get_most_recent_age(df)
+
+        # Test that the result is a pandas Series
+        assert isinstance(recent_age, pd.Series), f"Expected a pandas Series, but got {type(recent_age)}"
+        
+        expected_ages = {
+            'Player_1': 26,
+            'Player_3': 24,
+            'Player_2': 27,
+            'Player_4': 31, 
+        }
+
+        for player, expected_age in expected_ages.items():
+            assert recent_age[player] == expected_age, f"Expected age for {player} is {expected_age}, but got {recent_age[player]}"
+
+        

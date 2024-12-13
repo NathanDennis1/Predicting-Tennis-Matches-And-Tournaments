@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from io import StringIO
+import os
 import sys
 
 class GetTennisData():
@@ -62,6 +63,12 @@ class GetTennisData():
         
         final_df = final_df.dropna()
 
-        file_path = f'../data/tennis_data.csv'
+        output_dir = '../data'
+
+        os.makedirs(output_dir, exist_ok=True)  # Create the directory if it doesn't exist
+        
+        file_path = os.path.join(output_dir, 'tennis_data.csv')
 
         final_df.to_csv(file_path, index=0)
+
+        return final_df
