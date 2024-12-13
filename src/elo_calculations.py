@@ -88,7 +88,7 @@ class ELO:
         Args:
             first_elo (float): The first elo for a given team/player.
             second_elo (float): The second elo for a given team/player.
-            S (int): Scaling factor.
+            S (int): Scaling factor. Default set to 400.
 
         Returns:
             Final calculation for an expected game score.
