@@ -173,7 +173,10 @@ class Errors():
         csv_dict_k['original'] = model
         if self.k_list is not None:
             for k in self.k_list:
-                csv_dict_k[k] = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}_{self.rating_system}.csv', index_col=0)
+                if simulation_number is not None:
+                    csv_dict_k[k] = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}_{self.rating_system}_{simulation_number}.csv', index_col=0)
+                else:
+                    csv_dict_k[k] = pd.read_csv(f'../data/tournament_results_{tournament_name_underscore}_head_to_head_{k}_{self.rating_system}.csv', index_col=0)
 
         odds_comparison = odds[['normalized_winning_probability']].copy()
         actual = odds_comparison['normalized_winning_probability']
