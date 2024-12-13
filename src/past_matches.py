@@ -56,15 +56,15 @@ class past_match_data():
             games_played[loser][winner] += 1
             wins[winner][loser] += 1
 
-        # Calculate win percentages
-        win_percentages = {}
-        for player in games_played:
-            win_percentages[player] = {}
-            for opponent in games_played[player]:
-                total_games = games_played[player][opponent]
-                total_wins = wins[player][opponent]
-                win_percentage = total_wins / total_games if total_games > 0 else 0
-                win_percentages[player][opponent] = win_percentage
+            # Calculate win percentages
+            win_percentages = {}
+            for player in games_played:
+                win_percentages[player] = {}
+                for opponent in games_played[player]:
+                    total_games = games_played[player][opponent]
+                    total_wins = wins[player][opponent]
+                    win_percentage = total_wins / total_games if total_games > 0 else 0
+                    win_percentages[player][opponent] = win_percentage
 
         # Make into dataframe, fill the NA values with 0 which means players never played each other
         win_percentage_df = pd.DataFrame(win_percentages).fillna(0)
