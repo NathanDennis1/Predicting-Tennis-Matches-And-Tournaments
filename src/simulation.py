@@ -47,12 +47,11 @@ class Simulation():
 
     def compute_prob_using_ELO(self, first_elo, second_elo):
         """
-        Calculates expected game score based on the logistic function
+        Calculates expected game score based on the logistic function fr the ELO formula.
 
         Args:
             first_elo (float): The first elo for a given team/player
             second_elo (float): The second elo for a given team/player
-            S (int): Scaling factor
 
         Returns:
             Final calculation for an expected game score as a float.
@@ -92,7 +91,6 @@ class Simulation():
             P_A (float): Probability played A beats player B
             P_head_to_head (float): Historical head-to-head winning percentage for player A
             games_played (int): Number of games played between played A and B
-            k (float): Steepness factor in sigmoid function
         
         Returns:
             Adjusted win probability for Player A
@@ -367,8 +365,9 @@ class Simulation():
             tennis_data (pandas dataframe): Dataframe of tennis data for given years.
             year (int): Year of tournament user wants to simulate
             tournament_name (str): The name of the tournament the user wants to simulate
-            nsims (int): Number of tournament simulations
-            saves (boolean): Save simulation to csv or not.
+            nsims (int): Number of tournament simulations.
+            sim_num (int): Simulation number. Default set to 1.
+            saves (boolean): Save simulation to csv or not. Default set to True.
 
         Raises:
             ValueError: User must have saves be a boolean value, and year to be of type int
