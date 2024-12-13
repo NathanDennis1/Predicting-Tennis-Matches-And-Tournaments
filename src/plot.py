@@ -6,7 +6,8 @@ from pathlib import Path
 
 class Plot():
     """
-    Plot class to plot models predicted tournament winner probabilities vs the betting odds probabilities.
+    Plot class to plot models predicted tournament winner probabilities vs the betting odds probabilities. Also comparison between
+    rating systems plot.
     """
     def __init__(self):
         """

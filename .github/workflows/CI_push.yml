@@ -3,7 +3,7 @@ name: Python CI Pipeline
 on:
   push:
     branches:
-      - skillo_dev
+      - main
 
 jobs:
   build:
