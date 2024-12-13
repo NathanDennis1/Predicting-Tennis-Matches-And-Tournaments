@@ -76,15 +76,14 @@ class skillO:
         uncertainty = np.sqrt(variance_1 + variance_2 + self.beta**2)
         return 1 / (1 + np.exp(-skill_diff / uncertainty))
 
-    def skillO_calculation(self, data, SkillO_df, tau=0.1, gamma = 0.1):
+    def skillO_calculation(self, data, SkillO_df, gamma = 0.1):
         """
         Calculates SkillO for each player based on match history.
 
         Args:
             data (pd.DataFrame): Match data containing winner, loser, surface, and year of match.
             SkillO_df (pd.DataFrame): Dataframe of SkillO ratings.
-            gamma (float): SkillO adjustment factor
-            beta (float): Noise factor for performance uncertainty.
+            gamma (float): SkillO adjustment factor. Default set to 0.1
 
         Returns:
             pd.DataFrame: Updated player skill dataframe after all matches.
@@ -110,7 +109,7 @@ class skillO:
             elif row['tourney_level'] == 'F':
                 gamma = gamma
             elif row['tourney_level'] == 'D':
-                gamma = gamma * 0.5 # Davis Cup has little effect on ELO scores.
+                gamma = gamma * 0.5
 
             year_diff = self.current_year - row['Year']
 
@@ -210,7 +209,7 @@ class skillO:
 
         Args:
             tennis_data (pandas dataframe): The dataframe containing all tennis match data
-            file_path (str): Path of the file to save, default player_elos.csv
+            file_path (str): Path of the file to save, default ../data/skillo.csv
 
         Returns:
             Series for the number of games a player has played.
