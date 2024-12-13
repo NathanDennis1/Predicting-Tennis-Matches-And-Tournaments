@@ -125,12 +125,12 @@ class Errors():
     def displayErrors(self, rating_system, tournament_name, simulation_number = None, k_list = None):
         """ 
         Given prediction probabilities, returns all the utilized error metrics including RMSE, L-Infinity Norm,
-        and L-1 Norm.
+        L-1, MAPE and R-squared score.
 
         Args:
             rating_system (str): Name of given rating system, either ELO or SkillO.
             tournament_name (str): Name of tennis tournament.
-            simulation_number (None or str): Optimal imput for simulation number to display errors for certain simulation number csv files created. Default set to None
+            simulation_number (None or str): Optional imput for simulation number to display errors for certain simulation number csv files created. Default set to None
             k_list (None or list): The list (max length 3) of different k factors used in the H2H model to calculate error rates for. 
                                    This can be none if the H2H model is not being used, which is the default.
 
@@ -195,7 +195,6 @@ class Errors():
             mape_value = self.MAPE(actual, champion_column)
             r2_value = self.R_squared(actual, champion_column)
 
-            # Append the metrics to the list
             error_metrics.append({
                 'Model': self.rating_system,
                 'RMSE': rmse_value,
@@ -205,8 +204,6 @@ class Errors():
                 'R-squared': r2_value
             })
 
-        # Convert the error metrics list to a DataFrame
         error_df = pd.DataFrame(error_metrics)
 
-        # Return the error DataFrame
         return error_df
