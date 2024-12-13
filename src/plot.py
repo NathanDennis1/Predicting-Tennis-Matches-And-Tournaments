@@ -17,7 +17,7 @@ class Plot():
 
     def get_project_root(self):
         """
-        Returns the root directory of the project, which in our case is team_19. This was done
+        Returns the root directory of the project, which in our case is final_19. This was done
         so that the test_plot.py test code would work.
         """
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -126,7 +126,6 @@ class Plot():
         imgs_dir = os.path.join(project_root, 'imgs')
         plt.savefig(os.path.join(imgs_dir, f'{tournament_name_underscore}_plot.png'), bbox_inches='tight')
         plt.show()
-
 
 
     def plot_ELO_vs_SkillO(self, tournament_name, year, simulation_num = None):
