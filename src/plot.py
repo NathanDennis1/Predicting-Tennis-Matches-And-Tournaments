@@ -31,6 +31,8 @@ class Plot():
         Args:
             tournament_name (str): Name of tournament.
             year (int): Year tournament was played in.
+            rating_system (str): Rating system being used, either ELO or SkillO.
+            simulation_num (None or str): Simulation number for the plot. Default set to None.
             k_list (None or list): The list of different k factors used in the H2H model to calculate error rates for. This can be none if the H2H model is not being used.
 
         Outputs:
@@ -136,7 +138,7 @@ class Plot():
         Args:
             tournament_name (str): Name of tournament.
             year (int): Year tournament was played in.
-            simulation_num (None or int): Simulation number for title. Default set to None.
+            simulation_num (None or int): Simulation number for title and csv file. Default set to None.
 
         Outputs:
             A png file for the given tournament and probabilities of winning for top 10 players.
