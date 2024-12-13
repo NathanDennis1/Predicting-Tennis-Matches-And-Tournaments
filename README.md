@@ -3,10 +3,11 @@
 ## Group Members:
 Nathan Dennis, John Breedis, Yiming Chen (Team 19)
 
-## IN PROGRESS:
+## Description & Content Overview
 
-Currently implementing new metrics to simulate and predict tennis matches and tournaments, including the Glicko and TrueSkill based systems. The objective is to have these metrics as potential options to use rather than just an ELO based system to predict tennis tournaments.
+In this repository we present a singles tennis match tournament simulation library. There are 2 rating systems used in this project to predict tennis match tournaments including the well known ELO system and the SkillO system developed by us. Tournaments which can be simulated include the Wimbledon, Australian Open, Roland Garros, and US Open, where there are comparable betting odds to compare for the first 3 tournaments listed. Users can freely change parameter combinations in the ELO and SkillO formulas to develop their own predictions for these tournaments. The output of the predictions will be a dataframe corresponding to the predicted probability that a player makes it to a specific round in a tournament, where the last column is the probability they win the Championship.
 
+All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explanations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to  simulate major grand slam tournaments and validate these results against betting odds.
 
 ### Prerequisites
 
@@ -46,12 +47,6 @@ To run the code and simulate tournaments, run the main.py file. Feel free to edi
 ```bash
 python main.py
 ```
-
-### Content Overview
-
-In this repository we present a tennis tournament simulator for the 4 major Grand Slam tournaments: Roland Garros, Wimbledon, Australian Open, and US Open. All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explainations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to  simulate major grand slam tournaments and validate these results against betting odds.
-
-All python scripts are in the src folder.
 
 #### get_tennis_data.py
 
