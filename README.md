@@ -139,6 +139,18 @@ player_elos = pd.read_csv('../data/player_elos.csv', index_col = 'Player_Name')
 
 Now we have that player_elos holds the dataframe of the ELO rating for every player.
 
+### Simulate SkillO
+
+Next, we can simulate a tennis tournament using the SkillO rating system. We simulate the Wimbledon and run 5000 simulations, averaging the results to obtain the predicted winner probabilities. We first initialize the simulation class given the skillo dataframe, where we set the beta parameter to be equal to 1, similar to the SkillO rating calculation previously. We then run user_tournament_simulation to simulate the given Wimbledon tournament, specifying 5000 simulation runs and the first simulation. We also set saves to be True so the results save to a csv. We can further read the csv created as 'skillo_wimbledon'
+
+```bash
+simulation_1 = Simulation(skillo_df_2, 'skillO', beta = 1)
+simulation_1.user_tournament_simulation(data, 2023, 'Wimbledon', 5000, sim_num = '1', saves = True)
+skillo_wimbledon = pd.read_csv(f'../data/tournament_results_Wimbledon_skillO_1.csv', index_col = 0)
+```
+
+This code will run the simulation and create the csv. Optionally, we read the csv file.
+
 ## Python File Descriptions
 
 In the following section we present descriptions of each python file.
