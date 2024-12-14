@@ -115,6 +115,30 @@ tennis_data.get_data(year_lower = 2014, year_upper = 2024)
 data = pd.read_csv('../data/tennis_data.csv')
 ```
 
+Now the tennis match history data is read in as 'data'.
+
+### Create SkillO csv
+
+We first create the SkillO csv file of player ratings and variances. We initialize the skillO class and create a csv file, naming it skillo_1.csv to indicate this is the first simulation.
+
+```bash
+skillo.final_csv(data, '../data/skillo_1.csv')
+skillo_df = pd.read_csv('../data/skillo_1.csv', index_col = 'Player_Name')
+```
+
+We read the SkillO player ratings as skillo_df.
+
+### Create ELO csv
+
+Next, we create the csv for the players ELO ratings given the tennis data. To do this, we simply can call final_elo_csv from the ELO class and just pass in the tennis match data argument. We will not be putting separate simulation numbers on the ELO data.
+
+```bash
+elo.final_elo_csv(data)
+player_elos = pd.read_csv('../data/player_elos.csv', index_col = 'Player_Name')
+```
+
+Now we have that player_elos holds the dataframe of the ELO rating for every player.
+
 ## Python File Descriptions
 
 In the following section we present descriptions of each python file.
