@@ -9,6 +9,7 @@ In this repository we present a singles tennis match tournament simulation libra
 
 All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explanations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to  simulate major grand slam tournaments and validate these results against betting odds.
 
+
 ### Prerequisites
 
 Ensure you have met these requirements:
@@ -40,13 +41,52 @@ Navigate into the project folder
 cd src
 ```
 
-3. **Run main file**
+## Directory Tree
 
-To run the code and simulate tournaments, run the main.py file. Feel free to edit this file to change the tournament, year, and other variables.
+Here we present the directory tree.
+.
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── data
+├── imgs
+├── docs
+│   ├── Makefile
+│   ├── make.bat
+│   ├── build
+│   │   ├── doctrees
+│   │   └── html
+│   └── source
+│       ├── src.rst
+│       ├── conf.py
+│       ├── index.rst
+│       └── modules.rst
+├── src
+│   ├── Odds_to_Prob.py
+│   ├── __init__.py
+│   ├── elo_calculations.py
+│   ├── error_metrics.py
+│   ├── get_tennis_data.py
+│   ├── main.py
+│   ├── past_matches.py
+│   ├── plot.py
+│   ├── simulation.py
+│   ├── skillo_calculations.py
+└── tests
+│   ├── test_elo_calculations.py
+│   ├── test_error_metrics.py
+│   ├── test_get_tennis_data.py
+│   ├── test_odds_to_prob.py
+│   ├── test_past_matches.py
+│   ├── test_plot.py
+│   ├── test_simulation.py
+│   └── test_skillo_calculations.py
 
-```bash
-python main.py
-```
+
+## Python File Descriptions
+
+In the following section we present descriptions of each python file.
 
 #### get_tennis_data.py
 
