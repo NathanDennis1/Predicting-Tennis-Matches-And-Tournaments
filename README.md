@@ -23,23 +23,6 @@ Ensure you have met these requirements:
   - `pytest`
   - `requests`
   
-### Installation Steps
-
-1. **Clone the Repository**
-
-You can clone our repository to your local machine by running:
-
-```bash
-git clone https://code.harvard.edu/AM215/final_19.git
-```
-
-2. **Navigate to directory**
-
-Navigate into the project folder
-
-```bash
-cd src
-```
 
 ## Directory Tree
 
@@ -85,6 +68,53 @@ Here we present the directory tree.
 │   └── test_skillo_calculations.py
 ```
 
+## Installation Steps
+
+1. **Clone the Repository**
+
+You can clone our repository to your local machine by running:
+
+```bash
+git clone https://code.harvard.edu/AM215/final_19.git
+```
+
+2. **Navigate to directory**
+
+Navigate into the project folder
+
+```bash
+cd src
+```
+
+## Example
+
+We now present an example on how to use our library.
+
+### Load Libraries
+
+You first must open either a python file or python notebook and import all of the libraries you will be using from this project.
+
+```bash
+tennis_data = GetTennisData()
+plot = Plot()
+error = Errors()
+elo = ELO(1500, 2023)
+skillo = skillO(initial_mean=25, initial_variance=8.3333, current_year=2023, beta = 1, year_decay = 1.0)
+odds = Odds()
+matches = past_match_data()
+```
+
+The ELO class here is intialized with a mean variance of 1500 for all players and the current year being 2023 for the tournaments we will predict. The skillO class is initialized with all players starting with an initial mean rating of 25 and variance of 8.333, with the same current year. The beta value to determine how influenial variance is in the predictions is set to 1, and the year decay factor when calculating rating changes from past years data is set to 1.0.
+
+### Obtain tennis Data
+
+Next, we display how to obtain and read the tennis data. Run the following code to get the data, then read it into a csv:
+
+```bash
+tennis_data.get_data(year_lower = 2014, year_upper = 2024)
+data = pd.read_csv('../data/tennis_data.csv')
+```
+
 ## Python File Descriptions
 
 In the following section we present descriptions of each python file.
@@ -95,7 +125,7 @@ To begin, you can obtain tennis match data between 1960 and 2024 through the `ge
 
 #### elo_calculations.py
 
-Next, `elo_calculations.py` contains scripts to calculate ELO scores based on the data given from 'get_tennis_data'. Simply running the "final_elo_csv" function from the ELO class and input the tennis dataframe to output the ELO calculation dataframe for every player in the dataset, saving it to a csv file. Optionally run the function 'win_percentage_common_opponents' in 'past_match_data' to get the win percentage and games played for every player against the others across the dataset, saved in 2 csv files. The input for this function is only the tennis data.
+Next, `elo_calculations.py` contains scripts to calculate ELO scores based on the data given from  `get_tennis_data`. Simply running the "final_elo_csv" function from the ELO class and input the tennis dataframe to output the ELO calculation dataframe for every player in the dataset, saving it to a csv file. Optionally run the function 'win_percentage_common_opponents' in 'past_match_data' to get the win percentage and games played for every player against the others across the dataset, saved in 2 csv files. The input for this function is only the tennis data.
 
 #### simulation.py
 
@@ -103,11 +133,13 @@ To simulate tournaments, initiate the Simulation class with the arguments: elo d
 
 #### error_metrics.py
 
-To display error metrics (RMSE, L1, and Linf scores), utilize the Odds_to_prob.py script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the year and tournament. Running 'displayErrors' in the 'error_metrics.py' script will display the error scores across the given tournament input and optional k scaling factors for the head-to-head data. 
+To display error metrics (RMSE, L1, Linf, MAPE, and R-Squared scores), utilize the Odds_to_prob.py script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the year and tournament. Running 'displayErrors' in the 'error_metrics.py' script will display the error scores across the given tournament input and optional k scaling factors for the head-to-head data outputting a dataframe with these values.
 
 #### plot.py
 
 To plot the data, use the 'plot.py' script and Plot class. Run the plots function with the input tournament, year, and optimal k scaling factors to include head-to-head model data in the plots.
+
+To plot a comparison between the ELO and SkillO predictions, running 'plot_ELO_vs_SkillO' with the tournament name, year, and simulation will output a png file based on the simulation number for the corresponding SkillO and ELO output.
 
 #### main.py
 
