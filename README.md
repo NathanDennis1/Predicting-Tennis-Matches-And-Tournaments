@@ -161,6 +161,23 @@ simulation_ELO.user_tournament_simulation(data, 2023, 'Wimbledon', 5000, saves =
 ELO_wimbledon = pd.read_csv(f'../data/tournament_results_Wimbledon_ELO.csv', index_col = 0)
 ```
 
+### Display Error Metrics
+
+We now display the error metrics for the ELO and SkillO tournament simulations with the displayErrors function from the error class.
+
+```bash
+error.displayErrors('SkillO', 'Wimbledon', '1')
+```
+
+This displays the error metrics for the SkillO simulation for Wimbledon, with simulation number 1 as we specified earlier.
+
+```bash
+error.displayErrors('ELO', 'Wimbledon')
+```
+
+This displays the ELO error metrics for the ELO simulation for Wimbledon.
+
+
 ## Python File Descriptions
 
 In the following section we present descriptions of each python file.
