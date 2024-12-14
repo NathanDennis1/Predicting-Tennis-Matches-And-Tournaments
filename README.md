@@ -44,7 +44,8 @@ cd src
 ## Directory Tree
 
 Here we present the directory tree.
-.
+
+```bash
 ├── LICENSE
 ├── README.md
 ├── requirements.txt
@@ -82,7 +83,7 @@ Here we present the directory tree.
 │   ├── test_plot.py
 │   ├── test_simulation.py
 │   └── test_skillo_calculations.py
-
+```
 
 ## Python File Descriptions
 
