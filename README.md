@@ -74,7 +74,7 @@ Here we present the directory tree.
 │   ├── plot.py
 │   ├── simulation.py
 │   ├── skillo_calculations.py
-└── tests
+├── tests
 │   ├── test_elo_calculations.py
 │   ├── test_error_metrics.py
 │   ├── test_get_tennis_data.py
@@ -91,11 +91,11 @@ In the following section we present descriptions of each python file.
 
 #### get_tennis_data.py
 
-To begin, you can obtain tennis match data between 1960 and 2024 through the 'get_tennis_data.py' script under the GetTennisData class, which allows users to input a year interval between 1960 and 2024 to obtain tennis data. This data includes all relevant tournament match outcomes between the years, the winners and losers, their ages, the surface of the tournament, and the tournament level.
+To begin, you can obtain tennis match data between 1960 and 2024 through the `get_tennis_data.py` script under the GetTennisData class, which allows users to input a year interval between 1960 and 2024 to obtain tennis data. This data includes all relevant tournament match outcomes between the years, the winners and losers, their ages, the surface of the tournament, and the tournament level.
 
 #### elo_calculations.py
 
-Next, 'elo_calculations.py' contains scripts to calculate ELO scores based on the data given from 'get_tennis_data'. Simply running the "final_elo_csv" function from the ELO class and input the tennis dataframe to output the ELO calculation dataframe for every player in the dataset, saving it to a csv file. Optionally run the function 'win_percentage_common_opponents' in 'past_match_data' to get the win percentage and games played for every player against the others across the dataset, saved in 2 csv files. The input for this function is only the tennis data.
+Next, `elo_calculations.py` contains scripts to calculate ELO scores based on the data given from 'get_tennis_data'. Simply running the "final_elo_csv" function from the ELO class and input the tennis dataframe to output the ELO calculation dataframe for every player in the dataset, saving it to a csv file. Optionally run the function 'win_percentage_common_opponents' in 'past_match_data' to get the win percentage and games played for every player against the others across the dataset, saved in 2 csv files. The input for this function is only the tennis data.
 
 #### simulation.py
 
