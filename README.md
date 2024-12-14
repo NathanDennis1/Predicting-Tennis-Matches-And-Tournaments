@@ -189,7 +189,15 @@ Here is example output of what this comparison will look like:
 
 ![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_1.png)
 
+### OPTIONAL, Head-to-head
 
+Users can also simulate tournaments incorporating head-to-head match history into account by incorporating head-to-head parameters in the simulation function:
+
+```bash
+simulation_ELO = Simulation(player_elos, 'ELO', S = 800, hth = True, k = 0.1)
+```
+
+Here, we set hth, representing head-to-head, to be True, indicating the simulation will incorporate head-to-head match data into analysis. The k factor scales the head-to-head data and the influence on match outcomes.
 
 ## Python File Descriptions
 
