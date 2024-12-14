@@ -177,6 +177,19 @@ error.displayErrors('ELO', 'Wimbledon')
 
 This displays the ELO error metrics for the ELO simulation for Wimbledon.
 
+### Make comparison plot to compare SkillO and ELO formulas
+
+We can now display the corresponding bar plot showing the top 10 predicted champions based on the betting odds, with bars representing the predicted champion probabilities for the SkillO and ELO formula.
+
+```bash
+plot.plot_ELO_vs_SkillO('Wimbledon', 2023, '1')
+```
+
+Here is example output of what this comparison will look like:
+
+![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_1.png)
+
+
 
 ## Python File Descriptions
 
