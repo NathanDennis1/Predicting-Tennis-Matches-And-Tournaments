@@ -9,13 +9,13 @@ import os
 @pytest.fixture
 def original_tennis_data():
     """
-    Obtains original tennis data
+    Obtains original tennis data.
 
     Returns:
-        Dataframe of tennis data
+        Dataframe of tennis data.
 
     Raises:
-        FileNotFoundError: File was not found in data folder
+        FileNotFoundError: File was not found in data folder.
     """
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tennis_data.csv')    
     if not os.path.exists(data_path):
@@ -28,13 +28,13 @@ def original_tennis_data():
 @pytest.fixture
 def original_player_elo_df():
     """
-    Obtains original player elo dataframe
+    Obtains original player elo dataframe.
 
     Returns:
-        Dataframe of player elos data
+        Dataframe of player elos data.
 
     Raises:
-        FileNotFoundError: File was not found in data folder
+        FileNotFoundError: File was not found in data folder.
     """
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'player_elos.csv')    
     if not os.path.exists(data_path):
@@ -47,13 +47,13 @@ def original_player_elo_df():
 @pytest.fixture
 def original_player_skillo_df():
     """
-    Obtains original player SkillO dataframe
+    Obtains original player SkillO dataframe.
 
     Returns:
-        Dataframe of player SkillO ratings data
+        Dataframe of player SkillO ratings data.
 
     Raises:
-        FileNotFoundError: File was not found in data folder
+        FileNotFoundError: File was not found in data folder.
     """
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'skillo_2.csv')    
     if not os.path.exists(data_path):
@@ -66,13 +66,13 @@ def original_player_skillo_df():
 @pytest.fixture
 def original_win_pct_df():
     """
-    Obtains original win percentage dataframe
+    Obtains original win percentage dataframe.
 
     Returns:
-        Dataframe of win percentage for players in original data
+        Dataframe of win percentage for players in original data.
 
     Raises:
-        FileNotFoundError: File was not found in data folder
+        FileNotFoundError: File was not found in data folder.
     """
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'win_percentage.csv')    
     if not os.path.exists(data_path):
@@ -85,13 +85,13 @@ def original_win_pct_df():
 @pytest.fixture
 def original_games_played_df():
     """
-    Obtains original games played dataframe
+    Obtains original games played dataframe.
 
     Returns:
-        Dataframe of games played for players in original data
+        Dataframe of games played for players in original data.
 
     Raises:
-        FileNotFoundError: File was not found in data folder
+        FileNotFoundError: File was not found in data folder.
     """
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'games_played_opponents.csv')
     if not os.path.exists(data_path):
@@ -104,14 +104,14 @@ def original_games_played_df():
 @pytest.fixture
 def original_simulation(original_player_elo_df):
     """
-    Initializes original simulation class with original players
+    Initializes original simulation class with original players.
     """
     return Simulation(rating_df=original_player_elo_df, rating_system = 'ELO')
 
 @pytest.fixture
 def original_simulation_skillO(original_player_skillo_df):
     """
-    Initializes original simulation class with original players
+    Initializes original simulation class with original players.
     """
     return Simulation(rating_df=original_player_skillo_df, rating_system = 'SkillO')
 
@@ -121,10 +121,10 @@ def original_simulation_skillO(original_player_skillo_df):
 @pytest.fixture
 def tennis_data():
     """
-    Creates mock tennis dataset
+    Creates mock tennis dataset.
 
     Returns:
-        Mock dataframe of tennis players
+        Mock dataframe of fake tennis players.
     """
     data = {
         'tourney_name': ['Australian Open', 'French Open', 'Wimbledon', 'US Open', 
@@ -153,7 +153,7 @@ def tennis_data():
 @pytest.fixture
 def player_elo_df():
     """
-    Creates mock player elo dataset
+    Creates mock player elo dataset.
 
     Returns:
         Mock dataframe of tennis players elo ratings, given random elo ratings and ages.
@@ -175,10 +175,10 @@ def player_elo_df():
 @pytest.fixture
 def player_skillo_df():
     """
-    Creates mock player elo dataset
+    Creates mock player skillo dataset.
 
     Returns:
-        Mock dataframe of tennis players elo ratings, given random elo ratings and ages.
+        Mock dataframe of tennis players skillo ratings, given random skillo ratings and ages.
     """
     skillo_data = {
         'Player_Name': ['Player_1', 'Player_2', 'Player_3', 'Player_4' ],
@@ -241,20 +241,20 @@ def games_played_df():
 @pytest.fixture
 def simulation(player_elo_df):
     """
-    Creates simulation class for mock player elos
+    Creates simulation class for mock player elo ratings.
     """
     return Simulation(rating_df=player_elo_df, rating_system = 'ELO')
 
 @pytest.fixture
 def simulation_skillo(player_skillo_df):
     """
-    Creates simulation class for mock player elos
+    Creates simulation class for mock player skillo ratings.
     """
     return Simulation(rating_df=player_skillo_df, rating_system = 'skillO')
 
 class Test_simulation():
     """
-    Test simulation class to test various simulation functions
+    Test simulation class to test various simulation functions.
     """
     def test_compute_prob_using_elo(self, simulation):
         """
@@ -358,7 +358,7 @@ class Test_simulation():
 
     def test_simulating_game_type_error_player_1_string(self, simulation):
         """
-        Test that TypeError is raised when player 1's name is not a string
+        Test that TypeError is raised when player 1's name is not a string.
 
         Parameters:
             simulation (class): An instance of the Simulation class to be tested.
@@ -368,7 +368,7 @@ class Test_simulation():
 
     def test_simulating_game_type_error_player_2_string(self, simulation):
         """
-        Test that TypeError is raised when player 2's name is not a string
+        Test that TypeError is raised when player 2's name is not a string.
 
         Parameters:
             simulation (class): An instance of the Simulation class to be tested.
@@ -378,7 +378,7 @@ class Test_simulation():
 
     def test_simulating_game_type_error_player_1_age(self, simulation):
         """
-        Test that TypeError is raised when player 1's age is not a float
+        Test that TypeError is raised when player 1's age is not a float.
 
         Parameters:
             simulation (class): An instance of the Simulation class to be tested.
@@ -388,7 +388,7 @@ class Test_simulation():
 
     def test_simulating_game_type_error_player_2_age(self, simulation):
         """
-        Test that TypeError is raised when player 2's age is not a float
+        Test that TypeError is raised when player 2's age is not a float.
 
         Parameters:
             simulation (class): An instance of the Simulation class to be tested.
