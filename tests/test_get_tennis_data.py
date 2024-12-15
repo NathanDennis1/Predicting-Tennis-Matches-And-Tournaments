@@ -11,7 +11,7 @@ def tennis_data():
 
 def test_get_data_type_error(tennis_data):
     """
-    Tests raising the type error of the lower year is not an integer.
+    Tests raising the type error if the lower year is not an integer.
 
     Parameters:
         tennis_data (class): An instance of the tennis_data class to be tested.
@@ -21,7 +21,7 @@ def test_get_data_type_error(tennis_data):
 
 def test_get_data_value_error(tennis_data):
     """
-    Tests raising the type error of the upper year is not an integer.
+    Tests raising the type error if the upper year is not an integer.
 
     Parameters:
         tennis_data (class): An instance of the tennis_data class to be tested.
