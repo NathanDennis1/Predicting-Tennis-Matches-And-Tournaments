@@ -42,8 +42,8 @@ class Odds():
         odds for a tournament in a year.
 
         Args:
-            year (int): year of tournament
-            tournament (str): Name of tournament
+            year (int): Year of tournament.
+            tournament (str): Name of tournament. (Australian Open, Roland Garros, Wimbledon, or US Open)
 
         Raises:
             TypeError: Inputs must both be floats, true and pred, raises error if not.
