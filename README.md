@@ -193,7 +193,7 @@ Here is example output of what this comparison will look like:
 
 ![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_2.png)
 
-We note this is the same second simulation we did in our paper.
+We note this is the same second simulation we did in our paper. The results from user simulation may vary, since this code is dependent on randomness in the simulations.
 
 ### OPTIONAL, Head-to-head
 
