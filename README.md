@@ -119,7 +119,7 @@ tennis_data.get_data(year_lower = 2014, year_upper = 2024)
 data = pd.read_csv('../data/tennis_data.csv')
 ```
 
-Now the tennis match history data is read in as 'data'.
+Now the tennis match history data is read in as 'data'. This gets tennis data between the years 2022 and 2023.
 
 ### Create SkillO csv
 
