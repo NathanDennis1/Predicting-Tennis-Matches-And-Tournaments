@@ -3,11 +3,11 @@ import pandas as pd
 
 class past_match_data():
     """
-    Class to obtain past match data between players
+    Class to obtain past match data between players.
     """
     def __init__(self):
         """
-        Initializer for past_match_data class
+        Initializer for past_match_data class.
         """
         pass
 
