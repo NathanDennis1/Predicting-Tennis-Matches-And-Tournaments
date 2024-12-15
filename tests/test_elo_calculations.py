@@ -6,7 +6,7 @@ import pandas as pd
 @pytest.fixture
 def elo():
     """
-    Created ELO class for testing
+    Created ELO class for testing.
     """
     return ELO(initial_elo_rating=1500, current_year = 2023)
 
@@ -96,7 +96,7 @@ class Test_elo_calculations():
 
     def test_expected_game_score(self, elo):
         """
-        Tests the inital elos function to return a float
+        Tests the expected game score to return a float.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -106,7 +106,7 @@ class Test_elo_calculations():
 
     def test_decay_factor(self, elo):
         """
-        Tests the decay factor function to return a float
+        Tests the decay factor function to return a float.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -116,7 +116,7 @@ class Test_elo_calculations():
 
     def test_elo_calculation(self, elo, df, elo_df):
         """
-        Tests the elo calculation function to return a dataframe
+        Tests the elo calculation function to return a dataframe.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -128,7 +128,7 @@ class Test_elo_calculations():
 
     def test_get_most_recent_age(self, elo, df):
         """
-        Tests the get most recent age function to return a series
+        Tests the get most recent age function to return a series.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -154,7 +154,7 @@ class Test_elo_calculations():
 
     def test_expected_game_score_first_elo_type_error(self, elo):
         """
-        Test that a TypeError is raised if first_elo is not a float.
+        Test that a TypeError is raised if first_elo is not a float for expected_game_score function.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -168,7 +168,7 @@ class Test_elo_calculations():
         Test that a TypeError is raised if second_elo is not a float.
 
         Parameters:
-            elo (class): An instance of the ELO class to be tested.
+            elo (class): An instance of the ELO class to be tested for expected_game_score function.
         """
         with pytest.raises(TypeError, match="Second ELO is not a float"):
             elo.expected_game_score(first_elo=2000.0, second_elo="1800", S=400)
@@ -176,7 +176,7 @@ class Test_elo_calculations():
 
     def test_expected_game_score_scaling_factor_type_error(self, elo):
         """
-        Test that a TypeError is raised if S is not an int.
+        Test that a TypeError is raised if S is not an int for expected_game_score function.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -186,7 +186,7 @@ class Test_elo_calculations():
 
     def test_decay_factor_year_difftype_error(self, elo):
         """
-        Test that a TypeError is raised if year_diff is not an int.
+        Test that a TypeError is raised if year_diff is not an int  for decay_factor function..
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -196,7 +196,7 @@ class Test_elo_calculations():
 
     def test_decay_factor_decay_ratetype_error(self, elo):
         """
-        Test that a TypeError is raised if year_diff is not an int.
+        Test that a TypeError is raised if decay_rate is not an int for decay_factor function.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -206,7 +206,7 @@ class Test_elo_calculations():
 
     def test_elo_calculation_invalid_data_type(self, elo):
         """
-        Test that a TypeError is raised if 'data' is not a pandas DataFrame.
+        Test that a TypeError is raised if data is not a pandas DataFrame for elo_calculation function.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -217,7 +217,7 @@ class Test_elo_calculations():
 
     def test_elo_calculation_invalid_elo_df_type(self, elo):
         """
-        Test that a TypeError is raised if 'elo_df' is not a pandas DataFrame.
+        Test that a TypeError is raised if elo_df is not a pandas DataFrame for elo_calculation function.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
@@ -228,7 +228,7 @@ class Test_elo_calculations():
 
     def test_elo_calculation_invalid_K_type(self, elo):
         """
-        Test that a TypeError is raised if 'K' is not an integer.
+        Test that a TypeError is raised if 'K' is not an integer for elo_calculation function.
 
         Parameters:
             elo (class): An instance of the ELO class to be tested.
