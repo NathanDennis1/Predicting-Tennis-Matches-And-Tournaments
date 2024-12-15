@@ -18,7 +18,9 @@ def sample_data():
     return pd.DataFrame(data)
 
 class TestPastMatchData:
-    
+    """
+    Class to test past_matches python script.
+    """
     @pytest.fixture
     def past_match(self):
         """
@@ -28,7 +30,7 @@ class TestPastMatchData:
     
     def test_return_type(self, past_match, sample_data):
         """
-        Test that the return type is a tuple of two DataFrames.
+        Test that the return type is a tuple of two DataFrames for win_percentage_common_opponents function.
 
         Parameters:
             past_match (class): An instance of the past_match_data class to be tested.
@@ -40,7 +42,7 @@ class TestPastMatchData:
     
     def test_index_names(self, past_match, sample_data):
         """
-        Test that both dataframes have 'Player_Name' as the index name.
+        Test that both dataframes have 'Player_Name' as the index name from dataframes returned from win_percentage_common_opponents.
 
         Parameters:
             past_match (class): An instance of the past_match_data class to be tested.
