@@ -10,7 +10,7 @@ class GetTennisData():
     """
     def __init__(self):
         """
-        Initialize the GetTennisData class
+        Initialize the GetTennisData class.
         """
         self.base_url = "https://raw.githubusercontent.com/JeffSackmann/tennis_atp/master/atp_matches_{}.csv"
 
@@ -27,7 +27,7 @@ class GetTennisData():
 
         Raises:
             Exception: Years must be integers
-            ValueError: Year must be in specified range of possible data.
+            ValueError: Year must be in specified range of possible data. Between 1968 to 2024 to lower year, 1969 to 2025 for upper.
         """
 
         if (type(year_lower) != int or type(year_upper) != int):
