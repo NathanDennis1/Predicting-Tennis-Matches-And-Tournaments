@@ -229,17 +229,17 @@ To simulate tournaments, running 'user_tournament_simulation' with the inputs of
 
 #### error_metrics.py
 
-To display error metrics (RMSE, L1, Linf, MAPE, and R-Squared scores), utilize the Odds_to_prob.py script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the year and tournament. Running 'displayErrors' in the 'error_metrics.py' script will display the error scores across the given tournament input and optional k scaling factors for the head-to-head data outputting a dataframe with these values.
+To display error metrics (RMSE, L1, Linf, MAPE, and R-Squared scores), utilize the `Odds_to_prob.py` script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the year and tournament. Running 'displayErrors' in the `error_metrics.py` script will display the error scores across the given tournament input and simulation number, alongside the optional k scaling factors for the head-to-head data, outputting a dataframe with these values.
 
 #### plot.py
 
-To plot the data, use the 'plot.py' script and Plot class. Run the plots function with the input tournament, year, and optimal k scaling factors to include head-to-head model data in the plots.
+To plot the data, use the `plot.py` script and Plot class. Run the plots function with the input tournament, year, and optional k scaling factors to include head-to-head model data in the plots.
 
-To plot a comparison between the ELO and SkillO predictions, running 'plot_ELO_vs_SkillO' with the tournament name, year, and simulation will output a png file based on the simulation number for the corresponding SkillO and ELO output.
+To plot a comparison between the ELO and SkillO predictions, running 'plot_ELO_vs_SkillO' with the tournament name, year, and simulation number will output a png file based on the simulation number for the corresponding SkillO and ELO output.
 
 #### main.py
 
-A working example of this is in the 'main.py' script in src. This file runs everything from top to bottom and creates the plot/error metrics for a given tournament. To replicate this, navigate to the source code using 'cd src' in your terminal. Then run 'python main.py' to output the plot image and calculate error metrics.
+A working example of this is in the `main.py` script in src. This file runs everything from top to bottom and creates the plot/error metrics for a given tournament. To replicate this, navigate to the source code using 'cd src' in your terminal. Then run 'python main.py' to output the plot image and calculate error metrics.
 
 We note that to fully utilize the plot and errors class, ensure you have the sufficient csv files created to do so when using the head-to-head data. You may need to run simulation multiple times for different head-to-head k factors before plotting and getting the error metrics.
 
