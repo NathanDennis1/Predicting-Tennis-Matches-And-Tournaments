@@ -48,7 +48,7 @@ class ELO:
         the winners and losers columns, then combines the set using union.
 
         Args:
-            data (pandas dataframe): Dataframe for given tennis dataset
+            data (pandas dataframe): Dataframe for given tennis dataset.
 
         Returns:
             Set of player names from the tennis dataset
@@ -259,7 +259,7 @@ class ELO:
         player_elos.csv, saved in the data folder.
 
         Args:
-            tennis_data (pandas dataframe): The dataframe containing all tennis match data
+            tennis_data (pandas dataframe): The dataframe containing all tennis match data.
             file_path (str): Path of the file to save, default ../data/player_elos.csv.
 
         Returns:
