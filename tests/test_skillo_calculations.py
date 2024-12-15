@@ -108,7 +108,7 @@ class Test_skillo_calculations():
 
     def test_final_skillo_csv(self, skillo, tmp_path, df):
         """
-        Tests the final skillo csv function to create a csv in data..
+        Tests the final skillo csv function to create a csv file in the data folder.
 
         Parameters:
             skillo (class): An instance of the SkillO class to be tested.
