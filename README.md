@@ -103,7 +103,7 @@ tennis_data = GetTennisData()
 plot = Plot()
 error = Errors()
 elo = ELO(1500, 2023)
-skillo = skillO(initial_mean=25, initial_variance=8.3333, current_year=2023, beta = 1, year_decay = 1.0)
+skillo = skillO(initial_mean=25, initial_variance=8.3333, current_year=2023, beta = 1, year_decay = 1.1)
 odds = Odds()
 matches = past_match_data()
 ```
@@ -191,9 +191,9 @@ plot.plot_ELO_vs_SkillO('Wimbledon', 2023, '1')
 
 Here is example output of what this comparison will look like:
 
-![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_1.png)
+![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_2.png)
 
-We note this is the same first simulation we did in our paper, where we eventually achieved better results with different parameter combinations for SkillO.
+We note this is the same second simulation we did in our paper.
 
 ### OPTIONAL, Head-to-head
 
