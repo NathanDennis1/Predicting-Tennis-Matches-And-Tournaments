@@ -13,14 +13,14 @@ class Errors():
 
     def RMSE(self, true, pred):
         """ 
-        Calculates RMSE score, the root mean squared error.
+        Calculates RMSE score, the root mean squared error between the true and predicted values.
 
         Args:
             true (pandas series): Series of true values (betting odds probability)
             pred (pandas series): Series of predicted values (model output probability)
 
         Return:
-            RMSE score as a float
+            RMSE score as a float.
 
         Raises:
             TypeError: Inputs must both be series, true and pred, raises error if not.
@@ -54,7 +54,7 @@ class Errors():
 
     def L1(self, true, pred):
         """ 
-        Calculates L-1 Norm score, the average absolute difference between the true and predicted values
+        Calculates L-1 Norm score, the average absolute difference between the true and predicted values.
 
         Args:
             true (pandas series): True values (betting odds probability)
