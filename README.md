@@ -189,6 +189,8 @@ Here is example output of what this comparison will look like:
 
 ![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_1.png)
 
+We note this is the same first simulation we did in our paper, where we eventually achieved better results with different parameter combinations for SkillO.
+
 ### OPTIONAL, Head-to-head
 
 Users can also simulate tournaments incorporating head-to-head match history into account by incorporating head-to-head parameters in the simulation function:
