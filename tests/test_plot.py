@@ -17,7 +17,7 @@ class TestPlot:
     """
     def test_plot(self, plot):
         """
-        Tests to ensure a figure is created when calling plot.
+        Tests to ensure a figure is created when calling plots.
 
         Parameters:
             plot (class): An instance of the Plot class to be tested.
@@ -32,7 +32,7 @@ class TestPlot:
 
     def test_plot_comparison(self, plot):
         """
-        Tests to ensure a figure is created when calling plot.
+        Tests to ensure a figure is created when calling plot_ELO_vs_SkillO.
 
         Parameters:
             plot (class): An instance of the Plot class to be tested.
