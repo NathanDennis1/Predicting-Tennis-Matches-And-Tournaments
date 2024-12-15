@@ -38,10 +38,10 @@ class Simulation():
         Creates logistic function used for ELO calculation.
 
         Args:
-            x (float): number input for the log function
+            x (float): number input for the log function.
 
         Returns:
-            Final calculation of log function with given number
+            Final calculation of log function with given number.
         """
         return 1 / (1 + 10**(-x))
 
@@ -50,8 +50,8 @@ class Simulation():
         Calculates expected game score based on the logistic function fr the ELO formula.
 
         Args:
-            first_elo (float): The first elo for a given team/player
-            second_elo (float): The second elo for a given team/player
+            first_elo (float): The first elo for a given team/player.
+            second_elo (float): The second elo for a given team/player.
 
         Returns:
             Final calculation for an expected game score as a float.
@@ -88,12 +88,12 @@ class Simulation():
         Calculate the adjusted win probability for Player A based on the sigmoid-weighted head-to-head record.
         
         Args:
-            P_A (float): Probability played A beats player B
-            P_head_to_head (float): Historical head-to-head winning percentage for player A
-            games_played (int): Number of games played between played A and B
+            P_A (float): Probability played A beats player B.
+            P_head_to_head (float): Historical head-to-head winning percentage for player A.
+            games_played (int): Number of games played between played A and B.
         
         Returns:
-            Adjusted win probability for Player A
+            Adjusted win probability for Player A.
         """
         adjustment_factor = 0.5 / (1 + math.exp(-self.k * (games_played - 10))) 
 
@@ -110,10 +110,10 @@ class Simulation():
         Computes a players winning probability based off the number of sets in a match.
 
         Args:
-            winning_prob (float): The initial winning probability for a given player
-            age (float): The age of a player in years
-            sets (int): The number of sets in a match
-            surface (str): The surface of a given match
+            winning_prob (float): The initial winning probability for a given player.
+            age (float): The age of a player in years.
+            sets (int): The number of sets in a match. In grand slams, this is 5.
+            surface (str): The surface of a given match.
 
         Returns:
             List of winning probability for the number of sets.
@@ -138,12 +138,12 @@ class Simulation():
         Computes a game in a tennis match
 
         Args:
-            player_1 (str): Name of player 1
-            player_1_age (float): The age of player 1
-            player_2 (str): Name of player 2
-            player_2_age (float): The age of player 2
-            num_sets (int): Number of sets in a match
-            surface (str): Surface of a match
+            player_1 (str): Name of player 1.
+            player_1_age (float): The age of player 1.
+            player_2 (str): Name of player 2.
+            player_2_age (float): The age of player 2.
+            num_sets (int): Number of sets in a match.
+            surface (str): Surface of a match.
 
         Returns:
             Player who won the match as a string.
@@ -199,9 +199,9 @@ class Simulation():
         Finds the initial draw of a tournament for grand slams in the tennis dataset.
 
         Args:
-            data (pandas dataframe): Dataframe of scraped tennis data
-            year (int): The year the match was played in
-            tournament (str): Name of the tournament
+            data (pandas dataframe): Dataframe of scraped tennis data with tennis match history.
+            year (int): The year the match was played in,
+            tournament (str): Name of the tournament.
 
         Returns:
             first_round_df (pandas dataframe): Dataframe of the first round matchup for given tournament.
@@ -347,7 +347,7 @@ class Simulation():
     
     def simulation_params(self, win_pct_df, games_played_df):
         """
-        Initializes parameters for the simulation module
+        Initializes parameters for the simulation module.
 
         Args:
             win_pct_df (pandas dataframe): Dataframe of the given win percentage for head-to-head matchups between players
@@ -363,8 +363,8 @@ class Simulation():
 
         Args:
             tennis_data (pandas dataframe): Dataframe of tennis data for given years.
-            year (int): Year of tournament user wants to simulate
-            tournament_name (str): The name of the tournament the user wants to simulate
+            year (int): Year of tournament user wants to simulate.
+            tournament_name (str): The name of the tournament the user wants to simulate.
             nsims (int): Number of tournament simulations.
             sim_num (int): Simulation number. Default set to 1.
             saves (boolean): Save simulation to csv or not. Default set to True.
