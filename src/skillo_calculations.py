@@ -18,8 +18,8 @@ class skillO:
         Initializer for skillO class
 
         Args:
-            initial_mean (float): Initial skill level of players.
-            initial_variance (float): Initial uncertainty in the skill level, their variance
+            initial_mean (float): Initial skill level of players, their mean skill level.
+            initial_variance (float): Initial uncertainty in the skill level, their variance.
             current_year (int): The current year that data was obtained from.
             beta (float): Beta scaling parameter used in SkillO calculations. Default set to 2.
             year_decay (float): Year decay factor determining how much past years are weighted. Default set to 0.7
@@ -33,7 +33,7 @@ class skillO:
         self.year_decay = year_decay
         self.gamma = gamma
 
-        # Initializes mock ELO class to import functions over
+        # Initializes mock ELO class to import functions over so we don't have to repeat many functions.
         self.elo_instance = ELO(1500, current_year)
 
     def initial_skills(self, surfaces, names):
@@ -69,7 +69,7 @@ class skillO:
             variance_2 (float): Uncertainty of player 2, their variance.
         
         Returns:
-            float: Expected probability that player 1 wins.
+            float: Expected probability that player 1 beats player 2.
         """
         # Calculate expected score using a logistic function
         skill_diff = mean_1 - mean_2
@@ -81,12 +81,12 @@ class skillO:
         Calculates SkillO for each player based on match history.
 
         Args:
-            data (pd.DataFrame): Match data containing winner, loser, surface, and year of match.
-            SkillO_df (pd.DataFrame): Dataframe of SkillO ratings.
+            data (pandas dataFrame): Match data containing winner, loser, surface, and year of match.
+            SkillO_df (pandas dataFrame): Dataframe of SkillO ratings.
             gamma (float): SkillO adjustment factor. Default set to 0.1
 
         Returns:
-            pd.DataFrame: Updated player skill dataframe after all matches.
+            pandas dataFrame: Updated player skill dataframe after all matches.
         """
         if not isinstance(data, pd.DataFrame):
             raise TypeError(f"data must be a pandas dataframe, it is type {type(data)}")
@@ -112,7 +112,7 @@ class skillO:
                 gamma = gamma * 0.5
 
             year_diff = self.current_year - row['Year']
-
+            
             # Calculates decay factor based on the difference in years
             decay_factor_year = self.elo_instance.decay_factor(year_diff, self.year_decay)
 
@@ -171,13 +171,13 @@ class skillO:
         Run the skillO calculation multiple times and take the average mean and variance for each player.
 
         Args:
-            data (pd.DataFrame): Match data containing winner, loser, surface, and year of match.
+            data (pandas dataFrame): Match data containing winner, loser, surface, and year of match.
             num_simulations (int): Number of times to run the simulation.
             surfaces (list): List of surfaces (Hard, Clay, Grass)
             names (list): List of player names.
 
         Returns:
-            pd.DataFrame: Dataframe with average mean and variance across all simulations.
+            pandas dataFrame: Dataframe with average mean and variance across all simulations for skillo.
         """
         # Initialize a list to store the skill results after each simulation.
         all_means = []
@@ -205,14 +205,11 @@ class skillO:
 
     def final_csv(self, tennis_data, file_path='../data/skillo.csv'):
         """
-        Creates the final csv.
+        Creates the final csv for the skillo player ratings.
 
         Args:
-            tennis_data (pandas dataframe): The dataframe containing all tennis match data
-            file_path (str): Path of the file to save, default ../data/skillo.csv
-
-        Returns:
-            Series for the number of games a player has played.
+            tennis_data (pandas dataframe): The dataframe containing all tennis match data.
+            file_path (str): Path of the file to save, default ../data/skillo.csv.
         """
         names = self.elo_instance.get_names(tennis_data)
         surfaces = tennis_data['surface'].unique()[0:3]
