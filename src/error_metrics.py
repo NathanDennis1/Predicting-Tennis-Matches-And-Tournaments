@@ -6,6 +6,9 @@ class Errors():
     Class to calculate error metrics based on the models predicted probabilities and the given winning probabilities based on the odds.
     """
     def __init__(self):
+        """
+        Initializer for Errors class.
+        """
         pass
 
     def RMSE(self, true, pred):
@@ -114,7 +117,6 @@ class Errors():
         ss_res = np.sum((true - pred) ** 2)
         ss_tot = np.sum((true - np.mean(true)) ** 2)
         
-        # R-squared formula
         r2 = 1 - (ss_res / ss_tot)
         
         return r2
@@ -129,7 +131,7 @@ class Errors():
 
         Args:
             rating_system (str): Name of given rating system, either ELO or SkillO.
-            tournament_name (str): Name of tennis tournament.
+            tournament_name (str): Name of tennis tournament. (Ex: Wimbledon, Roland Garros, Australian Open)
             simulation_number (None or str): Optional imput for simulation number to display errors for certain simulation number csv files created. Default set to None
             k_list (None or list): The list (max length 3) of different k factors used in the H2H model to calculate error rates for. 
                                    This can be none if the H2H model is not being used, which is the default.
