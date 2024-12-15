@@ -108,7 +108,7 @@ odds = Odds()
 matches = past_match_data()
 ```
 
-The ELO class here is intialized with a mean variance of 1500 for all players and the current year being 2023 for the tournaments we will predict. The skillO class is initialized with all players starting with an initial mean rating of 25 and variance of 8.333, with the same current year. The beta value to determine how influenial variance is in the predictions is set to 1, and the year decay factor when calculating rating changes from past years data is set to 1.0.
+The ELO class here is initialized with a mean variance of 1500 for all players and the current year being 2023 for the tournaments we will predict. The skillO class is initialized with all players starting with an initial mean rating of 25 and variance of 8.333, with the same current year. The beta value to determine how influential variance is in the predictions is set to 1, and the year decay factor when calculating rating changes from past years data is set to 1.0.
 
 ### Obtain tennis Data
 
