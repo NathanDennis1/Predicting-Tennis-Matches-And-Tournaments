@@ -197,8 +197,8 @@ class Test_error_metrics():
 
         Parameters:
             mock_read_csv (MagicMock): The mocked version of `pandas.read_csv`, which is 
-                                    used to simulate the behavior of reading CSV files 
-                                    without actually accessing the file.
+                                       used to simulate the behavior of reading CSV files 
+                                       without actually accessing the file.
             error_metrics (class): An instance of the error_metrics class to be tested.
         """
         # Prepare mock data
@@ -222,7 +222,6 @@ class Test_error_metrics():
         # Test that the result is a DataFrame
         assert isinstance(result_df, pd.DataFrame), f"Expected a DataFrame, but got {type(result_df)}"
 
-
         # Test that the DataFrame contains the expected columns
         expected_columns = ['Model', 'RMSE', 'Linf', 'L1', 'MAPE', 'R-squared']
         assert all(col in result_df.columns for col in expected_columns), f"Missing columns. Expected columns: {expected_columns}, found: {result_df.columns.tolist()}"
@@ -234,8 +233,8 @@ class Test_error_metrics():
         
         Parameters:
             mock_read_csv (MagicMock): The mocked version of `pandas.read_csv`, which is 
-                                    used to simulate the behavior of reading CSV files 
-                                    without actually accessing the file.
+                                       used to simulate the behavior of reading CSV files 
+                                       without actually accessing the file.
             error_metrics (class): An instance of the error_metrics class to be tested.
         """
         # Prepare mock data
