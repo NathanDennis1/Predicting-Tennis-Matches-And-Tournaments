@@ -18,7 +18,7 @@ class Plot():
     def get_project_root(self):
         """
         Returns the root directory of the project, which in our case is final_19. This was done
-        so that the test_plot.py test code would work.
+        so that the test_plot.py test code would work. We received assistance for this code from ChatGPT.
         """
         return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     
