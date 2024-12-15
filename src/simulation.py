@@ -47,7 +47,7 @@ class Simulation():
 
     def compute_prob_using_ELO(self, first_elo, second_elo):
         """
-        Calculates expected game score based on the logistic function fr the ELO formula.
+        Calculates expected game score based on the logistic function for the ELO formula.
 
         Args:
             first_elo (float): The first elo for a given team/player.
