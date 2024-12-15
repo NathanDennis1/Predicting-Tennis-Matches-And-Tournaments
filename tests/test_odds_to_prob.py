@@ -11,7 +11,7 @@ def odds():
 
 class Test_odds_to_prob():
     """
-    Class to test the Odds_to_Prob python script
+    Class to test the Odds_to_Prob python script.
     """
     def test_american_odds_to_probability_positive(self, odds):
         """
@@ -51,7 +51,7 @@ class Test_odds_to_prob():
 
     def test_invalid_year_type(self, odds):
         """
-        Test that TypeError is raised when year is not an integer.
+        Test that TypeError is raised when year is not an integer for convert_odds function.
 
         Parameters:
             odds (class): An instance of the Odds class to be tested.
@@ -61,7 +61,7 @@ class Test_odds_to_prob():
 
     def test_invalid_tournament_type(self, odds):
         """
-        Test that TypeError is raised when tournament is not a string.
+        Test that TypeError is raised when tournament is not a string for convert_odds function.
 
         Parameters:
             odds (class): An instance of the Odds class to be tested.
