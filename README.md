@@ -211,9 +211,15 @@ To begin, you can obtain tennis match data between 1960 and 2024 through the `ge
 
 Next, `elo_calculations.py` contains scripts to calculate ELO scores based on the data given from  `get_tennis_data`. Simply running the "final_elo_csv" function from the ELO class and input the tennis dataframe to output the ELO calculation dataframe for every player in the dataset, saving it to a csv file. Optionally run the function 'win_percentage_common_opponents' in 'past_match_data' to get the win percentage and games played for every player against the others across the dataset, saved in 2 csv files. The input for this function is only the tennis data.
 
+#### skillo_calculations.py
+
+The `skillo_calculations.py` module holds the code to calculate SkillO ratings for all players based on the data given from  `get_tennis_data`. Running the "final_csv" function and inputting the tennis data from `get_tennis_data`, alongside the optimal csv saving path, will allow you to create a SkillO ratings dataframe for each player.
+
 #### simulation.py
 
-To simulate tournaments, initiate the Simulation class with the arguments: elo dataframe for player elos, S (Scaling factor, default 800), hth (Boolean value if you want the model to include the head-to-head win percentage data), and K scaling factor for the head-to-head data. Before simulating the tournament, running 'simulation_params' with the win percentage and games played dataframe will include the head-to-head statistics for each player. To simulate tournaments, running 'user_tournament_simulation' with the inputs of the tennis data, year, tournament name, number of simulation, and saves (A boolean value to save the resulting simulation results to a csv). This will output a csv file named based on the tournament you are simulating, called  'tournament_results_{tournament_name}' where tournament_name is the name of the tournament. If head-to-head was true, the string '_head_to_head_{k}' with the scaling factor k would be in the csv files name at the end.
+To simulate tournaments, initiate the Simulation class with the arguments: rating dataframe for given rating system (ELO or SkillO), rating system as a string ('ELO' or 'skillO'), the S scaling factor (default 400), hth (Boolean value if you want the model to include the head-to-head win percentage data, default False to not include hth), k scaling factor for the head-to-head data (Default 0.1), and the beta value for the skillo rating system (default set to 2). If you are using one rating system, you only need to fill in values if you want for your choice of rating system, like S for ELO and beta for SkillO.Before simulating the tournament, running 'simulation_params' with the win percentage and games played dataframe will include the head-to-head statistics for each player. 
+
+To simulate tournaments, running 'user_tournament_simulation' with the inputs of the tennis data, year, tournament name, number of simulation, simulation number (Default set to 1), and saves (A boolean value to save the resulting simulation results to a csv). This will output a csv file named based on the tournament you are simulating, called  'tournament_results_{self.tournament_name}_{self.rating_system}_{self.simulation_number}.csv depended on the tournament, rating system, and simulation number. If simulation number is none, the last string is left blank. If head-to-head was true, the string '_head_to_head_{k}' with the scaling factor k would be in the csv files name at the end of the tournament name.
 
 #### error_metrics.py
 
@@ -239,5 +245,7 @@ To run test cases, you can run:
 PYTHONPATH=. pytest --cov=src -W ignore::DeprecationWarning -v tests/___.py
 ```
 
-Where ___ would be the specific testing file you would like to run
+Where ___ would be the specific testing file you would like to run.
+
+We note based on the github workflows, we have 89% test coverage.
 
