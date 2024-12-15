@@ -52,6 +52,14 @@ src.past\_matches module
    :undoc-members:
    :show-inheritance:
 
+   src.skillo\_calculations module
+------------------------
+
+.. automodule:: src.skillo_calculations
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.plot module
 ---------------
 

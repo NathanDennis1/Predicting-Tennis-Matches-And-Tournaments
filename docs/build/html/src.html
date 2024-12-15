@@ -435,6 +435,7 @@ This can be none if the H2H model is not being used, which is the default.</p></
 </section>
 <section id="module-src.past_matches">
 <span id="src-past-matches-module"></span><h2>src.past_matches module<a class="headerlink" href="#module-src.past_matches" title="Link to this heading">¶</a></h2>
+<p>src.skillo_calculations module</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.past_matches.past_match_data">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.past_matches.</span></span><span class="sig-name descname"><span class="pre">past_match_data</span></span><a class="headerlink" href="#src.past_matches.past_match_data" title="Link to this definition">¶</a></dt>
@@ -454,6 +455,110 @@ dataset. Creates a csv file for both win percentage and games played between eve
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>TypeError</strong> -- data must be of type dataframe.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
+<dl class="py class" id="module-src.skillo_calculations">
+<dt class="sig sig-object py" id="src.skillo_calculations.skillO">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.skillo_calculations.</span></span><span class="sig-name descname"><span class="pre">skillO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">initial_mean</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_variance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_year</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.skillo_calculations.skillO" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>SkillO class to calculate player skill and uncertainty updates for tennis matches.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.skillo_calculations.skillO.expected_game_score">
+<span class="sig-name descname"><span class="pre">expected_game_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mean_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mean_2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance_1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variance_2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.skillo_calculations.skillO.expected_game_score" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the expected outcome of a match between two players based on their skill and uncertainty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mean_1</strong> (<em>float</em>) -- Skill of player 1, their mean.</p></li>
+<li><p><strong>mean_2</strong> (<em>float</em>) -- Skill of player 2, their mean.</p></li>
+<li><p><strong>variance_1</strong> (<em>float</em>) -- Uncertainty of player 1, their variance.</p></li>
+<li><p><strong>variance_2</strong> (<em>float</em>) -- Uncertainty of player 2, their variance.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expected probability that player 1 beats player 2.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.skillo_calculations.skillO.final_csv">
+<span class="sig-name descname"><span class="pre">final_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tennis_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'../data/skillo.csv'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.skillo_calculations.skillO.final_csv" title="Link to this definition">¶</a></dt>
+<dd><p>Creates the final csv for the skillo player ratings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tennis_data</strong> (<em>pandas dataframe</em>) -- The dataframe containing all tennis match data.</p></li>
+<li><p><strong>file_path</strong> (<em>str</em>) -- Path of the file to save, default ../data/skillo.csv.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.skillo_calculations.skillO.initial_skills">
+<span class="sig-name descname"><span class="pre">initial_skills</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surfaces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.skillo_calculations.skillO.initial_skills" title="Link to this definition">¶</a></dt>
+<dd><p>Creates initial skill dataframe with skill mean and variance for each player.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>surfaces</strong> (<em>list</em>) -- A list of surfaces players are playing on. (Clay, Grass, Hard)</p></li>
+<li><p><strong>names</strong> (<em>list</em>) -- Names of all players.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe containing initial skill (mean) and uncertainty (variance) for each player as a pandas dataframe.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.skillo_calculations.skillO.simulate_multiple_runs">
+<span class="sig-name descname"><span class="pre">simulate_multiple_runs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_simulations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">surfaces</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.skillo_calculations.skillO.simulate_multiple_runs" title="Link to this definition">¶</a></dt>
+<dd><p>Run the skillO calculation multiple times and take the average mean and variance for each player.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pandas dataFrame</em>) -- Match data containing winner, loser, surface, and year of match.</p></li>
+<li><p><strong>num_simulations</strong> (<em>int</em>) -- Number of times to run the simulation.</p></li>
+<li><p><strong>surfaces</strong> (<em>list</em>) -- List of surfaces (Hard, Clay, Grass)</p></li>
+<li><p><strong>names</strong> (<em>list</em>) -- List of player names.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dataframe with average mean and variance across all simulations for skillo.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas dataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.skillo_calculations.skillO.skillO_calculation">
+<span class="sig-name descname"><span class="pre">skillO_calculation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SkillO_df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.skillo_calculations.skillO.skillO_calculation" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates SkillO for each player based on match history.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pandas dataFrame</em>) -- Match data containing winner, loser, surface, and year of match.</p></li>
+<li><p><strong>SkillO_df</strong> (<em>pandas dataFrame</em>) -- Dataframe of SkillO ratings.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) -- SkillO adjustment factor. Default set to 0.1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Updated player skill dataframe after all matches.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pandas dataFrame</p>
 </dd>
 </dl>
 </dd></dl>
