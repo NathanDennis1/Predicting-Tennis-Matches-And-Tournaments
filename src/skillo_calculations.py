@@ -86,7 +86,7 @@ class skillO:
             gamma (float): SkillO adjustment factor. Default set to 0.1
 
         Returns:
-            pandas dataFrame: Updated player skill dataframe after all matches.
+            Updated player skill dataframe after all matches.
         """
         if not isinstance(data, pd.DataFrame):
             raise TypeError(f"data must be a pandas dataframe, it is type {type(data)}")
@@ -177,7 +177,7 @@ class skillO:
             names (list): List of player names.
 
         Returns:
-            pandas dataFrame: Dataframe with average mean and variance across all simulations for skillo.
+            Dataframe with average mean and variance across all simulations for skillo.
         """
         # Initialize a list to store the skill results after each simulation.
         all_means = []
