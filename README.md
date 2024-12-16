@@ -108,7 +108,7 @@ odds = Odds()
 matches = past_match_data()
 ```
 
-The ELO class here is initialized with a mean variance of 1500 for all players and the current year being 2023 for the tournaments we will predict. The skillO class is initialized with all players starting with an initial mean rating of 25 and variance of 8.333, with the same current year. The beta value to determine how influential variance is in the predictions is set to 1, and the year decay factor when calculating rating changes from past years data is set to 1.0.
+The ELO class here is initialized with a mean variance of 1500 for all players and the current year being 2023 for the tournaments we will predict. The skillO class is initialized with all players starting with an initial mean rating of 25 and variance of 8.333, with the same current year. The beta value to determine how influential variance is in the predictions is set to 1, and the year decay factor when calculating rating changes from past years data is set to 1.1.
 
 ### Obtain tennis Data
 
@@ -119,7 +119,7 @@ tennis_data.get_data(year_lower = 2014, year_upper = 2024)
 data = pd.read_csv('../data/tennis_data.csv')
 ```
 
-Now the tennis match history data is read in as 'data'. This gets tennis data between the years 2022 and 2023.
+Now the tennis match history data is read in as 'data'. This gets tennis data between the years 2014 and 2023.
 
 ### Create SkillO csv
 
@@ -153,7 +153,7 @@ simulation_1.user_tournament_simulation(data, 2023, 'Wimbledon', 5000, sim_num =
 skillo_wimbledon = pd.read_csv(f'../data/tournament_results_Wimbledon_skillO_1.csv', index_col = 0)
 ```
 
-This code will run the simulation and create the csv. Optionally, we read the csv file.
+This code will run the simulation and create the csv. Optionally, we read the csv file but we don't need too since it won't be used later.
 
 ### Simulate ELO Tournament
 
@@ -165,6 +165,8 @@ simulation_ELO.user_tournament_simulation(data, 2023, 'Wimbledon', 5000, saves =
 ELO_wimbledon = pd.read_csv(f'../data/tournament_results_Wimbledon_ELO.csv', index_col = 0)
 ```
 
+Again, optionally, we read the csv file but we don't need too since it won't be used later.
+
 ### Display Error Metrics
 
 We now display the error metrics for the ELO and SkillO tournament simulations with the displayErrors function from the error class.
@@ -173,7 +175,7 @@ We now display the error metrics for the ELO and SkillO tournament simulations w
 error.displayErrors('SkillO', 'Wimbledon', '1')
 ```
 
-This displays the error metrics for the SkillO simulation for Wimbledon, with simulation number 1 as we specified earlier.
+This displays the error metrics for the SkillO simulation for Wimbledon, with simulation number 1 as we specified earlier. It will display the RMSE, $L_1$, $L_{\infty}$, MAPE, and R-squared scores.
 
 ```bash
 error.displayErrors('ELO', 'Wimbledon')
@@ -183,7 +185,7 @@ This displays the ELO error metrics for the ELO simulation for Wimbledon.
 
 ### Make comparison plot to compare SkillO and ELO formulas
 
-We can now display the corresponding bar plot showing the top 10 predicted champions based on the betting odds, with bars representing the predicted champion probabilities for the SkillO and ELO formula.
+We can now display the corresponding bar plot showing the top 10 predicted champions based on the betting odds, with bars representing the predicted champion probabilities for the SkillO and ELO formula. We specify this was the first SkillO simulation with '1'.
 
 ```bash
 plot.plot_ELO_vs_SkillO('Wimbledon', 2023, '1')
@@ -203,7 +205,7 @@ Users can also simulate tournaments incorporating head-to-head match history int
 simulation_ELO = Simulation(player_elos, 'ELO', S = 800, hth = True, k = 0.1)
 ```
 
-Here, we set hth, representing head-to-head, to be True, indicating the simulation will incorporate head-to-head match data into analysis. The k factor scales the head-to-head data and the influence on match outcomes.
+Here, we set hth, representing head-to-head, to be True, indicating the simulation will incorporate head-to-head match data into analysis. The k factor scales the head-to-head data and the influence on match outcomes. We note this was not part of our final project analysis, rather mini project 2.
 
 ## Python File Descriptions
 
@@ -229,7 +231,7 @@ To simulate tournaments, running 'user_tournament_simulation' with the inputs of
 
 #### error_metrics.py
 
-To display error metrics (RMSE, L1, Linf, MAPE, and R-Squared scores), utilize the `Odds_to_prob.py` script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the valid year and tournament based on Odds we have in 2023. Running 'displayErrors' in the `error_metrics.py` script will display the error scores across the given tournament input and simulation number, alongside the optional k scaling factors for the head-to-head data, outputting a dataframe with these values.
+To display error metrics (RMSE, $L_1$, $L_{\infty}$, MAPE, and R-Squared scores), utilize the `Odds_to_prob.py` script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the valid year and tournament based on Odds we have in 2023. Running 'displayErrors' in the `error_metrics.py` script will display the error scores across the given tournament input and simulation number, alongside the optional k scaling factors for the head-to-head data, outputting a dataframe with these values.
 
 #### plot.py
 
