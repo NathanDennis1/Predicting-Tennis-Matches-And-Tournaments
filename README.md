@@ -195,7 +195,7 @@ Here is example output of what this comparison will look like:
 
 ![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_2.png)
 
-We note this is the same second simulation we did in our paper. The results from user simulation may vary, since this code is dependent on randomness in the simulations.
+We note this is the same second simulation we did in our paper, hence why the graph says simulation 2 and not 1. The results from user simulation may vary, since this code is dependent on randomness in the simulations.
 
 ### OPTIONAL, Head-to-head
 
@@ -209,7 +209,7 @@ Here, we set hth, representing head-to-head, to be True, indicating the simulati
 
 ## Python File Descriptions
 
-In the following section we present descriptions of each python file.
+In the following section we present descriptions of each python file. We note that the simulation number parameter is $\textbf{ONLY}$ used for SkillO simulation, as the emphasis was to test multiple simulations for SkillO and compare it to betting odds or ELO.
 
 #### get_tennis_data.py
 
@@ -225,13 +225,13 @@ The `skillo_calculations.py` module holds the code to calculate SkillO ratings f
 
 #### simulation.py
 
-To simulate tournaments, initiate the Simulation class with the arguments: rating dataframe for given rating system (ELO or SkillO), rating system as a string ('ELO' or 'skillO'), the S scaling factor for ELO (default 400), hth (Boolean value if you want the model to include the head-to-head win percentage data, default False to not include hth), k scaling factor for the head-to-head data (Default 0.1), and the beta value for the skillo rating system (default set to 2). If you are using one rating system, you only need to fill in values if you want for your choice of rating system, like S for ELO and beta for SkillO. Before simulating the tournament, running 'simulation_params' with the win percentage and games played dataframe will include the head-to-head statistics for each player. 
+To simulate tournaments, initiate the Simulation class with the arguments: rating dataframe for given rating system (ELO or SkillO), rating system as a string ('ELO' or 'skillO'), the S scaling factor for ELO (default 400), hth (Boolean value if you want the model to include the head-to-head win percentage data, default False to not include hth), k scaling factor for the head-to-head data (Default 0.1), and the beta value for the skillo rating system (default set to 2). If you are using one rating system, you only need to fill in values if you want for your choice of rating system, like S for ELO and beta for SkillO or leave the values as default. Before simulating the tournament, running 'simulation_params' with the win percentage and games played dataframe will include the head-to-head statistics for each player to incorporate in the simulation, which was the main focus of project 2.
 
 To simulate tournaments, running 'user_tournament_simulation' with the inputs of the tennis data, year, tournament name, number of simulations to run, simulation number (Default set to 1), and saves (A boolean value to save the resulting simulation results to a csv). This will output a csv file named based on the tournament you are simulating, called  'tournament_results_{self.tournament_name}_{self.rating_system}_{self.simulation_number}.csv depended on the tournament, rating system, and simulation number. If simulation number is none, the last string is left blank. If head-to-head was true, the string '_head_to_head_{k}' with the scaling factor k would be in the csv files name at the end of the tournament name.
 
 #### error_metrics.py
 
-To display error metrics (RMSE, $L_1$, $L_{\infty}$, MAPE, and R-Squared scores), utilize the `Odds_to_prob.py` script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the valid year and tournament based on Odds we have in 2023. Running 'displayErrors' in the `error_metrics.py` script will display the error scores across the given tournament input and simulation number, alongside the optional k scaling factors for the head-to-head data, outputting a dataframe with these values.
+To display error metrics (RMSE, $L_1$, $L_{\infty}$, MAPE, and R-Squared scores), utilize the `Odds_to_prob.py` script and the function "convert_odds" inputting the year and tournament to create a csv file for the given odds based on the valid year and tournament based on Odds we have in 2023. Running 'displayErrors' in the `error_metrics.py` script will display the error scores across the given tournament input and optional simulation number for SkillO, alongside the optional k scaling factors for the head-to-head data, outputting a dataframe with these values.
 
 #### plot.py
 
