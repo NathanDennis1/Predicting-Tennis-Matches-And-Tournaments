@@ -253,5 +253,5 @@ PYTHONPATH=. pytest --cov=src -W ignore::DeprecationWarning -v tests/___.py
 
 Where ___ would be the specific testing file you would like to run.
 
-We note based on the github workflows, we have 89% test coverage.
+We note based on the github workflows, we have 88% test coverage and it would be higher without main.py.
 
