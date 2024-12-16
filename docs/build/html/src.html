@@ -259,7 +259,7 @@ the winners and losers columns, then combines the set using union.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.error_metrics.Errors.L1">
 <span class="sig-name descname"><span class="pre">L1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.error_metrics.Errors.L1" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates L-1 Norm score, the average absolute difference between the true and predicted values</p>
+<dd><p>Calculates L-1 Norm score, the average absolute difference between the true and predicted values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -325,7 +325,7 @@ the winners and losers columns, then combines the set using union.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.error_metrics.Errors.RMSE">
 <span class="sig-name descname"><span class="pre">RMSE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.error_metrics.Errors.RMSE" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates RMSE score, the root mean squared error.</p>
+<dd><p>Calculates RMSE score, the root mean squared error between the true and predicted values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -334,7 +334,7 @@ the winners and losers columns, then combines the set using union.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>RMSE score as a float</p>
+<dd class="field-even"><p>RMSE score as a float.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>TypeError</strong> -- Inputs must both be series, true and pred, raises error if not.</p>
@@ -440,7 +440,7 @@ This can be none if the H2H model is not being used, which is the default.</p></
 <dt class="sig sig-object py" id="src.past_matches.past_match_data">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.past_matches.</span></span><span class="sig-name descname"><span class="pre">past_match_data</span></span><a class="headerlink" href="#src.past_matches.past_match_data" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class to obtain past match data between players</p>
+<p>Class to obtain past match data between players.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.past_matches.past_match_data.win_percentage_common_opponents">
 <span class="sig-name descname"><span class="pre">win_percentage_common_opponents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.past_matches.past_match_data.win_percentage_common_opponents" title="Link to this definition">¶</a></dt>
@@ -536,9 +536,6 @@ dataset. Creates a csv file for both win percentage and games played between eve
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Dataframe with average mean and variance across all simulations for skillo.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas dataFrame</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -556,9 +553,6 @@ dataset. Creates a csv file for both win percentage and games played between eve
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Updated player skill dataframe after all matches.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas dataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -578,7 +572,7 @@ rating systems plot.</p>
 <dt class="sig sig-object py" id="src.plot.Plot.get_project_root">
 <span class="sig-name descname"><span class="pre">get_project_root</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#src.plot.Plot.get_project_root" title="Link to this definition">¶</a></dt>
 <dd><p>Returns the root directory of the project, which in our case is final_19. This was done
-so that the test_plot.py test code would work.</p>
+so that the test_plot.py test code would work. We received assistance for this code from ChatGPT.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -695,7 +689,7 @@ models probabilities. Saves plot to a png.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.simulation.Simulation.compute_prob_using_ELO">
 <span class="sig-name descname"><span class="pre">compute_prob_using_ELO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">first_elo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_elo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#src.simulation.Simulation.compute_prob_using_ELO" title="Link to this definition">¶</a></dt>
-<dd><p>Calculates expected game score based on the logistic function fr the ELO formula.</p>
+<dd><p>Calculates expected game score based on the logistic function for the ELO formula.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
