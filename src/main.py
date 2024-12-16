@@ -17,7 +17,7 @@ def main():
     odds = Odds()
     matches = past_match_data()
 
-    #tennis_data.get_data(year_lower = 2014, year_upper = 2024)
+    tennis_data.get_data(year_lower = 2014, year_upper = 2024)
     data = pd.read_csv('../data/tennis_data.csv')
 
     skillo.final_csv(data, '../data/skillo_4.csv')
