@@ -209,7 +209,7 @@ Here, we set hth, representing head-to-head, to be True, indicating the simulati
 
 ## Python File Descriptions
 
-In the following section we present descriptions of each python file. We note that the simulation number parameter is $\textbf{ONLY}$ used for SkillO simulation, as the emphasis was to test multiple simulations for SkillO and compare it to betting odds or ELO.
+In the following section we present descriptions of each python file. We note that the simulation number parameter is $\textbf{ONLY}$ used for SkillO simulation, as the emphasis was to test multiple simulations for SkillO and compare it to betting odds or the ELO system.
 
 #### get_tennis_data.py
 
