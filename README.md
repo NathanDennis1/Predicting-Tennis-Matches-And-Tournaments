@@ -4,9 +4,6 @@
 
 # Predicting Singles Tennis Matches and Tournaments
 
-## Group Members:
-Nathan Dennis, John Breedis, Yiming Chen (Team 19)
-
 ## Description & Content Overview
 
 In this repository we present a singles tennis match tournament simulation library. There are 2 rating systems used in this project to predict tennis match tournaments including the well known ELO system and the SkillO system developed by us. Tournaments which can be simulated include the Wimbledon, Australian Open, Roland Garros, and US Open, where there are comparable betting odds to compare for the first 3 tournaments listed. Users can freely change parameter combinations in the ELO and SkillO formulas to develop their own predictions for these tournaments. The output of the predictions will be a dataframe corresponding to the predicted probability that a player makes it to a specific round in a tournament, where the last column is the probability they win the Championship.
@@ -263,5 +260,4 @@ PYTHONPATH=. pytest --cov=src -W ignore::DeprecationWarning -v tests/___.py
 
 Where ___ would be the specific testing file you would like to run.
 
-We note based on the github workflows, we have 88% test coverage and it would be higher without main.py.
-
+Note that this was originally a "group" project, but I ended up doing all of the work. My group members did not end up helping with the code (check commit history) or the paper other than editing a few typos since they were busy with other projects and I did not want to procrastinate this until the last day so I finished it on my own.
