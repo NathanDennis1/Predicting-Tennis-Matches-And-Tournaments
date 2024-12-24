@@ -1,5 +1,5 @@
-[![CI](https://code.harvard.edu/AM215/final_19/actions/workflows/CI_push.yml/badge.svg)](https://code.harvard.edu/AM215/final_19/actions/workflows/CI_push.yml)
-[![Docs](https://code.harvard.edu/AM215/final_19/actions/workflows/docs.yml/badge.svg)](https://code.harvard.edu/AM215/final_19/actions/workflows/docs.yml)
+[![CI](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/CI_push.yml/badge.svg)](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/CI_push.yml)
+[![Docs](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/docs.yml/badge.svg)](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/docs.yml)
 
 
 # Predicting Singles Tennis Matches and Tournaments
