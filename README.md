@@ -1,12 +1,16 @@
-[![CI](https://code.harvard.edu/AM215/final_19/actions/workflows/CI_push.yml/badge.svg)](https://code.harvard.edu/AM215/final_19/actions/workflows/CI_push.yml)
-[![Docs](https://code.harvard.edu/AM215/final_19/actions/workflows/docs.yml/badge.svg)](https://code.harvard.edu/AM215/final_19/actions/workflows/docs.yml)
+[![CI](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/CI_push.yml/badge.svg)](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/CI_push.yml)
+[![Docs](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/docs.yml/badge.svg)](https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments/actions/workflows/docs.yml)
 
 
 # Predicting Singles Tennis Matches and Tournaments
 
+Author: Nathan Dennis
+
+Note that this was originally a "group" project, but I ended up doing all of the work. My group members did not end up helping with the code (check commit history) or the paper other than editing a few typos since they were busy with other projects and I did not want to procrastinate this until the last day so I finished it on my own.
+
 ## Description & Content Overview
 
-In this repository we present a singles tennis match tournament simulation library. There are 2 rating systems used in this project to predict tennis match tournaments including the well known ELO system and the SkillO system developed by us. Tournaments which can be simulated include the Wimbledon, Australian Open, Roland Garros, and US Open, where there are comparable betting odds to compare for the first 3 tournaments listed. Users can freely change parameter combinations in the ELO and SkillO formulas to develop their own predictions for these tournaments. The output of the predictions will be a dataframe corresponding to the predicted probability that a player makes it to a specific round in a tournament, where the last column is the probability they win the Championship.
+In this repository I present a singles tennis match tournament simulation library. There are 2 rating systems used in this project to predict tennis match tournaments including the well known ELO system and the SkillO system developed by me. Tournaments which can be simulated include the Wimbledon, Australian Open, Roland Garros, and US Open, where there are comparable betting odds to compare for the first 3 tournaments listed. Users can freely change parameter combinations in the ELO and SkillO formulas to develop their own predictions for these tournaments. The output of the predictions will be a dataframe corresponding to the predicted probability that a player makes it to a specific round in a tournament, where the last column is the probability they win the Championship.
 
 All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explanations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to  simulate major grand slam tournaments and validate these results against betting odds.
 
@@ -27,7 +31,7 @@ Ensure you have met these requirements:
 
 ## Directory Tree
 
-Here we present the directory tree.
+Here I present the directory tree.
 
 ```bash
 ├── LICENSE
@@ -73,7 +77,7 @@ Here we present the directory tree.
 
 1. **Clone the Repository**
 
-You can clone our repository to your local machine by running:
+You can clone the repository to your local machine by running:
 
 ```bash
 git clone https://code.harvard.edu/AM215/final_19.git
@@ -89,7 +93,7 @@ cd src
 
 ## Example
 
-We now present an example on how to use our library.
+I now present an example on how to use our library.
 
 ### Load Libraries
 
@@ -109,7 +113,7 @@ The ELO class here is initialized with a mean variance of 1500 for all players a
 
 ### Obtain tennis Data
 
-Next, we display how to obtain and read the tennis data. Run the following code to get the data, then read it into a csv:
+Next, I display how to obtain and read the tennis data. Run the following code to get the data, then read it into a csv:
 
 ```bash
 tennis_data.get_data(year_lower = 2014, year_upper = 2024)
@@ -192,7 +196,7 @@ Here is example output of what this comparison will look like:
 
 ![Wimbledon Plot](imgs/Wimbledon_plot_comparison_simulation_2.png)
 
-We note this is the same second simulation we did in our paper, hence why the graph says simulation 2 and not 1. The results from user simulation may vary, since this code is dependent on randomness in the simulations.
+We note this is the same second simulation I did in the final paper, hence why the graph says simulation 2 and not 1. The results from user simulation may vary, since this code is dependent on randomness in the simulations.
 
 ### OPTIONAL, Head-to-head
 
@@ -259,5 +263,3 @@ PYTHONPATH=. pytest --cov=src -W ignore::DeprecationWarning -v tests/___.py
 ```
 
 Where ___ would be the specific testing file you would like to run.
-
-Note that this was originally a "group" project, but I ended up doing all of the work. My group members did not end up helping with the code (check commit history) or the paper other than editing a few typos since they were busy with other projects and I did not want to procrastinate this until the last day so I finished it on my own.
