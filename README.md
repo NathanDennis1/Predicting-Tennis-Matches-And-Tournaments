@@ -80,7 +80,7 @@ Here I present the directory tree.
 You can clone the repository to your local machine by running:
 
 ```bash
-git clone https://code.harvard.edu/AM215/final_19.git
+git clone https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments.git
 ```
 
 2. **Navigate to directory**
