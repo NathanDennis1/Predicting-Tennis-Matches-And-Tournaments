@@ -6,7 +6,9 @@
 
 Author: Nathan Dennis
 
-Note that this was originally a "group" project, but I ended up doing all of the work. My group members did not end up helping with the code (check commit history) or the paper other than editing a few typos since they were busy with other projects and I did not want to procrastinate this until the last day so I finished it on my own.
+Note that this was originally a "group" project, but I ended up doing all of the work. My group members did not end up helping with the code (check commit history) or the paper other than editing a few typos since they were busy with other projects and I did not want to procrastinate this until the last day so I finished it on my own. 
+
+I also let one of my friends (not in the same class) practice writing test cases and added a new function to write test cases in this code base.
 
 ## Description & Content Overview
 
