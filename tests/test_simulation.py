@@ -17,12 +17,12 @@ def original_tennis_data():
     Raises:
         FileNotFoundError: File was not found in data folder.
     """
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tennis_data.csv')    
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'tennis_data.csv')
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"File not found: {data_path}")
-    
+
     tennis_df = pd.read_csv(data_path)
-    
+
     return tennis_df
 
 @pytest.fixture
@@ -36,12 +36,12 @@ def original_player_elo_df():
     Raises:
         FileNotFoundError: File was not found in data folder.
     """
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'player_elos.csv')    
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'player_elos.csv')
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"File not found: {data_path}")
-    
+
     elo_df = pd.read_csv(data_path, index_col = 'Player_Name')
-    
+
     return elo_df
 
 @pytest.fixture
@@ -55,12 +55,12 @@ def original_player_skillo_df():
     Raises:
         FileNotFoundError: File was not found in data folder.
     """
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'skillo_2.csv')    
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'skillo_2.csv')
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"File not found: {data_path}")
-    
+
     skillo_df = pd.read_csv(data_path, index_col = 'Player_Name')
-    
+
     return skillo_df
 
 @pytest.fixture
@@ -74,12 +74,12 @@ def original_win_pct_df():
     Raises:
         FileNotFoundError: File was not found in data folder.
     """
-    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'win_percentage.csv')    
+    data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'win_percentage.csv')
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"File not found: {data_path}")
-    
+
     Pct_df = pd.read_csv(data_path, index_col = 'Player_Name')
-    
+
     return Pct_df
 
 @pytest.fixture
@@ -96,9 +96,9 @@ def original_games_played_df():
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', 'games_played_opponents.csv')
     if not os.path.exists(data_path):
         raise FileNotFoundError(f"File not found: {data_path}")
-    
+
     games_play_df = pd.read_csv(data_path, index_col = 'Player_Name')
-    
+
     return games_play_df
 
 @pytest.fixture
@@ -127,27 +127,27 @@ def tennis_data():
         Mock dataframe of fake tennis players.
     """
     data = {
-        'tourney_name': ['Australian Open', 'French Open', 'Wimbledon', 'US Open', 
-                        'French Open', 'French Open', 'Australian Open', 'Wimbledon', 
+        'tourney_name': ['Australian Open', 'French Open', 'Wimbledon', 'US Open',
+                        'French Open', 'French Open', 'Australian Open', 'Wimbledon',
                         'Wimbledon', 'US Open'],
         'surface': ['Hard', 'Clay', 'Grass', 'Hard', 'Clay', 'Clay', 'Hard', 'Grass', 'Hard', 'Hard'],
         'draw_size': [128, 128, 128, 128, 128, 128, 128, 128, 128, 128],
-        'tourney_level': ['Grand Slam', 'Grand Slam', 'Grand Slam', 'Grand Slam', 
-                        'Grand Slam', 'Grand Slam', 'Grand Slam', 'Grand Slam', 
+        'tourney_level': ['Grand Slam', 'Grand Slam', 'Grand Slam', 'Grand Slam',
+                        'Grand Slam', 'Grand Slam', 'Grand Slam', 'Grand Slam',
                         'Grand Slam', 'Grand Slam'],
         'best_of': [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
-        'winner_name': ['Player_1', 'Player_3', 'Player_2', 'Player_4', 
-                        'Player_1', 'Player_3', 'Player_2', 'Player_4', 
+        'winner_name': ['Player_1', 'Player_3', 'Player_2', 'Player_4',
+                        'Player_1', 'Player_3', 'Player_2', 'Player_4',
                         'Player_1', 'Player_3'],
         'winner_age': [26, 24, 27, 31, 26, 24, 27, 31, 26, 24],
-        'loser_name': ['Player_2', 'Player_4', 'Player_3', 'Player_1', 
-                    'Player_4', 'Player_2', 'Player_1', 'Player_3', 
+        'loser_name': ['Player_2', 'Player_4', 'Player_3', 'Player_1',
+                    'Player_4', 'Player_2', 'Player_1', 'Player_3',
                     'Player_2', 'Player_4'],
         'loser_age': [28, 30, 25, 29, 30, 27, 29, 25, 28, 30],
         'Year': [2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023, 2023]}
 
     final_df = pd.DataFrame(data)
-    
+
     return final_df
 
 @pytest.fixture
@@ -169,7 +169,7 @@ def player_elo_df():
     elo_df = pd.DataFrame(elo_data)
 
     elo_df = elo_df.set_index('Player_Name')
-    
+
     return elo_df
 
 @pytest.fixture
@@ -194,7 +194,7 @@ def player_skillo_df():
     skillo_df = pd.DataFrame(skillo_data)
 
     skillo_df = skillo_df.set_index('Player_Name')
-    
+
     return skillo_df
 
 @pytest.fixture
@@ -206,7 +206,7 @@ def win_pct_df():
         Mock dataframe of tennis players win percentages
     """
     players = ['Player_1', 'Player_2', 'Player_3', 'Player_4']
-    
+
     win_pct_data = {
         'Player_1': [0, 0.2, 0.4, 0.6],
         'Player_2': [0.8, 0, 0, 0.4],
@@ -215,7 +215,7 @@ def win_pct_df():
 
 
     Pct_df = pd.DataFrame(win_pct_data, index=players)
-    
+
     return Pct_df
 
 @pytest.fixture
@@ -235,7 +235,7 @@ def games_played_df():
         'Player_4': [5, 5, 4, 0]}
 
     gp_df = pd.DataFrame(games_played_data, index=players)
-    
+
     return gp_df
 
 @pytest.fixture
@@ -408,3 +408,53 @@ class Test_simulation():
         winners = simulation_skillo.simulate_round(matchups, results, "Hard", 1, 5)
         assert len(winners) == 2, "There should be two winners from two matchups"
         assert set(winners).issubset(['Player_1', 'Player_2', 'Player_3', 'Player_4']), "Winners should be from the original players"
+
+    def test_simulating_mock_game_type_error_player_1_elo_float(self, simulation):
+        """
+        Test that TypeError is raised when player 1's elo rating is not a float.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
+        """
+        with pytest.raises(TypeError, match="The first player's elo rating has to be a float"):
+            simulation.simulating_mock_game_ELO("2312.2", float(25), 1253.0, float(30), 3, "Hard")
+
+    def test_simulating_mock_game_type_error_player_1_elo_float(self, simulation):
+        """
+        Test that TypeError is raised when player 2's elo rating is not a float.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
+        """
+        with pytest.raises(TypeError, match="The second player's elo rating has to be a float"):
+            simulation.simulating_mock_game_ELO(1235.2, float(25), "2351.2", float(30), 3, "Hard")
+
+    def test_simulating_mock_game_type_error_player_1_age(self, simulation):
+        """
+        Test that TypeError is raised when player 1's age is not a float.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
+        """
+        with pytest.raises(TypeError, match="The first players age has to be a float"):
+            simulation.simulating_mock_game_ELO(1234.2, 'Age', 2352.5, float(30), 3, "Hard")
+
+    def test_simulating_mock_game_type_error_player_2_age(self, simulation):
+        """
+        Test that TypeError is raised when player 2's age is not a float.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
+        """
+        with pytest.raises(TypeError, match="The second players age has to be a float"):
+            simulation.simulating_mock_game_ELO(1234.2, float(25), 2345.6, 'age', 3, "Hard")
+
+    def test_simulating_mock_game_elo(self, simulation):
+        """
+        Tests simulating mock game function, ensures a string is returned for the winner.
+
+        Parameters:
+            simulation (class): An instance of the Simulation class to be tested.
+        """
+        winner = simulation.simulating_mock_game_ELO(1234.2, float(25), 2352.2, float(30), 3, "Hard")
+        assert isinstance(winner, str), "Returns string"
