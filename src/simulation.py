@@ -24,12 +24,12 @@ class Simulation():
         """
         if rating_system not in ['ELO', 'SkillO', 'skillO']:
             raise ValueError("rating_system must be 'ELO' or 'SkillO'. The S in SkillO can be lower case or uppercase")
-        
+
         self.rating_df = rating_df
         self.rating_system = rating_system
         self.tournament_name = None
         self.S = S
-        self.head_to_head = hth    
+        self.head_to_head = hth
         self.k = float(k)
         self.beta = beta
 
@@ -66,7 +66,7 @@ class Simulation():
             player_1 (str): Name of player 1.
             player_2 (str): Name of player 2.
             surface (str): Surface match is being played on.
-        
+
         Returns:
             Winning probability of player 1 as a float through the logistic function.
         """
@@ -82,29 +82,29 @@ class Simulation():
 
         # Return the logistic probability
         return self.logistic(skill_diff / uncertainty)
-    
+
     def adjusted_win_probability(self, P_A, P_head_to_head, games_played):
         """
         Calculate the adjusted win probability for Player A based on the sigmoid-weighted head-to-head record.
-        
+
         Args:
             P_A (float): Probability played A beats player B.
             P_head_to_head (float): Historical head-to-head winning percentage for player A.
             games_played (int): Number of games played between played A and B.
-        
+
         Returns:
             Adjusted win probability for Player A.
         """
-        adjustment_factor = 0.5 / (1 + math.exp(-self.k * (games_played - 10))) 
+        adjustment_factor = 0.5 / (1 + math.exp(-self.k * (games_played - 10)))
 
         # Calculate the adjusted win probability
         P_A_adjusted = P_A + adjustment_factor * (P_head_to_head - 0.5)
 
         # Ensure the adjusted probability stays within the valid range [0, 1]
         P_A_adjusted = max(0, min(1, P_A_adjusted))
-        
+
         return P_A_adjusted
-    
+
     def compute_prob_in_sets(self, winning_prob, age, sets, surface):
         """
         Computes a players winning probability based off the number of sets in a match.
@@ -130,9 +130,9 @@ class Simulation():
             factor = math.exp(-decay_rate * (age-25))
 
         return [winning_prob * factor ** i for i in range(sets)]
-    
 
-        
+
+
     def simulating_game(self, player_1, player_1_age, player_2, player_2_age, num_sets, surface):
         """
         Computes a game in a tennis match
@@ -150,7 +150,7 @@ class Simulation():
 
         Raises:
             TypeError: The player names must be strings and ages must be floats.
-        """   
+        """
         if not isinstance(player_1, str):
             raise TypeError(f"The first player has to be a string, it is {type(player_1)}")
         if not isinstance(player_2, str):
@@ -162,7 +162,7 @@ class Simulation():
             raise TypeError(f"The second players age has to be a float, it is {type(player_2_age)}")
 
         set_winner = []
-        
+
         if self.rating_system == 'ELO':
             player_1_elo = self.rating_df.loc[player_1][f'{surface}_ELO']
             player_2_elo = self.rating_df.loc[player_2][f'{surface}_ELO']
@@ -177,7 +177,7 @@ class Simulation():
                 winning_prob_1 = self.adjusted_win_probability(winning_prob_1, past_head_to_head, past_games_played)
 
         winning_prob_2 = 1 - winning_prob_1
-        
+
         winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age, num_sets, surface)
         winning_prob_2_in_sets = self.compute_prob_in_sets(winning_prob_2, player_2_age, num_sets, surface)
 
@@ -187,11 +187,63 @@ class Simulation():
                 set_winner.append(player_1)
             else:
                 set_winner.append(player_2)
-                                
+
         if set_winner.count(player_1) >= int(num_sets/2)+1:
             return player_1
         elif set_winner.count(player_2) >= int(num_sets/2)+1:
             return player_2
+
+
+    def simulating_mock_game_ELO(self, player_1_elo, player_1_age, player_2_elo, player_2_age, num_sets, surface):
+        """
+        Computes a mock game in a tennis match based on elo ratings.
+
+        Args:
+            player_1_elo (float): ELO rating of player 1.
+            player_1_age (float): The age of player 1.
+            player_2_elo (float): ELO rating of player 2.
+            player_2_age (float): The age of player 2.
+            num_sets (int): Number of sets in a match.
+            surface (str): Surface of a match.
+
+        Returns:
+            Player who won the match as a string.
+
+        Raises:
+            TypeError: The player elo ratings must be floats and ages must be floats.
+        """
+        if not isinstance(player_1_elo, float):
+            raise TypeError(f"The first player's elo rating has to be a float, it is {type(player_1_elo)}")
+        if not isinstance(player_2_elo, float):
+            raise TypeError(f"The second player's elo rating has to be a float, it is {type(player_2_elo)}")
+
+        if not isinstance(player_1_age, float):
+            raise TypeError(f"The first players age has to be a float, it is {type(player_1_age)}")
+        if not isinstance(player_2_age, float):
+            raise TypeError(f"The second players age has to be a float, it is {type(player_2_age)}")
+
+        set_winner = {
+            "player_1": 0,
+            "player_2": 0
+        }
+
+        winning_prob_1 = self.compute_prob_using_ELO(player_1_elo, player_2_elo)
+        winning_prob_2 = 1 - winning_prob_1
+
+        winning_prob_1_in_sets = self.compute_prob_in_sets(winning_prob_1, player_1_age, num_sets, surface)
+        winning_prob_2_in_sets = self.compute_prob_in_sets(winning_prob_2, player_2_age, num_sets, surface)
+
+        for i in range(num_sets):
+            winning_prob_1_inthisset = winning_prob_1_in_sets[i] / (winning_prob_1_in_sets[i] + winning_prob_2_in_sets[i])
+            if bool(np.random.uniform() < winning_prob_1_inthisset):
+                set_winner["player_1"] += 1
+            else:
+                set_winner["player_2"] += 1
+
+        if set_winner["player_1"] >= int(num_sets/2)+1:
+            return "player_1"
+        elif set_winner["player_2"] >= int(num_sets/2)+1:
+            return "player_2"
 
 
     def find_initial_draw(self, data, year, tournament):
@@ -305,7 +357,7 @@ class Simulation():
             raise ValueError(f"Invalid surface '{surface}'. Valid options are {surface_options}.")
 
 
-        final_matrix = np.zeros((128, 8)) 
+        final_matrix = np.zeros((128, 8))
 
         players = pd.concat([initial_draw['Player_1'], initial_draw['Player_2']]).to_list()
 
@@ -344,7 +396,7 @@ class Simulation():
             Winners_data.to_csv(file_path, index=True)
 
         return Winners_data
-    
+
     def simulation_params(self, win_pct_df, games_played_df):
         """
         Initializes parameters for the simulation module.
@@ -355,7 +407,7 @@ class Simulation():
         """
         self.win_pct_df = win_pct_df
         self.games_played_df = games_played_df
-    
+
     def user_tournament_simulation(self, tennis_data, year, tournament_name, nsims, sim_num = 1, saves = True):
         """
         Allows users to simulate tournament in one function. Utilizes all above methods to simulate tournament and
@@ -378,7 +430,7 @@ class Simulation():
             raise ValueError(f"Invalid value for 'saves, must be a boolean value (True or False), got {type(saves)}.")
         if not isinstance(year, int):
             raise TypeError(f"Year must be of type int, it is {type(year)}")
-    
+
         grand_slams = ['Australian Open', 'Roland Garros', 'Wimbledon', 'US Open']
 
         if tournament_name == 'Australian Open':
