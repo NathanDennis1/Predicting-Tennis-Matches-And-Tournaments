@@ -85,6 +85,8 @@ You can clone the repository to your local machine by running:
 git clone https://github.com/NathanDennis1/Predicting-Tennis-Matches-And-Tournaments.git
 ```
 
+Ensure this is in the location you would like the folder to be in.
+
 2. **Navigate to directory**
 
 Navigate into the project folder
