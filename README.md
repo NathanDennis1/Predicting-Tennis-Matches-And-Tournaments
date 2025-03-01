@@ -4,7 +4,7 @@
 
 # Predicting Singles Tennis Matches and Tournaments
 
-Harvard project for AC215, Fall 2024.
+Nathan Dennis - Harvard project for AC215, Fall 2024.
 
 ## Description & Content Overview
 
@@ -12,6 +12,7 @@ In this repository I present a singles tennis match tournament simulation librar
 
 All tournament simulation data can be found under the src folder. Instructions to run different python scripts are explained below, with deeper explanations regarding specific functions and inputs in the docs folder & related documentation in each python file. The objective of this code is to  simulate major grand slam tournaments and validate these results against betting odds.
 
+(Note the other contributor is a peer from a different instituion who wanted to practice writing test cases and functions).
 
 ### Prerequisites
 
