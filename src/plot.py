@@ -11,7 +11,7 @@ class Plot():
     """
     def __init__(self):
         """
-        Initializer for Plot class.
+        Initializer for Plot class. Sets bar_width default to 0.3.
         """
         self.bar_width = 0.3
 
